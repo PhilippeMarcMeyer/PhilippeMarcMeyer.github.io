@@ -20,7 +20,7 @@ $(document).ready(function () {
 	if(arr.length == 2){
 		var page = arr[1];
 		if(page !=""){
-			init(page);
+			init(page.toLowerCase());
 		}
 	}
 	
