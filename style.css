@@ -2,10 +2,44 @@
  #container{
 	 padding-top: 30px;
 	 padding-left:50px;
+	 width:90%;
  }
  
  h5 {
     color: #2e44b9;
     font-weight: bold;
     font-size: 24px;;
+}
+
+.edit{
+	margin-top:6px;
+	margin-right:4px;
+}
+
+.new{
+	margin-top:6px;
+}
+
+.delete{
+	margin-top:6px;
+	margin-right:4px;
+	color:darkred;
+}
+
+#text{
+	width:360px;
+	height:200px;
+}
+
+#key{
+	width:180px;
+}
+
+#title{
+	width:360px;
+}
+
+#firebaseEdit b{
+	display:block;
+	
 }

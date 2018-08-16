@@ -26,8 +26,6 @@ $(document).ready(function () {
 	
 	
 	
-	console.log("Path Beyond URL - ",location.href);
-	
   var config = {
     apiKey: "AIzaSyCdE3mJVWexNDOh83rNA5S29N2KK5gcy-c",
     authDomain: "first-firebase-project-5ada0.firebaseapp.com",
@@ -54,28 +52,135 @@ $(document).ready(function () {
 	  Modification:"no"
 	
 }
+
+	$(".cancel").off("click").on("click",function(){
+		$("#firebaseEdit").hide();
+		$("#firebaseEdit #key").val("");
+		$("#firebaseEdit #title").val("");
+		$("#firebaseEdit #text").val("");
+	});
+	
+	
+	$(".new").off("click").on("click",function(){
+		$("#firebaseEdit").show();
+		$("#firebaseEdit #key").val("");
+		$("#firebaseEdit .keyzone").hide();
+		$("#firebaseEdit #title").val("");
+		$("#firebaseEdit #text").val("");
+		$("#firebaseEdit #error").text("");
+
+	});
+
+
+
+	$(".save").off("click").on("click",function(){
+					
+		var key = $("#firebaseEdit #key").val();
+		var title = $("#firebaseEdit #title").val();
+		var text = $("#firebaseEdit #text").val();
+		
+		if(title !="" && text != ""){
+			if(key!=""){
+				now = new Date().toISOString();
+				ref.child(key)
+					.update({ 
+						Subject: title, 
+						Body: text,
+						Modification:now 
+					},function(error){
+						 if (error){
+							$("#firebaseEdit #error").text(error.message);
+						 }
+					  else{
+						 $("#firebaseEdit").hide();
+						 $("#firebaseEdit #key").val("");
+						 $("#firebaseEdit #title").val("");
+						 $("#firebaseEdit #text").val("");
+					  }
+				  });
+			}else{
+				now = new Date().toISOString();
+				ref.push({
+				  Subject:title,
+				  Creation: now,
+				  Body:	text,
+				  Modification:"no"					
+				},function(error){
+					 if (error){
+					$("#firebaseEdit #error").text(error.message);
+					 }
+				  else{
+					 $("#firebaseEdit").hide();
+					 $("#firebaseEdit #key").val("");
+					 $("#firebaseEdit #title").val("");
+					 $("#firebaseEdit #text").val("");
+				  }
+					
+				}); 
+			}
+			
+			
+		}else{
+			$("#firebaseEdit #error").text("Please type something...");
+
+		}
+
+		
+	});
+	
+	function showStatus(s){
+		console.log(s);
+	}
  //ref.push(data); 
 ref.on('value',gotData,errData);
 
+
 function gotData(data){
-	var posts = Object.values(data.val());
-	console.log(posts);
-	posts.sort(function(a,b){
-		var d1 = new Date(a.Creation);
-		var d2 = new Date(b.Creation);
+	var obj = data.val();
+	var entries = Object.entries(obj);	
+	entries.sort(function(a,b){
+		var d1 = new Date(a[1].Creation);
+		var d2 = new Date(b[1].Creation);
 		return d1.getTime() > d2.getTime();
 	});
 
 	var html="";
-	posts.forEach(function(p){
-		var when = new Date(p.Creation).toLocaleString();
-		html+="<b>"+p.Subject+"</b>&nbsp;"+when+"<br />";
-		html+= p.Body.replace(/[\n\r]/g, '<br />')+"<hr />";
+	entries.forEach(function(p){
+		var when = new Date(p[1].Creation).toLocaleString();
+		if(p[1].Modification != "no"){
+			when += " + modified : " + new Date(p[1].Modification).toLocaleString();
+		}
+		html+="<b>"+p[1].Subject+"</b>&nbsp;"+when+"<br />";
+		html+= p[1].Body.replace(/[\n\r]/g, '<br />')+'<br />';
+		html+= "<button type='button'  data-id='"+p[0]+"' class='edit btn btn-sm btn-default'>Edit</button>";
+		//html+= "<button type='button'  data-id='"+p[0]+"' class='delete btn btn-sm btn-default'>Delete</button>";
 
-		
+		html+= "<hr />";	
+
 	});
 	html = html.replace(/<br \/><br \/>/g, '<br \/>')+"<br />";
 	$("#firebaseZone").html(html);
+	
+	$(".edit").off("click").on("click",function(){
+		var key = $(this).data("id");
+		ref.child(key).on("value",function(x){
+			var data = x.val();
+			$("#firebaseEdit #key").val(key);
+			$("#firebaseEdit #title").val(data.Subject);
+			$("#firebaseEdit #text").val(data.Body);
+			$("#firebaseEdit").show();
+			$("#firebaseEdit .keyzone").show();
+			$("#firebaseEdit #error").text("");
+
+
+		});
+		
+	});
+	
+	$(".delete").off("click").on("click",function(){
+		
+		
+	});
 }
 
 function errData(err){

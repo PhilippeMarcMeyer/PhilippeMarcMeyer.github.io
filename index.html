@@ -43,7 +43,20 @@
             <h5>Firebase </h5>
             <b>Firebase is a Database as service : it means I can store data in the cloud and retrieve it in that page</b><br />
             <p>The following posts are stored in firebase :</p>
+			<button type='button'  class='new btn btn-sm btn-default'>New Post</button>
             <hr />
+			<div id="firebaseEdit" style="display: none;">
+			<b class="keyzone">Key</b>
+			<input class="keyzone" type = "text" id="key" readonly="readonly" value=""><br class="keyzone" />
+			<b>Title</b>
+			<input type = "text" id="title" value=""><br />
+			<b>Text</b>
+			<textarea id="text"></textarea><br />
+			<button type='button'  class='cancel btn btn-sm btn-default'>Cancel</button>
+			<button type='button'  class='save btn btn-sm btn-primary'>Save</button>
+			<span id="error"></span>
+			<hr />
+            </div>
             <div id="firebaseZone">
 
             </div>
