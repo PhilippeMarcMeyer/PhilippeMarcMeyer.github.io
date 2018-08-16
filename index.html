@@ -1,66 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">    
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pmg's experiments</title>
+
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>SimpleGrid</title>
+    <!-- external css -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- internal css -->
     <link href="simpleGrid.css" rel="stylesheet" type="text/css">
-    <script src="simpleGrid.js"></script>
-
+    <link rel="stylesheet" href="style.css">
 </head>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
 
-  <body>
-<div id="main">
-	<h2>Demos</h2>
-    <div id="myModal" class="modal" ></div> <!-- The modal zone-->
-    
-    <p>Coding Langage Designers</p>
-        <div id="zone"></div> <!-- The Grid zone-->
+            <div class="navbar-header">
+                <div class="btn-group" style="margin-top: 8px;margin-right:10px;">
+                </div>
+                <a class="navbar-brand" href="#">
+                    Pmg's experiments
+                </a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li id="firebaseLearning" class="active"><a href="#firebase">Firebase</a></li>
+                <li id="simplegrid"><a href="#simplegrid">SimpleGrid</a></li>
+                <li id="vanillajs"><a href="#vanillajs">Vanilla js</a></li>
+                <li id="jquery"><a href="#jquery">jquery</a></li>
+            </ul>
+
+        </div>
+    </nav>
+    <div id="container">
+        <div id="firebaseLearningZone" style="display: block;">
+            <h5>Firebase </h5>
+            <b>Firebase is a Database as service : it means I can store data in the cloud and retrieve it in that page</b><br />
+            <p>The following posts are stored in firebase :</p>
+            <hr />
+            <div id="firebaseZone">
+
+            </div>
+        </div>
+        <div id="simplegridZone" style="display: none;">
+            <div id="myModal" class="modal"></div> <!-- The modal zone-->
+            <h5>Coding Langage Designers</h5>
+            <div id="zone"></div> <!-- The Grid zone-->
+			<br />
+			<i><a href="https://github.com/PhilippeMarcMeyer" target="_blank">All explanations in my github</a></i>
+        </div>
+
+        <div id="vanillajsZone" style="display: none;">
+
+            <h5>Javascript </h5>
+            <p>todo : some interesting posts</p>
+        </div>
+        <div id="jqueryZone" style="display: none;">
+            <h5>JQuery </h5>
+            <p>todo : some interesting posts</p>
+        </div>
     </div>
-<script>
-   // Settings like width and height, le id of the modal zone.  allowSearch gives you a search field
- var aConfig ='{"width":"700px","height":"316px","modal":"myModal","allowSearch":"yes"}';
-    
-    // Defining the header of the grid : colums names (matching data), types , titles and width
-    // Supported types are : number, string and  mm-dd-yyyy, mm/dd/yyyy, dd-mm-yyyy, dd/mm/yyyy
- var aHeader = '{"arr":[{"name":"firstname","type":"string","title":"First name","width":"200px"},{"name":"lastname","type":"string","title":"Last name","width":"200px"},{"name":"birthdate","type":"mm-dd-yyyy","title":"Birthdate","width":"150px"},{"name":"langage","type":"string","title":"Langage","width":"150px"}]}';
 
-    // This json string should be provides by the back-end : here for demonstration purpose
-    // It's an objet containing an array 'arr' of objects representing the rows of our grid
-    // You provide for each cell, the name (which must match the name in the header) and the value
-var aData = '{"arr":[{"firstname":"Bjarne ","lastname":"Stroustrup","birthdate":"12-30-1950","langage":"C++"},{"firstname":"Denis","lastname":"Ritchie","birthdate":"09-09-1941","langage":"C"},{"firstname":"Kenneth","lastname":"Thompson","birthdate":"02-04-1943","langage":"Go"},{"firstname":"James","lastname":"Gosling","birthdate":"05-19-1955","langage":"Java"},{"firstname":"Brendan ","lastname":"Eich","birthdate":"07-04-1961","langage":"Javascript"},{"firstname":"Guido","lastname":"Van Rossum","birthdate":"01-31-1956","langage":"Python"},{"firstname":"Yukihiro","lastname":"Matsumoto","birthdate":"04-14-1965","langage":"Ruby"},{"firstname":"Roberto","lastname":"Lerusalimschy","birthdate":"05-21-1960","langage":"Lua"},{"firstname":"Rasmus","lastname":"Lerdorf","birthdate":"11-22-1968","langage":"Php"},{"firstname":"Jean","lastname":"Ichbiah","birthdate":"03-25-1940","langage":"Ada"}]}';
-    
-    // Optional feature (you don't need to set it via SetTranslations)
-    // By default a button New title is 'New', you change it to localize or just to provide another title like "Add" 
-    // Don't change the key, change the value ex : "New":"Nuevo" (Nuevo is new in spanish)
-    
-var aTranslation ='{"New":"New","Modifying":"Modifying","Adding":"Adding","Delete":"Delete","Cancel":"Cancel","Validate":"Validate","Search":"Search","Save":"Save"}';
-    
-    // Calling SimpleGrid : param1 : grid zone id, param2 : id of the grid itself, param3 : grid class (I propose grid-table grid-table-1 but you may write your own css)
-var myGrid = new SimpleGrid("zone","tableId","grid-table grid-table-1");
-    
-myGrid.SetConfig(aConfig); // Settting the config
-    
-myGrid.config.save = function(){// Declaring the saving function
-    // retreaving data
-    var json = myGrid.getData();
-    // You got to make your own saving function to localstorage or back-end !
-    alert('You got to send this Json string to your backend !\r\n'+json);
-}
-myGrid.SetTranslations(aTranslation); // Setting translation if needed    
-myGrid.SetHeader(aHeader); // Setting the hearder with names, types and width
-myGrid.SetData(aData); // Setting the data to populate the rows
-myGrid.Draw(); // Drawing the grid in it's zone 
+    <!-- external scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-database.js"></script>
 
+    <!-- internal scripts -->
 
-</script>
+    <script type="text/javascript" src="work.js"></script>
+    <script src="simpleGrid.js"></script>
+</body>
+</html>
 
-  
-
-</body></html>
