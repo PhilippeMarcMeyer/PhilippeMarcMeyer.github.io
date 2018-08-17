@@ -316,6 +316,203 @@ function init(menuItem) {
 	myGrid.SetHeader(aHeader); // Setting the hearder with names, types and width
 	myGrid.SetData(aData); // Setting the data to populate the rows
 	myGrid.Draw(); // Drawing the grid in it's zone 
+	
+	
+	
+// toaster
+var btn = document.getElementById("btnToast");
+btn.addEventListener("click",function(){
+	var toast = new LittleToaster("toaster") // init
+	toast.text("Hello World !"); // set text
+	var w2 = window.innerWidth/2;
+
+	toast.moveAt(w2 - 150, 100); // set an absolute position
+	toast.showFor(3000, function () {
+	
+	});
 });
 
+ var refPosts = database.ref("Posts");
+ refPosts.on('value',gotDataPost,errDataPost);
+ 
+ 
 
+ function errDataPost(err){
+	console.log("error in post !");
+	console.log(err);
+}
+
+function gotDataPost(data){
+
+	var obj = data.val();
+		if(obj){
+			var entries = Object.entries(obj);	
+			entries.sort(function(a,b){
+				var d1 = new Date(a[1].Creation);
+				var d2 = new Date(b[1].Creation);
+				return d1.getTime() > d2.getTime();
+			});
+
+			entries.forEach(function(p){
+				var key = p[0];
+				var data = p[1];
+				var category = data.Category;
+				$("#Post-" + category).html("");
+			});
+			
+			entries.forEach(function(p){
+				var key = p[0];
+				var data = p[1];
+				var category = data.Category;
+				var author = data.Author || "anonymous";
+				var when = new Date(data.Creation).toLocaleString();
+				if(data.Modification != "no"){
+					when += " + modified : " + new Date(data.Modification).toLocaleString();
+				}
+				var $ptr = $("#Post-" + category);
+				if($ptr.length==1){
+					$ptr.append("<b>"+data.Subject+"</b>&nbsp;by&nbsp;"+author+"&nbsp;on&nbsp;"+when+"<br />");
+					$ptr.append(data.Body.replace(/[\n\r]/g, '<br />')+'<br />');
+					//$ptr.append("<button type='button'  data-id='"+key+"' class='whenOn editPostJs btn btn-sm btn-default'>Edit</button>");
+					//$ptr.append("<button type='button'  data-id='"+key+"' class='whenOn deletePostJs btn btn-sm btn-default'>Delete</button>");
+					$ptr.append("<hr />");
+				}
+			});
+	}
+
+	if(!fireUser){
+		$(".whenOff").removeClass("hide");
+		$(".whenOn").addClass("hide");
+	}
+
+/*	
+	$(".editPostJs").off("click").on("click",function(){
+		var refPosts = $(this).data("id");
+		refPosts.child(key).on("value",function(x){
+			
+			window.scroll({
+			 top: 0, 
+			 left: 0, 
+			 behavior: 'smooth' 
+			});
+		
+			var data = x.val();
+			$("#postJs #keyPost").val(key);
+			$("#postJs #titlePost").val(data.Subject);
+			$("#postJs #textPost").val(data.Body);
+			$("#postJs").show();
+			$("#postJs .keyzone").show();
+			$("#postJs #errorPost").text("");
+
+
+		});
+		
+	});
+	*/
+	
+	$(".cancelPost").off("click").on("click",function(){
+		$("#postJs").hide();
+		$("#postJs #textPost").val("");
+		$("#postJs #categoryPost").val("");
+		$("#postJs #titlePost").val("");
+		$("#postJs #textPost").val("");
+	});
+	
+	
+	$(".newPostJsToaster").off("click").on("click",function(){
+			$("#postJs #keyPost").val();
+			$("#postJs #categoryPost").val("Toaster");
+			$("#postJs #titlePost").val("");
+			$("#postJs #textPost").val("");
+			$("#postJs .keyzone").hide();
+			$("#postJs #errorPost").text("");
+			$("#postJs").show();
+
+	});
+
+
+
+	$(".savePost").off("click").on("click",function(){
+				var author ="anonymous";
+				if(fireUser){
+					if(fireUser.displayName){
+						author = fireUser.displayName;
+					}else{
+						author = fireUser.email;
+
+					}
+				}
+		var key = $("#postJs #keyPost").val();
+		var title = $("#postJs #titlePost").val();
+		var text = $("#postJs #textPost").val();
+		var category = $("#postJs #categoryPost").val();
+		if(title !="" && text != ""){
+			if(key!=""){
+				now = new Date().toISOString();
+				refPosts.child(key)
+					.update({ 
+						Subject: title, 
+						Body: text,
+						//Creation:"2018-08-16T10:02:10.384Z",
+						Modification:now 
+					},function(error){
+						 if (error){
+							$("#postJs #error").text(error.message);
+						 }
+					  else{
+						 $("#postJs").hide();
+						 $("#postJs #key").val("");
+						 $("#postJs #titlePost").val("");
+						 $("#postJs #textPost").val("");
+						 $("#postJs #categoryPost").val("");
+					  }
+				  });
+			}else{
+				now = new Date().toISOString();
+				refPosts.push({
+				  Subject:title,
+				  Creation: now,
+				  Category:category,
+				  Author:author,
+				  Body:	text,
+				  Modification:"no"					
+				},function(error){
+					 if (error){
+					$("#postJs #error").text(error.message);
+					 }
+				  else{
+						 $("#postJs").hide();
+						 $("#postJs #key").val("");
+						 $("#postJs #titlePost").val("");
+						 $("#postJs #textPost").val("");
+						 $("#postJs #categoryPost").val("");
+				  }
+					
+				}); 
+			}
+			
+			
+		}else{
+			$("#postJs #error").text("Please type something...");
+
+		}
+
+		
+	});
+	
+}
+
+	$(".newPostJs").off("click").on("click",function(){
+		
+		$("#postJs").show();
+		$("#postJs #keyPost").val("");
+		$("#postJs .keyzone").hide();
+		$("#postJs #titlePost").val("");
+		$("#postJs #textPost").val("");
+		$("#postJs #errorPost").text("");
+
+	});
+
+ 
+
+});

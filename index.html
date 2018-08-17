@@ -105,9 +105,51 @@
         </div>
 
         <div id="vanillajsZone" style="display: none;">
+			 <div class="row">
+				<div class="col-md-6">
+					<h5>Javascript </h5>
+					<p><b>Little Toaster</b></p>
+					shows a little message for a given duration (à la Iphone)
+<pre>
 
-            <h5>Javascript </h5>
-            <p>todo : some interesting posts</p>
+instantiate :
+var toast = new LittleToaster("toaster") // init : toater is a id of a div :
+
+toast.text("Hello World !"); // set text
+
+var w2 = window.innerWidth/2;
+toast.moveAt(w2 - 150, 100); // set an absolute position (if you need it)
+
+toast.showFor(3000, function () { // Show for x seconds
+		// you can provide a call-back
+});
+
+</pre>
+
+					<button id="btnToast" class='btn btn-sm btn-primary'>Show a toast</button>
+					<div id="toaster"></div>
+					<br />
+					<a href="https://github.com/PhilippeMarcMeyer" target="_blank">All explanations in my github</a>
+				</div>
+				<div class="col-md-6" style="overflow-y:auto;overflow-x:hidden;height:400px;">
+					<p>Comments on Little Toaster : </p>
+						<button type='button'  class='whenOn newPostJsToaster btn btn-sm btn-default'>New Comment</button>
+            <hr />
+			<div id="postJs" style="display: none;">
+				<b class="keyzone">Key</b>
+				<input class="keyzone" type = "text" id="keyPost" readonly="readonly" value=""><br class="keyzone" />
+				<b>Title</b>
+				<input type = "text" id="titlePost" value=""><input type = "hidden" id="categoryPost" value=""><br />
+				<b>Text</b>
+				<textarea id="textPost"></textarea><br />
+				<button type='button'  class='cancelPost btn btn-sm btn-default'>Cancel</button>
+				<button type='button'  class='savePost btn btn-sm btn-primary'>Save</button>
+				<span id="errorPost"></span>
+				<hr />
+            </div>
+					<div id="Post-Toaster"></div>
+				</div>
+			</div>
         </div>
         <div id="jqueryZone" style="display: none;">
             <h5>JQuery </h5>
@@ -136,6 +178,7 @@
 
     <script type="text/javascript" src="work.js"></script>
     <script src="simpleGrid.js"></script>
+	<script src="litttleToaster.js"></script>
 </body>
 </html>
 

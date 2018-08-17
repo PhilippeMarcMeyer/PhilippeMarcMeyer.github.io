@@ -58,6 +58,24 @@
 	
 }
 
+#postJs b{
+	display:block;
+	
+}
+
+#textPost{
+	width:360px;
+	height:182px;
+}
+
+#keyPost{
+	width:180px;
+}
+
+#titlePost{
+	width:360px;
+}
+
 .auth{
 	font-size:12px;
 }
