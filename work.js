@@ -1,18 +1,6 @@
 
- /* 
-  var database = firebase.database();
-  var ref = database.ref("scores");
-  var data = {
-	  name:"PHM",
-	  score:44
-  }
-  ref.push(data);
-  */
-
-
-
 var database;
-
+var fireUser = null;
 $(document).ready(function () {
 	
 	var url = location.href;
@@ -24,7 +12,7 @@ $(document).ready(function () {
 		}
 	}
 	
-	
+
 	
   var config = {
     apiKey: "AIzaSyCdE3mJVWexNDOh83rNA5S29N2KK5gcy-c",
@@ -34,7 +22,74 @@ $(document).ready(function () {
     storageBucket: "first-firebase-project-5ada0.appspot.com",
     messagingSenderId: "770548806963"
   };
+  
   firebase.initializeApp(config);
+  
+	$("#btnLogin").on("click",function(){
+		var email = $("#txtEmail").val();
+		var pass = $("#txtPassword").val();
+		var auth = firebase.auth();
+		// Sign in
+		var promise = auth.signInWithEmailAndPassword(email,pass);
+		promise.catch(function(e){
+			console.log(e.message);
+		});
+	});
+	$("#btnSignUp").on("click",function(){
+		// TODO : check for email
+		var doContinue = true;
+		 $("#txtEmail").removeClass("error");
+		var regex = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+		var email = $("#txtEmail").val();
+		var pass = $("#txtPassword").val();
+		var auth = firebase.auth();
+		// Sign in
+		if(!regex.test(email)){
+			doContinue = false;
+			 $("#txtEmail").addClass("error");
+		}else{
+			 $("#txtEmail").removeClass("error");
+		}
+		
+		if(doContinue){
+			doContinue = pass !="";
+		}
+		
+		if(doContinue){
+			var promise = auth.createUserWithEmailAndPassword(email,pass);
+			promise.catch(function(e){
+				console.log(e.message);
+			});
+		}
+	});  
+  	$("#btnLogout").on("click",function(){
+		var auth = firebase.auth();
+		// Sign out
+		auth.signOut();
+
+	});
+	
+	firebase.auth().onAuthStateChanged(function(user){
+		if(user){
+			fireUser = user;
+			console.log(user);
+			 $(".whenOn").removeClass("hide");
+			 $(".whenOff").addClass("hide");
+			if(user.displayName){
+				$("#userMessage").html("You are logged as "+user.displayName+"&nbsp;&nbsp;&nbsp;");
+			}else{
+				$("#userMessage").html("You are logged as "+user.email+"&nbsp;&nbsp;&nbsp;");
+			}
+	
+		}else{
+			fireUser = null;
+			$(".whenOff").removeClass("hide");
+			$(".whenOn").addClass("hide");
+			$("#userMessage").text("");
+//displayName
+		}
+	});
+
   database = firebase.database();
   // when I wanna submit something :
  var ref = database.ref("Knowledge");
@@ -86,6 +141,7 @@ $(document).ready(function () {
 					.update({ 
 						Subject: title, 
 						Body: text,
+						//Creation:"2018-08-16T10:02:10.384Z",
 						Modification:now 
 					},function(error){
 						 if (error){
@@ -146,24 +202,39 @@ function gotData(data){
 
 	var html="";
 	entries.forEach(function(p){
-		var when = new Date(p[1].Creation).toLocaleString();
-		if(p[1].Modification != "no"){
-			when += " + modified : " + new Date(p[1].Modification).toLocaleString();
+		var key = p[0];
+		var data = p[1];
+		var when = new Date(data.Creation).toLocaleString();
+		if(data.Modification != "no"){
+			when += " + modified : " + new Date(data.Modification).toLocaleString();
 		}
-		html+="<b>"+p[1].Subject+"</b>&nbsp;"+when+"<br />";
-		html+= p[1].Body.replace(/[\n\r]/g, '<br />')+'<br />';
-		html+= "<button type='button'  data-id='"+p[0]+"' class='edit btn btn-sm btn-default'>Edit</button>";
-		//html+= "<button type='button'  data-id='"+p[0]+"' class='delete btn btn-sm btn-default'>Delete</button>";
+		html+="<b>"+data.Subject+"</b>&nbsp;"+when+"<br />";
+		html+= data.Body.replace(/[\n\r]/g, '<br />')+'<br />';+'<br />';
+		html+= "<button type='button'  data-id='"+key+"' class='whenOn edit btn btn-sm btn-default'>Edit</button>";
+		html+= "<button type='button'  data-id='"+key+"' class='whenOn delete btn btn-sm btn-default'>Delete</button>";
 
 		html+= "<hr />";	
 
 	});
 	html = html.replace(/<br \/><br \/>/g, '<br \/>')+"<br />";
+	
 	$("#firebaseZone").html(html);
+	if(!fireUser){
+		$(".whenOff").removeClass("hide");
+		$(".whenOn").addClass("hide");
+	}
+
 	
 	$(".edit").off("click").on("click",function(){
 		var key = $(this).data("id");
 		ref.child(key).on("value",function(x){
+			
+			window.scroll({
+			 top: 0, 
+			 left: 0, 
+			 behavior: 'smooth' 
+			});
+		
 			var data = x.val();
 			$("#firebaseEdit #key").val(key);
 			$("#firebaseEdit #title").val(data.Subject);
@@ -178,8 +249,14 @@ function gotData(data){
 	});
 	
 	$(".delete").off("click").on("click",function(){
-		
-		
+		var key = $(this).data("id");
+		$("#modal-ok").data("id",key);
+		$('#myModal').modal();
+	});
+	
+	$("#modal-ok").off("click").on("click",function(){
+		var key = $(this).data("id");
+		ref.child(key).remove();
 	});
 }
 
@@ -240,6 +317,5 @@ function init(menuItem) {
 	myGrid.SetData(aData); // Setting the data to populate the rows
 	myGrid.Draw(); // Drawing the grid in it's zone 
 });
-
 
 
