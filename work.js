@@ -32,7 +32,7 @@ $(document).ready(function () {
 		// Sign in
 		var promise = auth.signInWithEmailAndPassword(email,pass);
 		promise.catch(function(e){
-			console.log(e.message);
+			//console.log(e.message);
 		});
 	});
 	$("#btnSignUp").on("click",function(){
@@ -285,7 +285,7 @@ function init(menuItem) {
 
 
 	   // Settings like width and height, le id of the modal zone.  allowSearch gives you a search field
-	 var aConfig ='{"width":"700px","height":"316px","modal":"myModal","allowSearch":"yes"}';
+	 var aConfig ='{"width":"700px","height":"316px","modal":"simpleModal","allowSearch":"yes"}';
 		
 		// Defining the header of the grid : colums names (matching data), types , titles and width
 		// Supported types are : number, string and  mm-dd-yyyy, mm/dd/yyyy, dd-mm-yyyy, dd/mm/yyyy
@@ -429,6 +429,19 @@ function gotDataPost(data){
 			$("#postJs").show();
 
 	});
+	
+		
+	$(".newPostJsSimpleGrid").off("click").on("click",function(){
+			$("#postJs #keyPost").val();
+			$("#postJs #categoryPost").val("SimpleGrid");
+			$("#postJs #titlePost").val("");
+			$("#postJs #textPost").val("");
+			$("#postJs .keyzone").hide();
+			$("#postJs #errorPost").text("");
+			$("#postJs").show();
+
+	});
+	
 
 
 

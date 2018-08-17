@@ -57,7 +57,10 @@
 	display:block;
 	
 }
-
+#postJs{
+	margin-left:20px;
+	margin-top:20px;
+}
 #postJs b{
 	display:block;
 	

@@ -32,7 +32,6 @@
             </div>
             <ul class="nav navbar-nav">
                 <li id="firebaselearning" class="active"><a href="#firebaselearning">Firebase</a></li>
-                <li id="simplegrid"><a href="#simplegrid">SimpleGrid</a></li>
                 <li id="vanillajs"><a href="#vanillajs">Vanilla js</a></li>
                 <li id="jquery"><a href="#jquery">jquery</a></li>
 				<li id="about"><a href="#about">About me</a></li>
@@ -90,25 +89,49 @@
 
             </div>
         </div>
-        <div id="simplegridZone" style="display: none;">
-            <div id="myModal" class="modal"></div> <!-- The modal zone-->
-            <h5>Coding Langage Designers</h5>
-            <div id="zone"></div> <!-- The Grid zone-->
-			<br />
-			SimpleGrid was written in pure javascript with no dependency, for the exercice and <br />
-			before I became a full time web developer in June 2017<br />
-			Now I use Jquery, Bootstrap and the Datatable plugin which is very nice !<br />
-<br />
 
-			Here is a fully commented example :<br />
-			<p><a href="https://github.com/PhilippeMarcMeyer" target="_blank">All explanations in my github</a></p>
-        </div>
 
         <div id="vanillajsZone" style="display: none;">
-			 <div class="row">
+				 <div class="row">
 				<div class="col-md-6">
-					<h5>Javascript </h5>
-					<p><b>Little Toaster</b></p>
+					<h5>Simple Grid : Coding Langage Designers</h5>
+					 <div id="simpleModal" class="modal"></div> <!-- The modal zone-->
+								<div id="zone"></div> <!-- The Grid zone-->
+								<br />
+								SimpleGrid was written in pure javascript with no dependency, for the exercice and <br />
+								before I became a full time web developer in June 2017<br />
+								Now I use Jquery, Bootstrap and the Datatable plugin which is very nice !<br />
+					<br />
+
+								Here is a fully commented example :<br />
+								<p><a href="https://github.com/PhilippeMarcMeyer" target="_blank">All explanations in my github</a></p>
+
+				</div>
+				<div class="col-md-6" style="overflow-y:auto;overflow-x:hidden;height:400px;">
+				<button type='button'  class='whenOn newPostJsSimpleGrid btn btn-sm btn-default'>New Comment</button>
+				<br/>
+				
+					<div id="postJs" style="display: none;">
+				<b class="keyzone">Key</b>
+				<input class="keyzone" type = "text" id="keyPost" readonly="readonly" value=""><br class="keyzone" />
+				<b>Title</b>
+				<input type = "text" id="titlePost" value=""> Comment on :<input type = "text" readonly="readonly" id="categoryPost" value=""><br />
+				<b>Text</b>
+				<textarea id="textPost"></textarea><br />
+				<button type='button'  class='cancelPost btn btn-sm btn-default'>Cancel</button>
+				<button type='button'  class='savePost btn btn-sm btn-primary'>Save</button>
+				<span id="errorPost"></span>
+				<hr />
+            </div>		
+								<p>Comments on Simple Grid : </p>
+            <hr />
+
+					<div id="Post-SimpleGrid"></div>
+				</div>
+			</div>
+			 <div class="row" style="background-color:#efefef;border-radius:10px;">
+				<div class="col-md-6">
+					<h5>Little Toaster </h5>
 					shows a little message for a given duration (à la Iphone)
 <pre>
 
@@ -129,24 +152,15 @@ toast.showFor(3000, function () { // Show for x seconds
 					<button id="btnToast" class='btn btn-sm btn-primary'>Show a toast</button>
 					<div id="toaster"></div>
 					<br />
-					<a href="https://github.com/PhilippeMarcMeyer" target="_blank">All explanations in my github</a>
+					<a href="https://github.com/PhilippeMarcMeyer" target="_blank">All explanations in my github</a><br/><br /><br />
 				</div>
 				<div class="col-md-6" style="overflow-y:auto;overflow-x:hidden;height:400px;">
-					<p>Comments on Little Toaster : </p>
-						<button type='button'  class='whenOn newPostJsToaster btn btn-sm btn-default'>New Comment</button>
+				<button type='button'  class='whenOn newPostJsToaster btn btn-sm btn-default'>New Comment</button>
+				<br/>
+				<p>Comments on Little Toaster : </p>
+						
             <hr />
-			<div id="postJs" style="display: none;">
-				<b class="keyzone">Key</b>
-				<input class="keyzone" type = "text" id="keyPost" readonly="readonly" value=""><br class="keyzone" />
-				<b>Title</b>
-				<input type = "text" id="titlePost" value=""><input type = "hidden" id="categoryPost" value=""><br />
-				<b>Text</b>
-				<textarea id="textPost"></textarea><br />
-				<button type='button'  class='cancelPost btn btn-sm btn-default'>Cancel</button>
-				<button type='button'  class='savePost btn btn-sm btn-primary'>Save</button>
-				<span id="errorPost"></span>
-				<hr />
-            </div>
+
 					<div id="Post-Toaster"></div>
 				</div>
 			</div>
