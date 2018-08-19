@@ -61,21 +61,20 @@
 	margin-left:20px;
 	margin-top:20px;
 }
-#postJs b{
-	display:block;
-	
+#commentModal label{
+	display:block !important;
 }
 
-#textPost{
+.post-text{
 	width:360px;
 	height:182px;
 }
 
-#keyPost{
+.post-key{
 	width:180px;
 }
 
-#titlePost{
+.post-title{
 	width:360px;
 }
 

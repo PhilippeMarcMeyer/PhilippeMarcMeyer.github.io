@@ -1,0 +1,47 @@
+		<!-- Little Toaster Zone-->
+		<div class="row" style="background-color:#efefef;border-radius:10px;"> 
+			<div class="col-md-6"><!-- Left : Toaster Post-->
+				<h5>Little Toaster </h5>
+				shows a little message for a given duration (à la Iphone)
+	<pre>
+
+	instantiate :
+	var toast = new LittleToaster("toaster") // init : toater is a id of a div :
+
+	toast.text("Hello World !"); // set text
+
+	var w2 = window.innerWidth/2;
+	toast.moveAt(w2 - 150, 100); // set an absolute position (if you need it)
+
+	toast.showFor(3000, function () { // Show for x seconds
+	// you can provide a call-back
+	});
+
+	</pre>
+				<button id="btnToast" class='btn btn-sm btn-primary'>Show a toast</button><br />
+				<a href="https://github.com/PhilippeMarcMeyer" target="_blank">All explanations in my github</a><br/><br /><br />
+			</div>
+			
+			<div class="col-md-6" style="overflow-y:auto;overflow-x:hidden;height:400px;"><!-- right : Toaster Comments-->
+				<button type='button' data-category='Toaster' class='whenOn newPostJs btn btn-sm btn-default'>New Comment</button>
+				<br/>
+				<p>Comments on Little Toaster : </p>
+				<hr />
+				<div id="Post-Toaster"></div>
+			</div>
+		</div><!-- end : Toaster-->
+		
+		
+		
+		// toaster (js)
+var btn = document.getElementById("btnToast");
+btn.addEventListener("click",function(){
+	var toast = new LittleToaster("toaster") // init
+	toast.text("Hello World !"); // set text
+	var w2 = window.innerWidth/2;
+
+	toast.moveAt(w2 - 150, 100); // set an absolute position
+	toast.showFor(3000, function () {
+	
+	});
+});

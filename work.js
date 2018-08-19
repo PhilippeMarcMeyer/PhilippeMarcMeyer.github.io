@@ -190,7 +190,7 @@ $(document).ready(function () {
  //ref.push(data); 
 ref.on('value',gotData,errData);
 
-
+// Pull from firebase for "firebase" page
 function gotData(data){
 	var obj = data.val();
 	var entries = Object.entries(obj);	
@@ -284,53 +284,11 @@ function init(menuItem) {
 }
 
 
-	   // Settings like width and height, le id of the modal zone.  allowSearch gives you a search field
-	 var aConfig ='{"width":"700px","height":"316px","modal":"simpleModal","allowSearch":"yes"}';
-		
-		// Defining the header of the grid : colums names (matching data), types , titles and width
-		// Supported types are : number, string and  mm-dd-yyyy, mm/dd/yyyy, dd-mm-yyyy, dd/mm/yyyy
-	 var aHeader = '{"arr":[{"name":"firstname","type":"string","title":"First name","width":"200px"},{"name":"lastname","type":"string","title":"Last name","width":"200px"},{"name":"birthdate","type":"mm-dd-yyyy","title":"Birthdate","width":"150px"},{"name":"langage","type":"string","title":"Langage","width":"150px"}]}';
-		// This json string should be provides by the back-end : here for demonstration purpose
-		// It's an objet containing an array 'arr' of objects representing the rows of our grid
-		// You provide for each cell, the name (which must match the name in the header) and the value
-	var aData = '{"arr":[{"firstname":"Bjarne ","lastname":"Stroustrup","birthdate":"12-30-1950","langage":"C++"},{"firstname":"Denis","lastname":"Ritchie","birthdate":"09-09-1941","langage":"C"},{"firstname":"Kenneth","lastname":"Thompson","birthdate":"02-04-1943","langage":"Go"},{"firstname":"James","lastname":"Gosling","birthdate":"05-19-1955","langage":"Java"},{"firstname":"Brendan ","lastname":"Eich","birthdate":"07-04-1961","langage":"Javascript"},{"firstname":"Guido","lastname":"Van Rossum","birthdate":"01-31-1956","langage":"Python"},{"firstname":"Yukihiro","lastname":"Matsumoto","birthdate":"04-14-1965","langage":"Ruby"},{"firstname":"Roberto","lastname":"Lerusalimschy","birthdate":"05-21-1960","langage":"Lua"},{"firstname":"Rasmus","lastname":"Lerdorf","birthdate":"11-22-1968","langage":"Php"},{"firstname":"Jean","lastname":"Ichbiah","birthdate":"03-25-1940","langage":"Ada"}]}';
-		
-		// Optional feature (you don't need to set it via SetTranslations)
-		// By default a button New title is 'New', you change it to localize or just to provide another title like "Add" 
-		// Don't change the key, change the value ex : "New":"Nuevo" (Nuevo is new in spanish)
-		
-	var aTranslation ='{"New":"New","Modifying":"Modifying","Adding":"Adding","Delete":"Delete","Cancel":"Cancel","Validate":"Validate","Search":"Search","Save":"Save"}';
-		
-		// Calling SimpleGrid : param1 : grid zone id, param2 : id of the grid itself, param3 : grid class (I propose grid-table grid-table-1 but you may write your own css)
-	var myGrid = new SimpleGrid("zone","tableId","grid-table grid-table-1");
-		
-	myGrid.SetConfig(aConfig); // Settting the config
-		
-	myGrid.config.save = function(){// Declaring the saving function
-		// retreaving data
-		var json = myGrid.getData();
-		// You got to make your own saving function to localstorage or back-end !
-		alert('You got to send this Json string to your backend !\r\n'+json);
-	}
-	myGrid.SetTranslations(aTranslation); // Setting translation if needed    
-	myGrid.SetHeader(aHeader); // Setting the hearder with names, types and width
-	myGrid.SetData(aData); // Setting the data to populate the rows
-	myGrid.Draw(); // Drawing the grid in it's zone 
-	
-	
-	
-// toaster
-var btn = document.getElementById("btnToast");
-btn.addEventListener("click",function(){
-	var toast = new LittleToaster("toaster") // init
-	toast.text("Hello World !"); // set text
-	var w2 = window.innerWidth/2;
 
-	toast.moveAt(w2 - 150, 100); // set an absolute position
-	toast.showFor(3000, function () {
 	
-	});
-});
+	
+	
+
 
  var refPosts = database.ref("Posts");
  refPosts.on('value',gotDataPost,errDataPost);
@@ -341,7 +299,7 @@ btn.addEventListener("click",function(){
 	console.log("error in post !");
 	console.log(err);
 }
-
+// Pull from firebase site for posts in all pages (except firebase special page)
 function gotDataPost(data){
 
 	var obj = data.val();
@@ -357,7 +315,7 @@ function gotDataPost(data){
 				var key = p[0];
 				var data = p[1];
 				var category = data.Category;
-				$("#Post-" + category).html("");
+				$("#"+category+"-posts").html("");
 			});
 			
 			entries.forEach(function(p){
@@ -369,12 +327,12 @@ function gotDataPost(data){
 				if(data.Modification != "no"){
 					when += " + modified : " + new Date(data.Modification).toLocaleString();
 				}
-				var $ptr = $("#Post-" + category);
+				var $ptr = $("#"+category+"-posts");
 				if($ptr.length==1){
 					$ptr.append("<b>"+data.Subject+"</b>&nbsp;by&nbsp;"+author+"&nbsp;on&nbsp;"+when+"<br />");
 					$ptr.append(data.Body.replace(/[\n\r]/g, '<br />')+'<br />');
-					//$ptr.append("<button type='button'  data-id='"+key+"' class='whenOn editPostJs btn btn-sm btn-default'>Edit</button>");
-					//$ptr.append("<button type='button'  data-id='"+key+"' class='whenOn deletePostJs btn btn-sm btn-default'>Delete</button>");
+					$ptr.append("<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-edit btn btn-sm btn-default'>Edit</button>");
+					$ptr.append("<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-delete btn btn-sm btn-default'>Delete</button>");
 					$ptr.append("<hr />");
 				}
 			});
@@ -385,11 +343,16 @@ function gotDataPost(data){
 		$(".whenOn").addClass("hide");
 	}
 
-/*	
-	$(".editPostJs").off("click").on("click",function(){
+
+
+// edit for comments could be interesting : only for the poster
+	$(".post-edit").off("click").on("click",function(){
+		
 		var refPosts = $(this).data("id");
+		var category = $(this).data("category");
+		var formId = "#post-" + category;
+		
 		refPosts.child(key).on("value",function(x){
-			
 			window.scroll({
 			 top: 0, 
 			 left: 0, 
@@ -397,68 +360,70 @@ function gotDataPost(data){
 			});
 		
 			var data = x.val();
-			$("#postJs #keyPost").val(key);
-			$("#postJs #titlePost").val(data.Subject);
-			$("#postJs #textPost").val(data.Body);
-			$("#postJs").show();
-			$("#postJs .keyzone").show();
-			$("#postJs #errorPost").text("");
-
-
+			$(formId+ " .post-key").val(key);
+			$(formId+ " .post-title").val(data.Subject);
+			$(formId+ " .post-text").val(data.Body);
+			$(formId+ " .keyzone").show();
+			$(formId+ " .post-error").text("");
+			$(formId).show();
 		});
 		
 	});
-	*/
 	
-	$(".cancelPost").off("click").on("click",function(){
-		$("#postJs").hide();
-		$("#postJs #textPost").val("");
-		$("#postJs #categoryPost").val("");
-		$("#postJs #titlePost").val("");
-		$("#postJs #textPost").val("");
+	$(".post-delete").off("click").on("click",function(){
+		var key = $(this).data("id");
+		refPosts.child(key).remove();
 	});
 	
-	
-	$(".newPostJsToaster").off("click").on("click",function(){
-			$("#postJs #keyPost").val();
-			$("#postJs #categoryPost").val("Toaster");
-			$("#postJs #titlePost").val("");
-			$("#postJs #textPost").val("");
-			$("#postJs .keyzone").hide();
-			$("#postJs #errorPost").text("");
-			$("#postJs").show();
-
-	});
-	
+	$(".post-cancel").off("click").on("click",function(){
+		var $form = $(this).parent();
+		var formId = "#" + $form.attr("id");
+		var category = $form.data("category");
 		
-	$(".newPostJsSimpleGrid").off("click").on("click",function(){
-			$("#postJs #keyPost").val();
-			$("#postJs #categoryPost").val("SimpleGrid");
-			$("#postJs #titlePost").val("");
-			$("#postJs #textPost").val("");
-			$("#postJs .keyzone").hide();
-			$("#postJs #errorPost").text("");
-			$("#postJs").show();
-
+		$(formId + " .post-key").val("");
+		$(formId + " .post-title").val("");
+		$(formId + " .post-text").val("");
+		$(formId + " .keyzone").hide();
+		$(formId + " .post-error").text("");
+		
+		$form.hide();
+	});
+	
+	//commentModal
+	
+	
+	$(".post-new").off("click").on("click",function(){
+		var formId = $(this).data("target");
+		var $form = $(formId);
+		var category = $form.data("category");
+		
+		$(formId + " .post-key").val("");
+		$(formId + " .post-title").val("");
+		$(formId + " .post-text").val("");
+		$(formId + " .keyzone").hide();
+		$(formId + " .post-error").text("");
+		
+		$form.show();
 	});
 	
 
-
-
-	$(".savePost").off("click").on("click",function(){
-				var author ="anonymous";
-				if(fireUser){
-					if(fireUser.displayName){
-						author = fireUser.displayName;
-					}else{
-						author = fireUser.email;
-
-					}
-				}
-		var key = $("#postJs #keyPost").val();
-		var title = $("#postJs #titlePost").val();
-		var text = $("#postJs #textPost").val();
-		var category = $("#postJs #categoryPost").val();
+	$(".post-save").off("click").on("click",function(){
+		var $form = $(this).parent();
+		var formId = "#" + $form.attr("id");
+		var category = $form.data("category");
+		
+		var author ="anonymous";
+		if(fireUser){
+			if(fireUser.displayName){
+				author = fireUser.displayName;
+			}else{
+				author = fireUser.email;
+			}
+		}
+		var key = $(formId + " .post-key").val();
+		var title = $(formId + " .post-title").val();
+		var text = $(formId + " .post-text").val();
+		
 		if(title !="" && text != ""){
 			if(key!=""){
 				now = new Date().toISOString();
@@ -466,23 +431,21 @@ function gotDataPost(data){
 					.update({ 
 						Subject: title, 
 						Body: text,
-						//Creation:"2018-08-16T10:02:10.384Z",
 						Modification:now 
 					},function(error){
 						 if (error){
-							$("#postJs #error").text(error.message);
+							$(formId + " .post-error").text(error.message);
 						 }
 					  else{
-						 $("#postJs").hide();
-						 $("#postJs #key").val("");
-						 $("#postJs #titlePost").val("");
-						 $("#postJs #textPost").val("");
-						 $("#postJs #categoryPost").val("");
+						 $form.hide();
+						 $(formId + " .post-key").val("");
+						 $(formId + " .post-title").val("");
+						 $(formId + " .post-text").val("");
 					  }
 				  });
 			}else{
-				now = new Date().toISOString();
-				refPosts.push({
+				  now = new Date().toISOString();
+				  refPosts.push({
 				  Subject:title,
 				  Creation: now,
 				  Category:category,
@@ -490,42 +453,22 @@ function gotDataPost(data){
 				  Body:	text,
 				  Modification:"no"					
 				},function(error){
-					 if (error){
-					$("#postJs #error").text(error.message);
-					 }
-				  else{
-						 $("#postJs").hide();
-						 $("#postJs #key").val("");
-						 $("#postJs #titlePost").val("");
-						 $("#postJs #textPost").val("");
-						 $("#postJs #categoryPost").val("");
+				  if (error){
+					$(formId + " .post-error").text(error.message);
 				  }
-					
+				  else{
+					 $form.hide();
+					 $(formId + " .post-key").val("");
+					 $(formId + " .post-title").val("");
+					 $(formId + " .post-text").val("");
+				  }
 				}); 
 			}
-			
-			
 		}else{
-			$("#postJs #error").text("Please type something...");
-
-		}
-
-		
+			$(formId + " .post-error").text("Please type something...");
+		}		
 	});
-	
 }
 
-	$(".newPostJs").off("click").on("click",function(){
-		
-		$("#postJs").show();
-		$("#postJs #keyPost").val("");
-		$("#postJs .keyzone").hide();
-		$("#postJs #titlePost").val("");
-		$("#postJs #textPost").val("");
-		$("#postJs #errorPost").text("");
-
-	});
-
- 
 
 });
