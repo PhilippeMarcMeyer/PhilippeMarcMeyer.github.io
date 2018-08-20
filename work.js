@@ -284,12 +284,6 @@ function init(menuItem) {
 }
 
 
-
-	
-	
-	
-
-
  var refPosts = database.ref("Posts");
  refPosts.on('value',gotDataPost,errDataPost);
  
@@ -348,7 +342,7 @@ function gotDataPost(data){
 // edit for comments could be interesting : only for the poster
 	$(".post-edit").off("click").on("click",function(){
 		
-		var refPosts = $(this).data("id");
+		var key = $(this).data("id");
 		var category = $(this).data("category");
 		var formId = "#post-" + category;
 		
