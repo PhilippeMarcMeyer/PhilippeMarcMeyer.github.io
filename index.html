@@ -35,6 +35,7 @@
                 <li id="vanillajs"><a href="#vanillajs">Vanilla js</a></li>
                 <li id="jquery"><a href="#jquery">jquery</a></li>
 				<li id="csharp"><a href="#csharp">C#</a></li>
+				<li id="machinelearning"><a href="#machinelearning">Machine Learning</a></li>
 				<li id="about"><a href="#about">About me</a></li>
             </ul>
 			<div class="auth">
@@ -181,6 +182,52 @@
 			<hr />
 		</div>
 		<div id="csharp-posts">
+
+		</div>
+	</div>
+	
+	 <div id="canvasZone" style="display: none;">
+		<h5>Drawing with canvas and p5.js</h5>
+		<p>Mathematical animations and drawings</p>
+		<hr />
+		<button type='button'  data-target="#post-canvas"  class='whenOn post-new btn btn-sm btn-default'>New Post</button>
+		<hr />
+		<div id="post-canvas" data-category="canvas" style="display: none;">
+			<b class="keyzone">Key</b>
+			<input class="keyzone post-key" type = "text" readonly="readonly" value=""><br class="keyzone" />
+			<b>Title</b>
+			<input type="text" class="post-title" value=""><br />
+			<b>Text</b>
+			<textarea class="post-text"></textarea><br />
+			<button type='button'  class='post-cancel btn btn-sm btn-default'>Cancel</button>
+			<button type='button'  class='post-save btn btn-sm btn-primary'>Save</button>
+			<span class="post-error"></span>
+			<hr />
+		</div>
+		<div id="canvas-posts">
+
+		</div>
+	</div>
+	
+	<div id="machinelearningZone" style="display: none;">
+		<h5>Machine Learning</h5>
+		<p>Learning how to teach a machine with p5.js and ml5.js</p>
+		<hr />
+		<button type='button'  data-target="#post-machinelearning"  class='whenOn post-new btn btn-sm btn-default'>New Post</button>
+		<hr />
+		<div id="post-machinelearning" data-category="machinelearning" style="display: none;">
+			<b class="keyzone">Key</b>
+			<input class="keyzone post-key" type = "text" readonly="readonly" value=""><br class="keyzone" />
+			<b>Title</b>
+			<input type="text" class="post-title" value=""><br />
+			<b>Text</b>
+			<textarea class="post-text"></textarea><br />
+			<button type='button'  class='post-cancel btn btn-sm btn-default'>Cancel</button>
+			<button type='button'  class='post-save btn btn-sm btn-primary'>Save</button>
+			<span class="post-error"></span>
+			<hr />
+		</div>
+		<div id="machinelearning-posts">
 
 		</div>
 	</div>
