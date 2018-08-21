@@ -197,7 +197,7 @@ function gotData(data){
 	entries.sort(function(a,b){
 		var d1 = new Date(a[1].Creation);
 		var d2 = new Date(b[1].Creation);
-		return d1.getTime() > d2.getTime();
+		return d1.getTime() <= d2.getTime();
 	});
 
 	var html="";
@@ -302,7 +302,7 @@ function gotDataPost(data){
 			entries.sort(function(a,b){
 				var d1 = new Date(a[1].Creation);
 				var d2 = new Date(b[1].Creation);
-				return d1.getTime() > d2.getTime();
+				return d1.getTime() <= d2.getTime();
 			});
 
 			entries.forEach(function(p){
@@ -325,7 +325,7 @@ function gotDataPost(data){
 				if($ptr.length==1){
 					$ptr.append("<b>"+data.Subject+"</b>&nbsp;by&nbsp;"+author+"&nbsp;on&nbsp;"+when+"<br />");
 					$ptr.append(data.Body.replace(/[\n\r]/g, '<br />')+'<br />');
-					$ptr.append("<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-edit btn btn-sm btn-default'>Edit</button>");
+					$ptr.append("<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-edit btn btn-sm btn-default'>Edit</button>&nbsp;");
 					$ptr.append("<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-delete btn btn-sm btn-default'>Delete</button>");
 					$ptr.append("<hr />");
 				}
@@ -365,6 +365,12 @@ function gotDataPost(data){
 	});
 	
 	$(".post-delete").off("click").on("click",function(){
+		var key = $(this).data("id");
+		$("#post-del-ok").data("id",key);
+		$('#post-del-modal').modal();
+	});
+	
+	$("#post-del-ok").off("click").on("click",function(){
 		var key = $(this).data("id");
 		refPosts.child(key).remove();
 	});

@@ -40,6 +40,18 @@
 	color:darkred;
 }
 
+
+.post-delete {
+	margin-top:6px;
+	margin-right:4px;
+	color:darkred;
+}
+
+.post-edit{
+	margin-top:6px;
+	margin-right:4px;
+}
+
 #text{
 	width:360px;
 	height:200px;
