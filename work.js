@@ -58,7 +58,7 @@ $(document).ready(function () {
 		if(doContinue){
 			var promise = auth.createUserWithEmailAndPassword(email,pass);
 			promise.catch(function(e){
-				console.log(e.message);
+				//console.log(e.message);
 			});
 		}
 	});  
@@ -72,7 +72,6 @@ $(document).ready(function () {
 	firebase.auth().onAuthStateChanged(function(user){
 		if(user){
 			fireUser = user;
-			console.log(user);
 			 $(".whenOn").removeClass("hide");
 			 $(".whenOff").addClass("hide");
 			if(user.displayName){
@@ -185,7 +184,7 @@ $(document).ready(function () {
 	});
 	
 	function showStatus(s){
-		console.log(s);
+		//console.log(s);
 	}
  //ref.push(data); 
 ref.on('value',gotData,errData);
