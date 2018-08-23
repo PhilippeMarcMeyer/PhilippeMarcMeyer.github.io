@@ -75,6 +75,7 @@
 }
 #commentModal label{
 	display:block !important;
+	 user-select: none;
 }
 
 .post-text{

@@ -8,7 +8,6 @@
 */
 
 
-
 var globals = {
 	r : 200,
 	total : 60,
@@ -26,15 +25,15 @@ var globals = {
 };
 
 var shapes = {
-		"spheroid":{
-		zoom:0.9,
-		r1:{
+	"spheroid":{
+		"zoom":0.9,
+		"r1":{
 			m:0.1,
 			n1:1,
 			n2:1,
 			n3:1
 		},
-		r2:{
+		"r2":{
 			m:0.1,
 			n1:1,
 			n2:1,
@@ -42,14 +41,14 @@ var shapes = {
 		}
 	},
 	"thorny":{
-		zoom:1,
-		r1:{
+		"zoom":1,
+		"r1":{
 			m:7,
 			n1:0.2,
 			n2:1.7,
 			n3:1.7
 		},
-		r2:{
+		"r2":{
 			m:7,
 			n1:0.2,
 			n2:1.7,
@@ -57,14 +56,14 @@ var shapes = {
 		}
 	},
 	"seed":{
-		zoom:0.6,
-		r1:{
+		"zoom":0.6,
+		"r1":{
 			m:8,
 			n1:60,
 			n2:100,
 			n3:30
 		},
-		r2:{
+		"r2":{
 			m:2,
 			n1:10,
 			n2:10,
@@ -72,14 +71,14 @@ var shapes = {
 		}
 	},
 	"sentient-shell":{
-		zoom:1,
-		r1:{
+		"zoom":1,
+		"r1":{
 			m:6,
 			n1:1,
 			n2:1,
 			n3:1
 		},
-		r2:{
+		"r2":{
 			m:3,
 			n1:1,
 			n2:1,
@@ -87,14 +86,14 @@ var shapes = {
 		}
 	},
 	"trilobit":{
-		zoom:0.8,
-		r1:{
+		"zoom":0.8,
+		"r1":{
 			m:2,
 			n1:0.7,
 			n2:0.3,
 			n3:0.2
 		},
-		r2:{
+		"r2":{
 			m:3,
 			n1:100,
 			n2:100,
@@ -102,14 +101,14 @@ var shapes = {
 		}
 	},
 	"wise-rock":{
-		zoom:0.8,
-		r1:{
+		"zoom":0.8,
+		"r1":{
 			m:3,
 			n1:0.5,
 			n2:1.7,
 			n3:1.7
 		},
-		r2:{
+		"r2":{
 			m:2,
 			n1:10,
 			n2:10,
@@ -117,14 +116,14 @@ var shapes = {
 		}
 	},
 	"ringed-pulsar":{
-		zoom:1,
-		r1:{
+		"zoom":1,
+		"r1":{
 			m:0.2,
 			n1:0.1,
 			n2:1.7,
 			n3:1.7
 		},
-		r2:{
+		"r2":{
 			m:2,
 			n1:0.5,
 			n2:0.2,
@@ -132,14 +131,14 @@ var shapes = {
 		}
 	},
 	"space-bunny":{
-		zoom:1,
-		r1:{
+		"zoom":1,
+		"r1":{
 			m:2.6,
 			n1:0.1,
 			n2:1,
 			n3:2.5
 		},
-		r2:{
+		"r2":{
 			m:3,
 			n1:3,
 			n2:0.2,
@@ -147,14 +146,14 @@ var shapes = {
 		}
 	},
 	"penta-mind":{
-		zoom:0.7,
-		r1:{
+		"zoom":0.7,
+		"r1":{
 			m:5,
 			n1:1,
 			n2:1,
 			n3:1
 		},
-		r2:{
+		"r2":{
 			m:3,
 			n1:100,
 			n2:100,
@@ -162,14 +161,14 @@ var shapes = {
 		}
 	},
 	"hyper-clover":{
-		zoom:0.9,
-		r1:{
+		"zoom":0.9,
+		"r1":{
 			m:6,
 			n1:0.709889,
 			n2:46.8299,
 			n3:-0.8027
 		},
-		r2:{
+		"r2":{
 			m:7,
 			n1:-31.9083,
 			n2:-0.196521,
@@ -177,14 +176,14 @@ var shapes = {
 		}
 	},
 	"cruising-heart":{
-		zoom:0.5,
-		r1:{
+		"zoom":0.5,
+		"r1":{
 			m:2,
 			n1:0.437933,
 			n2:13.1909,
 			n3:0.64893
 		},
-		r2:{
+		"r2":{
 			m:1,
 			n1:-21.8776,
 			n2:-0.937533,
@@ -192,14 +191,14 @@ var shapes = {
 		}
 	},
 	"space-fish":{
-		zoom:0.8,
-		r1:{
+		"zoom":0.8,
+		"r1":{
 			m:5.2,
 			n1:0.04,
 			n2:1.7,
 			n3:1.7
 		},
-		r2:{
+		"r2":{
 			m:0.000001,
 			n1:1,
 			n2:1,
@@ -207,18 +206,33 @@ var shapes = {
 		}
 	},
 	"spin-top":{
-		zoom:0.8,
-		r1:{
+		"zoom":0.8,
+		"r1":{
 			m:4,
 			n1:100,
 			n2:1,
 			n3:1
 		},
-		r2:{
+		"r2":{
 			m:4,
 			n1:1,
 			n2:1,
 			n3:1
+		}
+	},
+	"starfish":{
+		"zoom":1,
+		"r1":{
+			m:5,
+			n1:0.1,
+			n2:1.7,
+			n3:1.7
+		},
+		"r2":{
+			m:1,
+			n1:0.3,
+			n2:0.5,
+			n3:0.5
 		}
 	}
 }
@@ -303,6 +317,7 @@ function supershape(theta,shape,latZoom,lonZoom){
   var radius = globals.r * myShape.zoom;
   var myColors = globals.colorChosen;
   var hueOn = false;
+  var colorOffset = "red";
   var wireModeOn = false;
   var movingColors = $("#movingOn").prop('checked');
   var autoRotationOn  = $("#autoRotationOn").prop('checked');
@@ -310,12 +325,42 @@ function supershape(theta,shape,latZoom,lonZoom){
   if(myColors == "wireframe"){
 	  colorMode(RGB);
 	  wireModeOn = true;
+	  
   }else if(myColors == "europa"){
 	  colorMode(RGB);
 	  hueOn = true;
+	  colorOffset = "red";
+	  
+  }else if(myColors == "blue"){
+	  colorMode(RGB);
+	  hueOn = true;
+	  colorOffset="redgreen"
+	  
+  }else if(myColors == "black"){
+	  colorMode(RGB);
+	  hueOn = true;
+	  colorOffset="black"
+	  
+  }else if(myColors == "lilac"){
+	  colorMode(RGB);
+	  hueOn = true;
+	  colorOffset="green"
   }else if(myColors == "rainbow"){
+	  colorOffset = "red";
 	  colorMode(HSB)
 	  hueOn = true;
+  }else if(myColors == "mint"){
+	  colorOffset = "redblue";
+	  colorMode(RGB)
+	  hueOn = true;
+  }else if(myColors == "strawberry"){
+	  colorOffset = "greenblue";
+	  colorMode(RGB)
+	  hueOn = true;
+  }else{
+	  colorMode(RGB);
+	  hueOn = true;
+	  colorOffset="other"
   }
   
   if(wireModeOn){
@@ -324,7 +369,6 @@ function supershape(theta,shape,latZoom,lonZoom){
   }else{
 	 noStroke(); 
   }
-  
 	for(var i = 0; i < definition+1; i++){
 		var lat = map(i,0,definition,-HALF_PI, HALF_PI);
 		var r2 = supershape(lat,myShape.r2,latZoom,lonZoom);
@@ -355,7 +399,26 @@ function supershape(theta,shape,latZoom,lonZoom){
 	for(var i = 0; i < definition+1; i++){
 		if(hueOn){
 			var hu = map(i, 0, definition, 0, 255*6);
-			fill((hu + globals.offset)  % 250, 200, 200);		
+			var colorOffsetValue =(( hu + globals.offset)  % 250);
+			if(colorOffset=="red"){
+				fill(colorOffsetValue, 200, 200);		
+			}else if(colorOffset=="blue"){
+				fill(200, 200,colorOffsetValue);	
+			}else if(colorOffset=="green"){
+				fill(200,colorOffsetValue,200);	
+			}else if(colorOffset=="redgreen"){
+				fill(colorOffsetValue,colorOffsetValue,200);	
+			}else if(colorOffset=="redblue"){
+				fill(colorOffsetValue,200,colorOffsetValue);	
+			}else if(colorOffset=="greenblue"){
+				fill(200,colorOffsetValue,colorOffsetValue);	
+			}else if(colorOffset=="black"){
+				fill(colorOffsetValue,colorOffsetValue,colorOffsetValue);	
+			}else{
+				var colorOffsetValue2 =(( hu + globals.offset)  % 170);
+				var colorOffsetValue3 =(( hu + globals.offset)  % 90);
+				fill(colorOffsetValue,colorOffsetValue2,colorOffsetValue3);	
+			}
 		}
 
 			
@@ -373,5 +436,54 @@ function supershape(theta,shape,latZoom,lonZoom){
 	}
  }
  
- 
+ 	$( document ).ready(function() {
+		  	var $label =  $("<label></label>");
+			$label
+				.appendTo($("#modelZone"))
+				.html("Select your supershape !&nbsp;:&nbsp;");
+				
+		  var $select = $("<select></select>");
+		  $select
+			.appendTo($("#modelZone"))
+			.attr("id","select-shape");
+			
+		  $.each(shapes, function( key, value ) {
+			var $option  = $("<option></option>");
+			$option
+				.appendTo($select)
+				.attr("value",key)
+				.text(key);
+				
+				if(key == globals.shapeChosen){
+					$option
+						.attr("selected",true);
+				}
+			});
+			$("#definitionChosen").val(globals.total);
+			$("#definitionValue").text(globals.total);
+			$("#select-colors").val(globals.colorChosen);
+
+			
+
+			$("#select-shape").on("change",function(){
+				globals.shapeChosen = $(this).val();
+			});	
+			
+			$("#select-colors").on("change",function(){
+				globals.colorChosen = $(this).val();
+			});	
+			
+			$("#definitionChosen").on("change",function(){
+				$("#definitionValue").text($(this).val());
+			});	
+			
+			$("#latZoomChosen").on("change",function(){
+				$("#latZoomValue").text($(this).val());
+			});	
+			$("#lonZoomChosen").on("change",function(){
+				$("#lonZoomValue").text($(this).val());
+			});	
+					
+			
+		});
  

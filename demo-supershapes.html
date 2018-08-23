@@ -45,11 +45,9 @@
 	#formZone label{
 		position:absolute;
 		width:200px;
-	}
-	
-	#formZone label{
 		width:200px;
 		margin-bottom:10px;
+		 user-select: none;
 	}
 	
 	#formZone select{
@@ -101,9 +99,15 @@
 			<div>
 				<label>Select your colors : </label>
 				<select id="select-colors">
-					<option value="wireframe">wire frame</option>
-					<option value="europa" selected>europa</option>
+					<option value="wireframe">wireframe</option>
+					<option value="europa">europa</option>
 					<option value="rainbow">rainbow</option>
+					<option value="lilac">lilac</option>
+					<option value="strawberry">strawberry</option>
+					<option value="blue">blue</option>
+					<option value="mint">mint</option>
+					<option value="black">black</option>
+					<option value="autumn">autumn</option>
 				</select>
 			</div>
 			<div>
@@ -116,7 +120,7 @@
 			</div>			
 			<div>
 				<label>Definition : <span id="definitionValue" class="label label-default"></span></label>
-				<input type="range" id="definitionChosen" min="10" max="75" step="1" style="width:200px;">
+				<input type="range" id="definitionChosen" min="10" max="100" step="1" style="width:200px;">
 			</div>	
 			<div>
 				<label>Latitude zoom : <span id="latZoomValue" class="label label-default">1</span></label>
@@ -137,53 +141,8 @@
 
 
 	  <script src="./demo-supershapes.js"></script>
+	  
 	<script>  
-		$( document ).ready(function() {
-		  	var $label =  $("<label></label>");
-			$label
-				.appendTo($("#modelZone"))
-				.html("Select your supershape !&nbsp;:&nbsp;");
-				
-		  var $select = $("<select></select>");
-		  $select
-			.appendTo($("#modelZone"))
-			.attr("id","select-shape");
-			
-		  $.each(shapes, function( key, value ) {
-			var $option  = $("<option></option>");
-			$option
-				.appendTo($select)
-				.attr("value",key)
-				.text(key);
-				
-				if(key == globals.total){
-					$option
-						.attr("selected",true);
-				}
-			});
-			$("#definitionChosen").val(globals.total);
-			$("#definitionValue").text(globals.total);
-
-			$("#select-shape").on("change",function(){
-				globals.shapeChosen = $(this).val();
-			});	
-			
-			$("#select-colors").on("change",function(){
-				globals.colorChosen = $(this).val();
-			});	
-			
-			$("#definitionChosen").on("change",function(){
-				$("#definitionValue").text($(this).val());
-			});	
-			
-			$("#latZoomChosen").on("change",function(){
-				$("#latZoomValue").text($(this).val());
-			});	
-			$("#lonZoomChosen").on("change",function(){
-				$("#lonZoomValue").text($(this).val());
-			});	
-					
-			
-		});
+	
 	 </script>  
 </html>
