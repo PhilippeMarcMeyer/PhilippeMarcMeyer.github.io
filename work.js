@@ -207,7 +207,7 @@ function gotData(data){
 		if(data.Modification != "no"){
 			when += " + modified : " + new Date(data.Modification).toLocaleString();
 		}
-		html+="<b>"+data.Subject+"</b>&nbsp;"+when+"<br />";
+		html+="<b class='subject'>"+data.Subject+"</b>&nbsp;"+when+"<br />";
 		html+= data.Body.replace(/[\n\r]/g, '<br />')+'<br />';+'<br />';
 		html+= "<button type='button'  data-id='"+key+"' class='whenOn edit btn btn-sm btn-default'>Edit</button>";
 		html+= "<button type='button'  data-id='"+key+"' class='whenOn delete btn btn-sm btn-default'>Delete</button>";
@@ -322,7 +322,7 @@ function gotDataPost(data){
 				}
 				var $ptr = $("#"+category+"-posts");
 				if($ptr.length==1){
-					$ptr.append("<b>"+data.Subject+"</b>&nbsp;by&nbsp;"+author+"&nbsp;on&nbsp;"+when+"<br />");
+					$ptr.append("<b class='subject'>"+data.Subject+"</b>&nbsp;by&nbsp;"+author+"&nbsp;on&nbsp;"+when+"<br />");
 					$ptr.append(data.Body.replace(/[\n\r]/g, '<br />')+'<br />');
 					$ptr.append("<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-edit btn btn-sm btn-default'>Edit</button>&nbsp;");
 					$ptr.append("<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-delete btn btn-sm btn-default'>Delete</button>");
