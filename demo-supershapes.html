@@ -58,6 +58,13 @@
 		width:160px;
 	}
 	
+	#formZone input{
+		margin-left:220px;
+		margin-bottom:10px;
+	}
+	
+	
+	
 	</style>
   </head>
   <body>
@@ -91,16 +98,28 @@
 	  <div id="canvasZone"></div>
 	  <div id="formZone">
 		<div id="modelZone"></div>
-		<div>
-			<label>Select your colors : </label>
-			<select id="select-colors">
-				<option value="wireframe">wire frame</option>
-				<option value="europa">europa</option>
-				<option value="rainbow">rainbow</option>
-			</select>
-		</div>
+			<div>
+				<label>Select your colors : </label>
+				<select id="select-colors">
+					<option value="wireframe">wire frame</option>
+					<option value="europa">europa</option>
+					<option value="rainbow">rainbow</option>
+				</select>
+			</div>
+			<div>
+				<label>Moving colors : </label>
+				<input type="checkbox" style="width:18px;height:18px;" id="movingOn"/>
+			</div>
+			<div>
+				<label>Auto-rotation : </label>
+				<input type="checkbox" style="width:18px;height:18px;" id="autoRotationOn"/>
+			</div>			
+			<div>
+				<label>Definition : <span id="definitionValue" class="label label-default"></span></label>
+				<input type="range" id="definitionChosen" min="10" max="75" step="1" style="width:200px;">
+			</div>				
 	  </div>
-  
+
   </div>
   
   
@@ -134,6 +153,8 @@
 						.attr("selected",true);
 				}
 			});
+			$("#definitionChosen").val(globals.total);
+			$("#definitionValue").text(globals.total);
 
 			$("#select-shape").on("change",function(){
 				globals.shapeChosen = $(this).val();
@@ -142,6 +163,12 @@
 			$("#select-colors").on("change",function(){
 				globals.colorChosen = $(this).val();
 			});	
+			
+			$("#definitionChosen").on("change",function(){
+				$("#definitionValue").text($(this).val());
+			});	
+			
+			
 			
 		});
 	 </script>  

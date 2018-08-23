@@ -14,6 +14,7 @@ var globals = {
 	total : 60,
 	globe : [],
 	offset : 0,
+	rot : 0,
 	auto : true,
 	colorChosen : 'wireframe',
 	shapeChosen : 'sphere',
@@ -246,18 +247,33 @@ function supershape(theta,shape){
 	return r;
 }
 
+function changeSize(event){
+	
+
+
+}
 
 
  function setup(){
   var cnv2 = createCanvas(640,480,WEBGL);
   cnv2.parent('supershapesZone');
-  cnv2.mouseReleased(function(){
+  cnv2.mouseReleased(function(e){
 	 globals.auto = !globals.auto;
 	 globals.lastx = map(mouseX,0,640,0,PI);
 	 globals.lasty = map(mouseY,0,480,0,PI);
   });
+  
+  cnv2.mouseWheel(function(e){
+	 if (e.deltaY > 0) {
+	   globals.r += 5;
+	  } else {
+		globals.r -= 5;
+	  }
+	  if(globals.r <30) globals.r =30;
+	  if(globals.r >300) globals.r =300;
+  });
 
- // frameRate(30);
+ frameRate(30);
   
 
   globals.globe = [];
@@ -266,6 +282,8 @@ function supershape(theta,shape){
  }
  
  function draw(){
+	 
+	 globals.rot += 0.05;
 	 // we have 2 radius in supershapesZone
 	 // because we want to change theses radius along 2 axis
 	 // as a 3D sphere is a 2D sphere rotated along the 2rd axis
@@ -280,12 +298,15 @@ function supershape(theta,shape){
   
   globals.globe = [];
 
-  
+  var definition = parseInt($("#definitionChosen").val());
+  if(isNaN(definition)) definition = 35;
   var myShape = shapes[globals.shapeChosen];
   var radius = globals.r * myShape.zoom;
   var myColors = globals.colorChosen;
   var hueOn = false;
   var wireModeOn = false;
+  var movingColors = $("#movingOn").prop('checked');
+  var autoRotationOn  = $("#autoRotationOn").prop('checked');
   
   if(myColors == "wireframe"){
 	  colorMode(RGB);
@@ -305,12 +326,12 @@ function supershape(theta,shape){
 	 noStroke(); 
   }
   
-	for(var i = 0; i < globals.total+1; i++){
-		var lat = map(i,0,globals.total,-HALF_PI, HALF_PI);
+	for(var i = 0; i < definition+1; i++){
+		var lat = map(i,0,definition,-HALF_PI, HALF_PI);
 		var r2 = supershape(lat,myShape.r2);
 		globals.globe.push([]);
-		for(var j = 0; j < globals.total+1; j++){
-			var lon = map(j,0,globals.total, -PI, PI);
+		for(var j = 0; j < definition+1; j++){
+			var lon = map(j,0,definition, -PI, PI);
 			var r1 = supershape(lon,myShape.r1);
 			var x = radius * r1 * cos(lon) * r2 * cos(lat);
 			var y = radius * r1 * sin(lon) * r2 * cos(lat);
@@ -319,25 +340,33 @@ function supershape(theta,shape){
 		}
 	}
 
-	rotateX(globals.lastx +globals.offset/500);
-	rotateY(globals.lasty+globals.offset/1000);
-		
-	globals.offset += 5;
-		
-	for(var i = 0; i < globals.total+1; i++){
+	if(autoRotationOn){
+		rotateX(globals.lastx + globals.rot*0.05);
+		rotateY(globals.lasty + globals.rot*0.25);
+	}else{
+		rotateX(0.5);
+		rotateY(1.2);
+	}
+	
+	if(movingColors){
+		globals.offset += 1;
+	}else{
+		globals.offset = 0;
+	}
+	for(var i = 0; i < definition+1; i++){
 		if(hueOn){
-			var hu = map(i, 0, globals.total, 0, 255*6);
+			var hu = map(i, 0, definition, 0, 255*6);
 			fill((hu + globals.offset)  % 250, 200, 200);		
 		}
 
 			
 		beginShape(TRIANGLE_STRIP);
-		for(var j = 0; j < globals.total+1; j++){
+		for(var j = 0; j < definition+1; j++){
 
 			var v1 = globals.globe[i][j];	
 			vertex(v1.x,v1.y,v1.z);
 			
-			var k = (i < globals.total) ? i+1 : i;
+			var k = (i < definition) ? i+1 : i;
 			var v2 = globals.globe[k ][j];
 			vertex(v2.x,v2.y,v2.z);
 		}
