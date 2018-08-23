@@ -21,23 +21,24 @@ var globals = {
 	a:1,
 	b:1,
 	lastx:0.1,
-	lasty:0.5
+	lasty:0.5,
+	textBg :null
 };
 
 var shapes = {
-		"sphere":{
+		"spheroid":{
 		zoom:0.9,
 		r1:{
-			m:0,
-			n1:0,
-			n2:0,
-			n3:0
+			m:0.1,
+			n1:1,
+			n2:1,
+			n3:1
 		},
 		r2:{
-			m:0,
-			n1:0,
-			n2:0,
-			n3:0,
+			m:0.1,
+			n1:1,
+			n2:1,
+			n3:1
 		}
 	},
 	"thorny":{
@@ -224,13 +225,13 @@ var shapes = {
 
 
 //http://paulbourke.net/geometry/supershape/
-function supershape(theta,shape){
+function supershape(theta,shape,latZoom,lonZoom){
 	var m = shape.m;
 	var n1 = shape.n1;
 	var n2 = shape.n2;
 	var n3 = shape.n3;
-	var a = globals.a;
-	var b = globals.b;
+	var a = latZoom;
+	var b = lonZoom;
 	var r = 1;
 	
 	if(m!=0){
@@ -245,12 +246,6 @@ function supershape(theta,shape){
 	}
 
 	return r;
-}
-
-function changeSize(event){
-	
-
-
 }
 
 
@@ -275,7 +270,7 @@ function changeSize(event){
 
  frameRate(30);
   
-
+  
   globals.globe = [];
 
 
@@ -293,11 +288,15 @@ function changeSize(event){
 	//noFill();
 	
   background(0);
+ 
 
   orbitControl();
   
   globals.globe = [];
-
+  
+  var latZoom =  parseFloat($("#latZoomChosen").val());
+  var lonZoom =  parseFloat($("#lonZoomChosen").val());
+  
   var definition = parseInt($("#definitionChosen").val());
   if(isNaN(definition)) definition = 35;
   var myShape = shapes[globals.shapeChosen];
@@ -328,11 +327,11 @@ function changeSize(event){
   
 	for(var i = 0; i < definition+1; i++){
 		var lat = map(i,0,definition,-HALF_PI, HALF_PI);
-		var r2 = supershape(lat,myShape.r2);
+		var r2 = supershape(lat,myShape.r2,latZoom,lonZoom);
 		globals.globe.push([]);
 		for(var j = 0; j < definition+1; j++){
 			var lon = map(j,0,definition, -PI, PI);
-			var r1 = supershape(lon,myShape.r1);
+			var r1 = supershape(lon,myShape.r1,latZoom,lonZoom);
 			var x = radius * r1 * cos(lon) * r2 * cos(lat);
 			var y = radius * r1 * sin(lon) * r2 * cos(lat);
 			var z = radius * r2 * sin(lat);
