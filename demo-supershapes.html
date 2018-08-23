@@ -36,6 +36,28 @@
 		font-weight: bold;
 		font-size: 24px;;
 	}
+	
+	#formZone{
+		font-size:14px;
+		margin-top:10px;
+	}
+	
+	#formZone label{
+		position:absolute;
+		width:200px;
+	}
+	
+	#formZone label{
+		width:200px;
+		margin-bottom:10px;
+	}
+	
+	#formZone select{
+		margin-left:220px;
+		margin-bottom:10px;
+		width:160px;
+	}
+	
 	</style>
   </head>
   <body>
@@ -50,7 +72,7 @@
                 </a>
             </div>
             <ul class="nav navbar-nav">
-                <li id="demo" class="active"><a href="#demo">Spherical Geometry</a></li>
+				<li id="supershapes" class="active"><a href="#supershapes">3D Supershapes</a></li>
                 <li id="blog"><a href="https://philippemarcmeyer.github.io#canvas">Github Blog</a></li>
                 <li id="repos"><a href="https://github.com/PhilippeMarcMeyer">Github repos</a></li>
             </ul>
@@ -58,15 +80,26 @@
     </nav>
   <div id="container">
   
-	  <div id="demoZone">
-	  <h5>Spherical Geometry</h5>
+	  
+ <div id="supershapesZone" >
+	  <h5>3D Supershapes</h5>
 	  <p>This is a personnal translation in javascript/p5.js of 
-	  <a href="https://github.com/CodingTrain/website/tree/master/CodingChallenges/CC_025_SphereGeometry" target="_blank">
-	     Daniel Shiffman's coding challenge : Spherical Geometry
+	     Daniel Shiffman's coding challenge : 3D Supershapes
 	  </a> from processing (java)
 	  </p>
 	  </div>
-	  
+	  <div id="canvasZone"></div>
+	  <div id="formZone">
+		<div id="modelZone"></div>
+		<div>
+			<label>Select your colors : </label>
+			<select id="select-colors">
+				<option value="wireframe">wire frame</option>
+				<option value="europa">europa</option>
+				<option value="rainbow">rainbow</option>
+			</select>
+		</div>
+	  </div>
   
   </div>
   
@@ -76,7 +109,40 @@
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 
-	  <script src="./demo-p5js.js"></script>
+	  <script src="./demo-supershapes.js"></script>
+	<script>  
+		$( document ).ready(function() {
+		  	var $label =  $("<label></label>");
+			$label
+				.appendTo($("#modelZone"))
+				.html("Select your supershape !&nbsp;:&nbsp;");
+				
+		  var $select = $("<select></select>");
+		  $select
+			.appendTo($("#modelZone"))
+			.attr("id","select-shape");
+			
+		  $.each(shapes, function( key, value ) {
+			var $option  = $("<option></option>");
+			$option
+				.appendTo($select)
+				.attr("value",key)
+				.text(key);
+				
+				if(key == globals.total){
+					$option
+						.attr("selected",true);
+				}
+			});
 
-	 
+			$("#select-shape").on("change",function(){
+				globals.shapeChosen = $(this).val();
+			});	
+			
+			$("#select-colors").on("change",function(){
+				globals.colorChosen = $(this).val();
+			});	
+			
+		});
+	 </script>  
 </html>
