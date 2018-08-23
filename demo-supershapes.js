@@ -257,7 +257,7 @@ function supershape(theta,shape){
 	 globals.lasty = map(mouseY,0,480,0,PI);
   });
 
-  frameRate(30);
+ // frameRate(30);
   
 
   globals.globe = [];
