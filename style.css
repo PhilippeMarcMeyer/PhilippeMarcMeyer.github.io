@@ -108,3 +108,15 @@
 .modal-body{
 	font-size: 14px !important;;
 }
+
+a.btn-demo{
+	padding:2px 4px 2px 4px;
+	border: 1px solid grey;
+	background-color:lightyellow;
+	text-decoration: #333;
+	color:black;
+}
+
+a.btn-demo:hover{
+	background-color:#FFDEAD;
+}
