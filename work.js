@@ -128,11 +128,10 @@ $(document).ready(function () {
 
 
 	$(".save").off("click").on("click",function(){
-					
 		var key = $("#firebaseEdit #key").val();
 		var title = $("#firebaseEdit #title").val();
 		var text = $("#firebaseEdit #text").val();
-		
+		var keywords = index(title+" "+text,5);
 		if(title !="" && text != ""){
 			if(key!=""){
 				now = new Date().toISOString();
@@ -140,6 +139,7 @@ $(document).ready(function () {
 					.update({ 
 						Subject: title, 
 						Body: text,
+						Keywords:keywords,
 						//Creation:"2018-08-16T10:02:10.384Z",
 						Modification:now 
 					},function(error){
@@ -159,7 +159,8 @@ $(document).ready(function () {
 				  Subject:title,
 				  Creation: now,
 				  Body:	text,
-				  Modification:"no"					
+				  Modification:"no",
+				  Keywords:keywords
 				},function(error){
 					 if (error){
 					$("#firebaseEdit #error").text(error.message);
@@ -241,8 +242,6 @@ function gotData(data){
 			$("#firebaseEdit").show();
 			$("#firebaseEdit .keyzone").show();
 			$("#firebaseEdit #error").text("");
-
-
 		});
 		
 	});
@@ -265,20 +264,26 @@ function errData(err){
 }
   
  $(".navbar-nav li").on("click", function () {
-	  var menuItem = $(this).find("a").attr('href').replace("#","").toLowerCase();
-       init(menuItem);
+	 	var attr = $(this).attr('id');
+	 if(attr){
+		  var menuItem = $(this).find("a").attr('href').replace("#","").toLowerCase();
+		  init(menuItem);
+	 }
 });
 
 function init(menuItem) {
     var menus = $(".navbar-nav li");
     $.each(menus, function (index, menu) {
-        if (menu.id == menuItem) {
-            $("#" + menu.id + "Zone").show();
-            $("#" + menu.id).addClass("active");
-        } else {
-            $("#" + menu.id + "Zone").hide();
-            $("#" + menu.id).removeClass("active");
-        }
+		var attr = $(this).attr('id');
+		if(attr){
+			if (menu.id == menuItem) {
+				$("#" + menu.id + "Zone").show();
+				$("#" + menu.id).addClass("active");
+			} else {
+				$("#" + menu.id + "Zone").hide();
+				$("#" + menu.id).removeClass("active");
+			}
+		}
     });
 }
 
@@ -422,7 +427,7 @@ function gotDataPost(data){
 		var key = $(formId + " .post-key").val();
 		var title = $(formId + " .post-title").val();
 		var text = $(formId + " .post-text").val();
-		
+		var keywords = index(title+" "+text,5);
 		if(title !="" && text != ""){
 			if(key!=""){
 				now = new Date().toISOString();
@@ -430,7 +435,8 @@ function gotDataPost(data){
 					.update({ 
 						Subject: title, 
 						Body: text,
-						Modification:now 
+						Modification:now,
+						Keywords:keywords
 					},function(error){
 						 if (error){
 							$(formId + " .post-error").text(error.message);
@@ -450,7 +456,8 @@ function gotDataPost(data){
 				  Category:category,
 				  Author:author,
 				  Body:	text,
-				  Modification:"no"					
+				  Modification:"no"	,
+				  Keywords:keywords				  
 				},function(error){
 				  if (error){
 					$(formId + " .post-error").text(error.message);
@@ -469,5 +476,51 @@ function gotDataPost(data){
 	});
 }
 
+$(".search").on("click",function(){
+	var toSearchField = $(this).parent().find(".searchField");
+	if(toSearchField.length==1){
+		var valueToSearch = $(toSearchField).val();
+		if(valueToSearch.length>=5){
+			var category = $(toSearchField).data("category");
+			var words = valueToSearch.split(" ");
+			if(category=="firebase"){
+			//	var query = ref.where("Keywords", "array-contains", words[0]);
+				//var query = ref.child("Knowledge");//.queryOrdered({"byChild": "Keywords"}).queryStart({"at": words[0]});
+				
+			ref.orderByChild(words[0]).on("child_added", function (snapshot) {
+                console.log(snapshot.key)
+            });
+
+			}else{
+				var query = refPosts.where("Keywords", "array-contains", words[0]);
+				
+			}
+		}
+	}
+});
+
 
 });
+
+function index (text,minLength){
+	var indexes = {};
+	var start = -1;
+	var end = -1;
+	var textWithOutCode = text.replace(/[\W]+/g," ");
+	textWithOutCode = textWithOutCode.replace(/ {1,}/g," ");
+	var words = textWithOutCode.split(" ");
+	words.sort();
+	var previous = null;
+	words.forEach(function(word){
+		if(word!=previous){
+			previous = word;
+			if(word.length >= minLength){
+				if(!indexes[word]){
+					indexes[word] = true;
+				}
+			}
+		}
+	});
+	
+	return indexes;
+}

@@ -30,8 +30,17 @@
 	margin-right:4px;
 }
 
+.searchField{
+	height:30px;
+	width:250px;
+}
+
 .new{
-	margin-top:6px;
+	margin-bottom:2px;
+}
+
+.search{
+	margin-bottom:2px;
 }
 
 .delete{
