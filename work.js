@@ -1,6 +1,8 @@
 
 var database;
 var fireUser = null;
+var indexMinimalLength = 4;
+
 $(document).ready(function () {
 	
 	var url = location.href;
@@ -126,12 +128,11 @@ $(document).ready(function () {
 	});
 
 
-
 	$(".save").off("click").on("click",function(){
 		var key = $("#firebaseEdit #key").val();
 		var title = $("#firebaseEdit #title").val();
 		var text = $("#firebaseEdit #text").val();
-		var keywords = index(title+" "+text,5);
+		var keywords = index(title+" "+text,indexMinimalLength);
 		if(title !="" && text != ""){
 			if(key!=""){
 				now = new Date().toISOString();
@@ -139,7 +140,7 @@ $(document).ready(function () {
 					.update({ 
 						Subject: title, 
 						Body: text,
-						Keywords:keywords,
+						Keywords : keywords,
 						//Creation:"2018-08-16T10:02:10.384Z",
 						Modification:now 
 					},function(error){
@@ -151,8 +152,17 @@ $(document).ready(function () {
 						 $("#firebaseEdit #key").val("");
 						 $("#firebaseEdit #title").val("");
 						 $("#firebaseEdit #text").val("");
+						 /*
+						ref.child(key).child("Keywords").remove();
+					  keywords.forEach(function(k){
+						 ref.child(key).child("Keywords").push(k); 
+					  });
+					   */
 					  }
 				  });
+
+			
+	
 			}else{
 				now = new Date().toISOString();
 				ref.push({
@@ -170,9 +180,15 @@ $(document).ready(function () {
 					 $("#firebaseEdit #key").val("");
 					 $("#firebaseEdit #title").val("");
 					 $("#firebaseEdit #text").val("");
+					 /*
+					  keywords.forEach(function(k){
+							  ref.child(key).child("Keywords").push(k); 
+					  });
+					*/
 				  }
 					
 				}); 
+				
 			}
 			
 			
@@ -192,7 +208,11 @@ ref.on('value',gotData,errData);
 
 // Pull from firebase for "firebase" page
 function gotData(data){
+	
 	var obj = data.val();
+	if(obj==null) return;
+	var search = $("#firebaselearningZone .searchField").val().toLowerCase().trim().split(" ");
+	
 	var entries = Object.entries(obj);	
 	entries.sort(function(a,b){
 		var d1 = new Date(a[1].Creation);
@@ -202,19 +222,34 @@ function gotData(data){
 
 	var html="";
 	entries.forEach(function(p){
+		var gotIt = true;
 		var key = p[0];
 		var data = p[1];
 		var when = new Date(data.Creation).toLocaleString();
+		
 		if(data.Modification != "no"){
 			when += " + modified : " + new Date(data.Modification).toLocaleString();
 		}
-		html+="<b class='subject'>"+data.Subject+"</b>&nbsp;"+when+"<br />";
-		html+= data.Body.replace(/[\n\r]/g, '<br />')+'<br />';+'<br />';
-		html+= "<button type='button'  data-id='"+key+"' class='whenOn edit btn btn-sm btn-default'>Edit</button>";
-		html+= "<button type='button'  data-id='"+key+"' class='whenOn delete btn btn-sm btn-default'>Delete</button>";
+		
+		if(search.length !=0 && search[0]!=""){
+			gotIt = false;
+			search.forEach(function(k){
+				if(k.length >=5){
+					if(data.Keywords.indexOf(k)!=-1){
+						gotIt = true;	
+					}
+				}
+			});
+		}
 
-		html+= "<hr />";	
+		if(gotIt){
+			html+="<b class='subject'>"+data.Subject+"</b>&nbsp;"+when+"<br />";
+			html+= data.Body.replace(/[\n\r]/g, '<br />')+'<br />';+'<br />';
+			html+= "<button type='button'  data-id='"+key+"' class='whenOn edit btn btn-sm btn-default'>Edit</button>";
+			html+= "<button type='button'  data-id='"+key+"' class='whenOn delete btn btn-sm btn-default'>Delete</button>";
 
+			html+= "<hr />";	
+		}
 	});
 	html = html.replace(/<br \/><br \/>/g, '<br \/>')+"<br />";
 	
@@ -287,7 +322,6 @@ function init(menuItem) {
     });
 }
 
-
  var refPosts = database.ref("Posts");
  refPosts.on('value',gotDataPost,errDataPost);
  
@@ -298,8 +332,7 @@ function init(menuItem) {
 	console.log(err);
 }
 // Pull from firebase site for posts in all pages (except firebase special page)
-function gotDataPost(data){
-
+function gotDataPost(data){	
 	var obj = data.val();
 		if(obj){
 			var entries = Object.entries(obj);	
@@ -325,13 +358,28 @@ function gotDataPost(data){
 				if(data.Modification != "no"){
 					when += " + modified : " + new Date(data.Modification).toLocaleString();
 				}
-				var $ptr = $("#"+category+"-posts");
-				if($ptr.length==1){
-					$ptr.append("<b class='subject'>"+data.Subject+"</b>&nbsp;by&nbsp;"+author+"&nbsp;on&nbsp;"+when+"<br />");
-					$ptr.append(data.Body.replace(/[\n\r]/g, '<br />')+'<br />');
-					$ptr.append("<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-edit btn btn-sm btn-default'>Edit</button>&nbsp;");
-					$ptr.append("<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-delete btn btn-sm btn-default'>Delete</button>");
-					$ptr.append("<hr />");
+				
+				var search = $("#"+category+"Zone .searchField").val().toLowerCase().trim().split(" ");
+				var gotIt = true;
+				if(search.length !=0 && search[0]!=""){
+					gotIt = false;
+					search.forEach(function(k){
+						if(k.length >=indexMinimalLength){
+							if(data.Keywords.indexOf(k)!=-1){
+								gotIt = true;	
+							}
+						}
+					});
+				}
+				if(gotIt){
+					var $ptr = $("#"+category+"-posts");
+					if($ptr.length==1){
+						$ptr.append("<b class='subject'>"+data.Subject+"</b>&nbsp;by&nbsp;"+author+"&nbsp;on&nbsp;"+when+"<br />");
+						$ptr.append(data.Body.replace(/[\n\r]/g, '<br />')+'<br />');
+						$ptr.append("<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-edit btn btn-sm btn-default'>Edit</button>&nbsp;");
+						$ptr.append("<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-delete btn btn-sm btn-default'>Delete</button>");
+						$ptr.append("<hr />");
+					}
 				}
 			});
 	}
@@ -415,7 +463,6 @@ function gotDataPost(data){
 		var $form = $(this).parent();
 		var formId = "#" + $form.attr("id");
 		var category = $form.data("category");
-		
 		var author ="anonymous";
 		if(fireUser){
 			if(fireUser.displayName){
@@ -427,7 +474,7 @@ function gotDataPost(data){
 		var key = $(formId + " .post-key").val();
 		var title = $(formId + " .post-title").val();
 		var text = $(formId + " .post-text").val();
-		var keywords = index(title+" "+text,5);
+		var keywords = index(title+" "+text,indexMinimalLength);
 		if(title !="" && text != ""){
 			if(key!=""){
 				now = new Date().toISOString();
@@ -479,22 +526,11 @@ function gotDataPost(data){
 $(".search").on("click",function(){
 	var toSearchField = $(this).parent().find(".searchField");
 	if(toSearchField.length==1){
-		var valueToSearch = $(toSearchField).val();
-		if(valueToSearch.length>=5){
-			var category = $(toSearchField).data("category");
-			var words = valueToSearch.split(" ");
-			if(category=="firebase"){
-			//	var query = ref.where("Keywords", "array-contains", words[0]);
-				//var query = ref.child("Knowledge");//.queryOrdered({"byChild": "Keywords"}).queryStart({"at": words[0]});
-				
-			ref.orderByChild(words[0]).on("child_added", function (snapshot) {
-                console.log(snapshot.key)
-            });
-
-			}else{
-				var query = refPosts.where("Keywords", "array-contains", words[0]);
-				
-			}
+		var category = $(toSearchField).data("category");
+		if(category=="firebase"){
+			ref.on('value',gotData,errData);
+		}else{
+			refPosts.on('value',gotDataPost,errDataPost);
 		}
 	}
 });
@@ -504,9 +540,10 @@ $(".search").on("click",function(){
 
 function index (text,minLength){
 	var indexes = {};
+	var output = [];
 	var start = -1;
 	var end = -1;
-	var textWithOutCode = text.replace(/[\W]+/g," ");
+	var textWithOutCode = text.replace(/[\W]+/g," ").toLowerCase();
 	textWithOutCode = textWithOutCode.replace(/ {1,}/g," ");
 	var words = textWithOutCode.split(" ");
 	words.sort();
@@ -517,10 +554,11 @@ function index (text,minLength){
 			if(word.length >= minLength){
 				if(!indexes[word]){
 					indexes[word] = true;
+					output.push(word);
 				}
 			}
 		}
 	});
 	
-	return indexes;
+	return output;
 }
