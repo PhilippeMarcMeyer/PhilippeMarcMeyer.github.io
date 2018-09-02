@@ -2,6 +2,7 @@
 var database;
 var fireUser = null;
 var indexMinimalLength = 4;
+var itsMe = false;
 
 $(document).ready(function () {
 	
@@ -37,6 +38,7 @@ $(document).ready(function () {
 			//console.log(e.message);
 		});
 	});
+	
 	$("#btnSignUp").on("click",function(){
 		// TODO : check for email
 		var doContinue = true;
@@ -76,18 +78,21 @@ $(document).ready(function () {
 			fireUser = user;
 			 $(".whenOn").removeClass("hide");
 			 $(".whenOff").addClass("hide");
+			 if(!itsMe){
+			 	$(".myEyesOnly").addClass("hide");
+			 }
+
 			if(user.displayName){
 				$("#userMessage").html("You are logged as "+user.displayName+"&nbsp;&nbsp;&nbsp;");
 			}else{
 				$("#userMessage").html("You are logged as "+user.email+"&nbsp;&nbsp;&nbsp;");
+				itsMe = (user.email == "pmg.meyer@gmail.com");
 			}
-	
 		}else{
 			fireUser = null;
 			$(".whenOff").removeClass("hide");
 			$(".whenOn").addClass("hide");
 			$("#userMessage").text("");
-//displayName
 		}
 	});
 
@@ -107,7 +112,7 @@ $(document).ready(function () {
 	  Body:"What I like very much is that each time an input is sent to the server, then the page receives an event with new data refreshed !",
 	  Modification:"no"
 	
-}
+	}
 
 	$(".cancel").off("click").on("click",function(){
 		$("#firebaseEdit").hide();
@@ -376,6 +381,15 @@ function gotDataPost(data){
 					if($ptr.length==1){
 						$ptr.append("<b class='subject'>"+data.Subject+"</b>&nbsp;by&nbsp;"+author+"&nbsp;on&nbsp;"+when+"<br />");
 						$ptr.append(data.Body.replace(/[\n\r]/g, '<br />')+'<br />');
+						$ptr.append("<button type='button' data-target='#post-"+category+"' data-id='"+key+"' class='whenOn newComment btn btn-sm btn-default'>New Comment</button><br />");
+
+						if(data.Comments){
+							$ptr.append("<br />Comments : <br />");
+							data.Comments.forEach(function(x){
+								$ptr.append(x.author+"&nbsp;on&nbsp;"+x.when+"<br />");
+								$ptr.append(x.Body.replace(/[\n\r]/g, '<br />')+'<br />');
+							});
+						}
 						$ptr.append("<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-edit btn btn-sm btn-default'>Edit</button>&nbsp;");
 						$ptr.append("<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-delete btn btn-sm btn-default'>Delete</button>");
 						$ptr.append("<hr />");
@@ -393,11 +407,12 @@ function gotDataPost(data){
 
 // edit for comments could be interesting : only for the poster
 	$(".post-edit").off("click").on("click",function(){
-		
+		debugger
 		var key = $(this).data("id");
 		var category = $(this).data("category");
 		var formId = "#post-" + category;
-		
+		$(formId).data("comment","false");
+
 		refPosts.child(key).on("value",function(x){
 			window.scroll({
 			 top: 0, 
@@ -407,10 +422,13 @@ function gotDataPost(data){
 		
 			var data = x.val();
 			$(formId+ " .post-key").val(key);
+			$(formId+ " .post-key").val(key);
 			$(formId+ " .post-title").val(data.Subject);
 			$(formId+ " .post-text").val(data.Body);
 			$(formId+ " .keyzone").show();
 			$(formId+ " .post-error").text("");
+			$(formId + " .post-title").removeClass("hide");
+
 			$(formId).show();
 		});
 		
@@ -454,15 +472,37 @@ function gotDataPost(data){
 		$(formId + " .post-text").val("");
 		$(formId + " .keyzone").hide();
 		$(formId + " .post-error").text("");
+		$(formId + " .post-title").removeClass("hide");
+
+		$form.show();
+	});
+	
+	$(".newComment").off("click").on("click",function(){
+		debugger
+		var formId = $(this).data("target");
+		var $form = $(formId);
+		var category = $form.data("category");
+		
+		$form.data("comment","true");
+		
+		$(formId + " .post-key").val("");
+		$(formId + " .post-title").val("none");
+		$(formId + " .post-title").addClass("hide");
+		
+		$(formId + " .post-text").val("");
+		$(formId + " .keyzone").hide();
+		$(formId + " .post-error").text("");
 		
 		$form.show();
 	});
+	
 	
 
 	$(".post-save").off("click").on("click",function(){
 		var $form = $(this).parent();
 		var formId = "#" + $form.attr("id");
 		var category = $form.data("category");
+		var isComment = ($form.data("comment")=="true");
 		var author ="anonymous";
 		if(fireUser){
 			if(fireUser.displayName){
@@ -478,23 +518,44 @@ function gotDataPost(data){
 		if(title !="" && text != ""){
 			if(key!=""){
 				now = new Date().toISOString();
-				refPosts.child(key)
-					.update({ 
-						Subject: title, 
-						Body: text,
-						Modification:now,
-						Keywords:keywords
-					},function(error){
-						 if (error){
+				if(isComment){
+					 var refComments = database.ref("Posts/Comments/"+key);
+					  refComments.push({
+						  Creation: now,
+						  Author:author,
+						  Body:	text
+						},function(error){
+						  if (error){
 							$(formId + " .post-error").text(error.message);
-						 }
-					  else{
-						 $form.hide();
-						 $(formId + " .post-key").val("");
-						 $(formId + " .post-title").val("");
-						 $(formId + " .post-text").val("");
-					  }
-				  });
+						  }
+						  else{
+							 $form.hide();
+							 $(formId + " .post-key").val("");
+							 $(formId + " .post-title").val("");
+							 $(formId + " .post-text").val("");
+						  }
+					}); 
+				}else{
+					refPosts.child(key)
+						.update({ 
+							Subject: title, 
+							Body: text,
+							Modification:now,
+							Keywords:keywords
+						},function(error){
+							 if (error){
+								$(formId + " .post-error").text(error.message);
+							 }
+						  else{
+							 $form.hide();
+							 $(formId + " .post-key").val("");
+							 $(formId + " .post-title").val("");
+							 $(formId + " .post-text").val("");
+						  }
+					  });
+				}
+				  
+				  
 			}else{
 				  now = new Date().toISOString();
 				  refPosts.push({
