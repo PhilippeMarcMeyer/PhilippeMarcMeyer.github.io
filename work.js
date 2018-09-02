@@ -358,6 +358,7 @@ function gotDataPost(data){
 				var key = p[0];
 				var data = p[1];
 				var category = data.Category;
+				if(category){
 				var author = data.Author || "anonymous";
 				var when = new Date(data.Creation).toLocaleString();
 				if(data.Modification != "no"){
@@ -395,6 +396,7 @@ function gotDataPost(data){
 						$ptr.append("<hr />");
 					}
 				}
+				}
 			});
 	}
 
@@ -407,7 +409,7 @@ function gotDataPost(data){
 
 // edit for comments could be interesting : only for the poster
 	$(".post-edit").off("click").on("click",function(){
-		debugger
+		
 		var key = $(this).data("id");
 		var category = $(this).data("category");
 		var formId = "#post-" + category;
@@ -421,7 +423,6 @@ function gotDataPost(data){
 			});
 		
 			var data = x.val();
-			$(formId+ " .post-key").val(key);
 			$(formId+ " .post-key").val(key);
 			$(formId+ " .post-title").val(data.Subject);
 			$(formId+ " .post-text").val(data.Body);
@@ -478,17 +479,18 @@ function gotDataPost(data){
 	});
 	
 	$(".newComment").off("click").on("click",function(){
-		debugger
+		
+		var key = $(this).data("id");
 		var formId = $(this).data("target");
 		var $form = $(formId);
 		var category = $form.data("category");
 		
 		$form.data("comment","true");
 		
-		$(formId + " .post-key").val("");
+		// $(formId+ " .post-key").val(key);
+
 		$(formId + " .post-title").val("none");
 		$(formId + " .post-title").addClass("hide");
-		
 		$(formId + " .post-text").val("");
 		$(formId + " .keyzone").hide();
 		$(formId + " .post-error").text("");
@@ -519,7 +521,7 @@ function gotDataPost(data){
 			if(key!=""){
 				now = new Date().toISOString();
 				if(isComment){
-					 var refComments = database.ref("Posts/Comments/"+key);
+					 var refComments = database.ref("Posts/"+key+"/Comments");
 					  refComments.push({
 						  Creation: now,
 						  Author:author,
