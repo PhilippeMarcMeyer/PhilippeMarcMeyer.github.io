@@ -383,6 +383,7 @@ function gotDataPost(data){
 						$ptr.append("<b class='subject'>"+data.Subject+"</b>&nbsp;by&nbsp;"+author+"&nbsp;on&nbsp;"+when+"<br />");
 						$ptr.append(data.Body.replace(/[\n\r]/g, '<br />')+'<br />');
 						$ptr.append("<button type='button' data-target='#post-"+category+"' data-id='"+key+"' class='whenOn newComment btn btn-sm btn-default'>New Comment</button><br />");
+						$ptr.append("<div class='whenOff hide inviteToLogAndComment'>Please log to leave comments</div>");
 
 						if(data.Comments){
 							var keys = Object.keys(data.Comments)
