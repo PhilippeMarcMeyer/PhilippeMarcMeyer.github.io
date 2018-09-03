@@ -385,10 +385,13 @@ function gotDataPost(data){
 						$ptr.append("<button type='button' data-target='#post-"+category+"' data-id='"+key+"' class='whenOn newComment btn btn-sm btn-default'>New Comment</button><br />");
 
 						if(data.Comments){
-							$ptr.append("<br />Comments : <br />");
-							data.Comments.forEach(function(x){
-								$ptr.append(x.author+"&nbsp;on&nbsp;"+x.when+"<br />");
-								$ptr.append(x.Body.replace(/[\n\r]/g, '<br />')+'<br />');
+							var keys = Object.keys(data.Comments)
+							$ptr.append("<br /><b class='comment-title'>Comments : </b><br />");
+							keys.forEach(function(k){
+								var comment = data.Comments[k];
+								var when = new Date(comment.Creation).toLocaleString();
+								var commentHtml = "<div class='comment-post'><b>"+comment.Author+"</b>&nbsp;on&nbsp;"+when+"<br />" + comment.Body.replace(/[\n\r]/g, '<br />')+"</div><br />";
+								$ptr.append(commentHtml);
 							});
 						}
 						$ptr.append("<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-edit btn btn-sm btn-default'>Edit</button>&nbsp;");
@@ -427,6 +430,7 @@ function gotDataPost(data){
 			$(formId+ " .post-title").val(data.Subject);
 			$(formId+ " .post-text").val(data.Body);
 			$(formId+ " .keyzone").show();
+			$(formId+ " .titlezone").show();
 			$(formId+ " .post-error").text("");
 			$(formId + " .post-title").removeClass("hide");
 
@@ -472,6 +476,7 @@ function gotDataPost(data){
 		$(formId + " .post-title").val("");
 		$(formId + " .post-text").val("");
 		$(formId + " .keyzone").hide();
+		$(formId+ " .titlezone").show();
 		$(formId + " .post-error").text("");
 		$(formId + " .post-title").removeClass("hide");
 
@@ -487,12 +492,11 @@ function gotDataPost(data){
 		
 		$form.data("comment","true");
 		
-		// $(formId+ " .post-key").val(key);
+		$(formId+ " .post-key").val(key);
 
 		$(formId + " .post-title").val("none");
-		$(formId + " .post-title").addClass("hide");
+		$(formId + " .titlezone").hide();
 		$(formId + " .post-text").val("");
-		$(formId + " .keyzone").hide();
 		$(formId + " .post-error").text("");
 		
 		$form.show();
@@ -521,6 +525,8 @@ function gotDataPost(data){
 			if(key!=""){
 				now = new Date().toISOString();
 				if(isComment){
+					$("#htmlRemover").html(text);
+					text = $("#htmlRemover").text();
 					 var refComments = database.ref("Posts/"+key+"/Comments");
 					  refComments.push({
 						  Creation: now,
