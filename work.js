@@ -78,9 +78,6 @@ $(document).ready(function () {
 			fireUser = user;
 			 $(".whenOn").removeClass("hide");
 			 $(".whenOff").addClass("hide");
-			 if(!itsMe){
-			 	$(".myEyesOnly").addClass("hide");
-			 }
 
 			if(user.displayName){
 				$("#userMessage").html("You are logged as "+user.displayName+"&nbsp;&nbsp;&nbsp;");
@@ -88,12 +85,17 @@ $(document).ready(function () {
 				$("#userMessage").html("You are logged as "+user.email+"&nbsp;&nbsp;&nbsp;");
 				itsMe = (user.email == "pmg.meyer@gmail.com");
 			}
+			
 		}else{
 			fireUser = null;
 			$(".whenOff").removeClass("hide");
 			$(".whenOn").addClass("hide");
 			$("#userMessage").text("");
 		}
+		if(!itsMe){
+			 $(".myEyesOnly").addClass("hide");
+		}
+
 	});
 
   database = firebase.database();
