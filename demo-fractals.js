@@ -1,17 +1,10 @@
-/*
-	x = r sin(Lon) cos(lat)
-	y = r sin(Lon) sin(lat)
-	z = r cos(Lon)
-	
-	translated from https://github.com/CodingTrain/website/blob/master/CodingChallenges/CC_026_SuperShape3D/CC_026_SuperShape3D.pde
-	in p5.js
-*/
+
 
 var fractals = {
 	mainHeight : 360,
-	mainWidth : 36,
+	mainWidth : 120,
 	decreasing : 0.3, 
-	iterations : 1,
+	iterations : 12,
 	bottom : 180,
 	triangles : []
 };
@@ -19,12 +12,22 @@ var fractals = {
 
 
 function branch(basePt,angle,width,height,iter,maxIter){
+	
+	var pt1 = {x:basePt.x,y:basePt.y};
 	var pt2 = {x:basePt.x+width,y:basePt.y};
 	var pt3 = {x:basePt.x,y:basePt.y-height};
 
-	fractals.triangles.push({a:basePt,b:pt2,c:pt3});
+	fractals.triangles.push({a:pt1,b:pt2,c:pt3});
+	
+	pt1 = {x:basePt.x,y:basePt.y};
+	pt2 = {x:basePt.x-width,y:basePt.y};
+	pt3 = {x:basePt.x,y:basePt.y-height};
+
+	fractals.triangles.push({a:pt1,b:pt2,c:pt3});
+	
 	if(iter < maxIter){
-		branch(basePt,angle,width,height,iter,maxIter)
+		basePt.y -= iter;
+		branch(basePt,angle,width*.9,height*0.9,iter+1,maxIter)
 	}
 }
 
@@ -40,17 +43,21 @@ function branch(basePt,angle,width,height,iter,maxIter){
  }
  
  function draw(){
-	translate(width / 2, height / 2); 
+  translate(width / 2, height / 2); 
   background(0);
-    noFill();
+  //noFill();
   stroke(255);
-  fractals.triangles.forEach(function(tri){
+  fractals.triangles.forEach(function(tri,i){
+	  fill(45+i*4);
+	  //rotate(i*0.2)
+	  //rotate(i*0.5);
+
+	  
 	  beginShape(TRIANGLE_STRIP);
 		vertex(tri.a.x, tri.a.y);
 		vertex(tri.b.x, tri.b.y);
 		vertex(tri.c.x, tri.c.y);
-
-	endShape();
+		endShape();
   });
 
   //orbitControl();
