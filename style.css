@@ -106,6 +106,17 @@
 	padding-right:8px;
 }
 
+.comment-title{
+	color:darkred;
+	font-size:14px;
+	padding-right:8px;
+}
+
+.comment-post{
+	margin-left:20px;
+	margin-bottom:12px;
+}
+
 .auth{
 	font-size:12px;
 }

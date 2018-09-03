@@ -2,6 +2,7 @@
 var database;
 var fireUser = null;
 var indexMinimalLength = 4;
+var itsMe = false;
 
 $(document).ready(function () {
 	
@@ -37,6 +38,7 @@ $(document).ready(function () {
 			//console.log(e.message);
 		});
 	});
+	
 	$("#btnSignUp").on("click",function(){
 		// TODO : check for email
 		var doContinue = true;
@@ -76,18 +78,21 @@ $(document).ready(function () {
 			fireUser = user;
 			 $(".whenOn").removeClass("hide");
 			 $(".whenOff").addClass("hide");
+			 if(!itsMe){
+			 	$(".myEyesOnly").addClass("hide");
+			 }
+
 			if(user.displayName){
 				$("#userMessage").html("You are logged as "+user.displayName+"&nbsp;&nbsp;&nbsp;");
 			}else{
 				$("#userMessage").html("You are logged as "+user.email+"&nbsp;&nbsp;&nbsp;");
+				itsMe = (user.email == "pmg.meyer@gmail.com");
 			}
-	
 		}else{
 			fireUser = null;
 			$(".whenOff").removeClass("hide");
 			$(".whenOn").addClass("hide");
 			$("#userMessage").text("");
-//displayName
 		}
 	});
 
@@ -107,7 +112,7 @@ $(document).ready(function () {
 	  Body:"What I like very much is that each time an input is sent to the server, then the page receives an event with new data refreshed !",
 	  Modification:"no"
 	
-}
+	}
 
 	$(".cancel").off("click").on("click",function(){
 		$("#firebaseEdit").hide();
@@ -353,6 +358,7 @@ function gotDataPost(data){
 				var key = p[0];
 				var data = p[1];
 				var category = data.Category;
+				if(category){
 				var author = data.Author || "anonymous";
 				var when = new Date(data.Creation).toLocaleString();
 				if(data.Modification != "no"){
@@ -376,10 +382,23 @@ function gotDataPost(data){
 					if($ptr.length==1){
 						$ptr.append("<b class='subject'>"+data.Subject+"</b>&nbsp;by&nbsp;"+author+"&nbsp;on&nbsp;"+when+"<br />");
 						$ptr.append(data.Body.replace(/[\n\r]/g, '<br />')+'<br />');
+						$ptr.append("<button type='button' data-target='#post-"+category+"' data-id='"+key+"' class='whenOn newComment btn btn-sm btn-default'>New Comment</button><br />");
+
+						if(data.Comments){
+							var keys = Object.keys(data.Comments)
+							$ptr.append("<br /><b class='comment-title'>Comments : </b><br />");
+							keys.forEach(function(k){
+								var comment = data.Comments[k];
+								var when = new Date(comment.Creation).toLocaleString();
+								var commentHtml = "<div class='comment-post'><b>"+comment.Author+"</b>&nbsp;on&nbsp;"+when+"<br />" + comment.Body.replace(/[\n\r]/g, '<br />')+"</div><br />";
+								$ptr.append(commentHtml);
+							});
+						}
 						$ptr.append("<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-edit btn btn-sm btn-default'>Edit</button>&nbsp;");
 						$ptr.append("<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-delete btn btn-sm btn-default'>Delete</button>");
 						$ptr.append("<hr />");
 					}
+				}
 				}
 			});
 	}
@@ -397,7 +416,8 @@ function gotDataPost(data){
 		var key = $(this).data("id");
 		var category = $(this).data("category");
 		var formId = "#post-" + category;
-		
+		$(formId).data("comment","false");
+
 		refPosts.child(key).on("value",function(x){
 			window.scroll({
 			 top: 0, 
@@ -410,7 +430,10 @@ function gotDataPost(data){
 			$(formId+ " .post-title").val(data.Subject);
 			$(formId+ " .post-text").val(data.Body);
 			$(formId+ " .keyzone").show();
+			$(formId+ " .titlezone").show();
 			$(formId+ " .post-error").text("");
+			$(formId + " .post-title").removeClass("hide");
+
 			$(formId).show();
 		});
 		
@@ -453,16 +476,39 @@ function gotDataPost(data){
 		$(formId + " .post-title").val("");
 		$(formId + " .post-text").val("");
 		$(formId + " .keyzone").hide();
+		$(formId+ " .titlezone").show();
+		$(formId + " .post-error").text("");
+		$(formId + " .post-title").removeClass("hide");
+
+		$form.show();
+	});
+	
+	$(".newComment").off("click").on("click",function(){
+		
+		var key = $(this).data("id");
+		var formId = $(this).data("target");
+		var $form = $(formId);
+		var category = $form.data("category");
+		
+		$form.data("comment","true");
+		
+		$(formId+ " .post-key").val(key);
+
+		$(formId + " .post-title").val("none");
+		$(formId + " .titlezone").hide();
+		$(formId + " .post-text").val("");
 		$(formId + " .post-error").text("");
 		
 		$form.show();
 	});
+	
 	
 
 	$(".post-save").off("click").on("click",function(){
 		var $form = $(this).parent();
 		var formId = "#" + $form.attr("id");
 		var category = $form.data("category");
+		var isComment = ($form.data("comment")=="true");
 		var author ="anonymous";
 		if(fireUser){
 			if(fireUser.displayName){
@@ -478,23 +524,46 @@ function gotDataPost(data){
 		if(title !="" && text != ""){
 			if(key!=""){
 				now = new Date().toISOString();
-				refPosts.child(key)
-					.update({ 
-						Subject: title, 
-						Body: text,
-						Modification:now,
-						Keywords:keywords
-					},function(error){
-						 if (error){
+				if(isComment){
+					$("#htmlRemover").html(text);
+					text = $("#htmlRemover").text();
+					 var refComments = database.ref("Posts/"+key+"/Comments");
+					  refComments.push({
+						  Creation: now,
+						  Author:author,
+						  Body:	text
+						},function(error){
+						  if (error){
 							$(formId + " .post-error").text(error.message);
-						 }
-					  else{
-						 $form.hide();
-						 $(formId + " .post-key").val("");
-						 $(formId + " .post-title").val("");
-						 $(formId + " .post-text").val("");
-					  }
-				  });
+						  }
+						  else{
+							 $form.hide();
+							 $(formId + " .post-key").val("");
+							 $(formId + " .post-title").val("");
+							 $(formId + " .post-text").val("");
+						  }
+					}); 
+				}else{
+					refPosts.child(key)
+						.update({ 
+							Subject: title, 
+							Body: text,
+							Modification:now,
+							Keywords:keywords
+						},function(error){
+							 if (error){
+								$(formId + " .post-error").text(error.message);
+							 }
+						  else{
+							 $form.hide();
+							 $(formId + " .post-key").val("");
+							 $(formId + " .post-title").val("");
+							 $(formId + " .post-text").val("");
+						  }
+					  });
+				}
+				  
+				  
 			}else{
 				  now = new Date().toISOString();
 				  refPosts.push({
