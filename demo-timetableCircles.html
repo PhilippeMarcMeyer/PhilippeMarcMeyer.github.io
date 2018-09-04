@@ -4,7 +4,7 @@
       <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>Fractals</title>
+    <title>Timetable Circles</title>
 
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,18 +50,25 @@
                 </a>
             </div>
             <ul class="nav navbar-nav">
-                <li id="demo" class="active"><a href="#demo">Fractals</a></li>
+                <li id="demo" class="active"><a href="#demo">Timetables circles</a></li>
                 <li id="blog"><a href="https://philippemarcmeyer.github.io#canvas">Github Blog</a></li>
             </ul>
         </div>
     </nav>
   <div id="container">
   
-	  <h5>Fractals</h5>
+	  <h5>Timetables circles</h5>
 	  <div id="canvasZone">
 	
 	  </div>
-	  
+	<div>
+		<label>Timetable: <span id="timetableInfo" class="label label-default">2</span></label>
+		<input type="range" id="timetable" min="2" max="99" step="1"  value= "2" style="width:200px;">
+	</div>		
+	<div>
+		<label>Definition: <span id="definitionInfo" class="label label-default">2</span></label>
+		<input type="range" id="definition" min="10" max="999" step="1"  value= "200" style="width:200px;">
+	</div>	
   
   </div>
   
