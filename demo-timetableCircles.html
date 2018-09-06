@@ -29,12 +29,43 @@
 		 padding-left:50px;
 		 width:90%;
 	 }
+	 .label{
+		display:inline-block;
+	 }
 	 
+	 .label.arrow{
+		font-size:13px;
+	 	min-width: 20px;
+		padding: 4px 0px 4px 0px;
+		text-align:center;
+		cursor:pointer;
+		z-index:1;
+	 }
 	 
+	 .label.arrow.arrow-left{
+		float:left;
+	 }
+	 
+	 .label.arrow.arrow-right{
+		float:right;
+	 }	 
+	 
+	 .label.range{
+	 	min-width:30px;
+		padding: 5px 6px 5px 0px;
+		text-align:right;
+	 }
+	 label{
+		display:block;
+	 }
 	h5 {
 		color: #2e44b9;
 		font-weight: bold;
 		font-size: 24px;;
+	}
+	
+	input[type='range']{
+		display:inline-block;
 	}
 	</style>
   </head>
@@ -61,13 +92,17 @@
 	  <div id="canvasZone">
 	
 	  </div>
-	<div>
-		<label>Timetable: <span id="timetableInfo" class="label label-default">2</span></label>
-		<input type="range" id="timetable" min="2" max="99" step="1"  value= "2" style="width:460px;">
+	<div style="width:476px;">
+		<label>Timetable: <span id="timetableInfo" class="label label-default range">2</span></label>
+		<span id="timetable-minus" class="label label-default arrow arrow-left"><</span>&nbsp;
+		<input type="range" id="timetable" min="2" max="99" step="1"  value= "2" style="width:420px;">&nbsp;
+		<span id="timetable-plus" class="label label-default arrow arrow-right">></span>
 	</div>		
-	<div>
-		<label>Definition: <span id="definitionInfo" class="label label-default">200</span></label>
-		<input type="range" id="definition" min="10" max="499" step="1"  value= "200" style="width:460px;">
+	<div style="width:476px;">
+		<label>Definition: <span id="definitionInfo" class="label label-default range">200</span></label>
+		<span id="definition-minus" class="label label-default arrow arrow-left"><</span>&nbsp;
+		<input type="range" id="definition" min="10" max="499" step="1"  value= "200" style="width:420px;">&nbsp;
+		<span id="definition-plus" class="label label-default arrow arrow-right">></span>
 	</div>	
   
   </div>

@@ -60,6 +60,7 @@ var globals = {
 
  }
  
+ 
  $( document ).ready(function() {
 	$("#definition").on("change",function(){
 		$("#definitionInfo").text($(this).val());
@@ -67,7 +68,39 @@ var globals = {
 	
 	$("#timetable").on("change",function(){
 		$("#timetableInfo").text($(this).val());
-	});				
+	});	
+	
+	$("#definition-plus").on("click",function(){
+		var value = parseInt($("#definition").val())+1;
+		var max =  parseInt($("#definition").attr("max"));
+		if(value > max) value = max;
+		$("#definition").val(value);	
+		$("#definition").trigger("change");		
+	});
+	
+	$("#definition-minus").on("click",function(){
+		var value = parseInt($("#definition").val())-1;
+		var min =  parseInt($("#definition").attr("min"));
+		if(value < min) value = min;
+		$("#definition").val(value);
+		$("#definition").trigger("change");
+	});
+	
+	$("#timetable-plus").on("click",function(){
+		var value = parseInt($("#timetable").val())+1;
+		var max =  parseInt($("#timetable").attr("max"));
+		if(value > max) value = max;
+		$("#timetable").val(value);
+		$("#timetable").trigger("change");
+	});
+	
+	$("#timetable-minus").on("click",function(){
+		var value = parseInt($("#timetable").val())-1;
+		var min =  parseInt($("#timetable").attr("min"));
+		if(value < min) value = min;
+		$("#timetable").val(value);
+		$("#timetable").trigger("change");
+	});
 });
  
 
