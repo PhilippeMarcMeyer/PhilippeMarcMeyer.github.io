@@ -4,8 +4,9 @@ var globals = {
 	mainWidth : 480,
 	radius : 200,
 	timeTable :5,
-	numberPoints : 60,
-	points : [],
+	numberPoints : 48,
+	circlePoints : [],
+	rectPoints : [],
 	rotation : 0,
 	color: "#ccccef",
 	bg:"#000",
@@ -23,7 +24,7 @@ var globals = {
 function setup() {
    var cnv = createCanvas(globals.mainWidth, globals.mainHeight);
     cnv.parent('canvasZone');
-	generate();
+	generateCircle();
 	frameRate(globals.frameRate);
 }
 
@@ -66,19 +67,33 @@ function draw() {
 	stroke(255);
 	noFill();
 	drawCircle();
+	/*
 	drawCircle(0.8);
 	drawCircle(0.7);
 	drawCircle(0.6);
+	*/
 }
 
- function generate(){
-	 globals.points = [];
+ function generateCircle(){
+	 globals.circlePoints = [];
 	 globals.rotation = TWO_PI / globals.numberPoints;
 	 for(var i = 0; i < globals.numberPoints; i++){
 		 var rot = i*  globals.rotation;
 		 var x = -cos(rot)*globals.radius;
 		 var y = -sin(rot)*globals.radius;
-		 globals.points.push({x:x,y:y});
+		 globals.circlePoints.push({x:x,y:y});
+	 }
+ }
+ 
+  function generateRect(){
+	  var halfSide = cos(PI/4)*globals.radius;
+	 globals.rectPoints = [];
+	// globals.rotation = TWO_PI / globals.numberPoints;
+	 for(var i = 0; i < globals.numberPoints; i++){
+		// var rot = i*  globals.rotation;
+		// var x = -cos(rot)*globals.radius;
+		// var y = -sin(rot)*globals.radius;
+		// globals.rectPoints.push({x:x,y:y});
 	 }
  }
 
@@ -86,8 +101,10 @@ function drawCircle(ratio){
 	rotate(globals.grot);
 	if(!ratio) ratio = 1;
 	scale(ratio,ratio);
+	globals.xRatio = 1;
+	stroke(255);
 	var numberPoints = globals.numberPoints;
-	var points = globals.points.slice(0);
+	var points = globals.circlePoints.slice(0);
 	 for(var i = 1; i < numberPoints; i++){
 			 var x1 = points[i-1].x*globals.xRatio;
 			 var x2 = points[i].x * globals.xRatio;
@@ -105,7 +122,16 @@ function drawCircle(ratio){
 		 
 		line(x1,y1,x2,y2);
 		line(0 ,0,x2,y2);
+		drawSquare();
 }
+
+function drawSquare(){
+	var halfSide = cos(PI/4)*globals.radius;
+	rectMode(CENTER) ;
+	stroke(255,0,0);
+	rect(0,0,halfSide*2,halfSide*2);
+}
+
 
 function floor(n){
 	var i;
