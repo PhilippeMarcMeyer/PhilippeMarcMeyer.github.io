@@ -1,7 +1,7 @@
-/* 
+﻿/* 
  Copyright (C) Philippe Meyer 2018
  Distributed under the MIT License
- bootstrapSelect v 0.61
+ bootstrapSelect v 0.6
 */
 
 (function ($) {
@@ -86,12 +86,12 @@
 					.css("color", color)
 					.attr("data-value", value)
 					.attr("data-text", text)
-					.text(text);
+					.html(text);
 
                 if (value == presentValue) {
                     $li.addClass("active");
                     $title
-                        .text(text)
+                        .html(text)
                         .css("color", color);
                 }
             });
@@ -102,7 +102,7 @@
                 var color = $(this).css("color") || "black";
                 $(that).val(value);
                 $(that).trigger("change");
-                $($title).text(text);
+                $($title).html(text);
                 $($title).css("color", color);
             });
 
@@ -121,7 +121,7 @@
                         $(that).val(value);
                         $(that).trigger("change");
                         $title = $(targetId).find(".title");
-                        $($title).text(text);
+                        $($title).html(text);
                         $($title).css("color", color);
                     }
                 } else {
