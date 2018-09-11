@@ -3,8 +3,7 @@ var globals = {
 	mainHeight : 480,
 	mainWidth : 480,
 	radius : 200,
-	timeTable :5,
-	numberPoints : 48,
+	numberPoints : 96,
 	circlePoints : [],
 	rectPoints : [],
 	rotation : 0,
@@ -12,30 +11,52 @@ var globals = {
 	bg:"#000",
 	frameRate :20,
 	grow : true,
-	xRatio : 1,
+	xRatio : 0,
 	yRatio : 1,
 	offset : 0.025,
 	pleaseWait : true,
 	counterMax : 10,
 	counter: 10,
-	grot :0
+	grot :0,
+	steps : [
+		{"name":"grow","max":40,"current":0},
+		{"name":"star","max":120,"current":0},
+		{"name":"antistar","max":120,"current":0},
+		{"name":"circle","max":40,"current":0}
+	],
+	currentStep : 0
 };
 
 function setup() {
    var cnv = createCanvas(globals.mainWidth, globals.mainHeight);
     cnv.parent('canvasZone');
-	generateCircle();
 	frameRate(globals.frameRate);
 }
 
 function draw() {
+		globals.steps[globals.currentStep].current ++;
+	if(globals.steps[globals.currentStep].current >= globals.steps[globals.currentStep].max){
+		globals.steps[globals.currentStep].current = 0;
+		globals.currentStep++;
+		if(globals.currentStep > globals.steps.length-1){
+			globals.currentStep = 1;
+		}
+	}
+	generateCircle(globals.steps[globals.currentStep]);
 
 	if(globals.xRatio > 1){
+		/*
 		globals.xgrow = false;
 		globals.xRatio = 1;
 		globals.pleaseWait = true;
 		globals.counter = globals.counterMax;
 		globals.grot = 0;
+		*/
+		globals.xRatio = 1;
+		if(globals.currentStep == 0){
+			globals.currentStep ++;
+		}
+		
 	}
 	
 	if(globals.xRatio < 0){
@@ -74,15 +95,34 @@ function draw() {
 	*/
 }
 
- function generateCircle(){
+ function generateCircle(step){
 	 globals.circlePoints = [];
 	 globals.rotation = TWO_PI / globals.numberPoints;
 	 for(var i = 0; i < globals.numberPoints; i++){
-		 var rot = i*  globals.rotation;
-		 var x = -cos(rot)*globals.radius;
-		 var y = -sin(rot)*globals.radius;
+		 var rot = i*globals.rotation - (globals.rotation/2);
+		 if(step.name == "circle" || step.name == "grow"){
+			var x = -cos(rot)*globals.radius;
+			var y = -sin(rot)*globals.radius; 
+		 }else if (step.name == "star") {
+			 if(i%2==1){
+				 var x = -cos(rot)*(globals.radius-step.current+1);
+				 var y = -sin(rot)*(globals.radius-step.current+1);
+			 } else{
+				var x = -cos(rot)*globals.radius;
+				var y = -sin(rot)*globals.radius;  
+				}
+		 }else if (step.name == "antistar") {
+			 if(i%2==1){
+				 var x = -cos(rot)*(globals.radius-step.max+step.current+1);
+				 var y = -sin(rot)*(globals.radius-step.max+step.current+1);
+			 } else{
+				var x = -cos(rot)*globals.radius;
+				var y = -sin(rot)*globals.radius;  
+				}
+		 }
 		 globals.circlePoints.push({x:x,y:y});
 	 }
+	 
  }
  
   function generateRect(){
@@ -99,9 +139,6 @@ function draw() {
 
 function drawCircle(ratio){
 	rotate(globals.grot);
-	if(!ratio) ratio = 1;
-	scale(ratio,ratio);
-	globals.xRatio = 1;
 	stroke(255);
 	var numberPoints = globals.numberPoints;
 	var points = globals.circlePoints.slice(0);
@@ -110,7 +147,7 @@ function drawCircle(ratio){
 			 var x2 = points[i].x * globals.xRatio;
 			 var y1 = points[i-1].y;
 			 var y2 = points[i].y;
-			 
+
 			 
 		 	line(x1,y1,x2,y2);
 			line(0 ,0,x2,y2);
@@ -122,7 +159,7 @@ function drawCircle(ratio){
 		 
 		line(x1,y1,x2,y2);
 		line(0 ,0,x2,y2);
-		drawSquare();
+		//drawSquare();
 }
 
 function drawSquare(){
