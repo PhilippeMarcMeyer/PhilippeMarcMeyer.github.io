@@ -3,26 +3,33 @@ var globals = {
 	mainHeight : 480,
 	mainWidth : 480,
 	radius : 200,
-	numberPoints : 96,
+	numberPoints : 48,
 	circlePoints : [],
 	rectPoints : [],
 	rotation : 0,
 	color: "#ccccef",
 	bg:"#000",
 	frameRate :20,
-	grow : true,
+	grow : false,
 	xRatio : 0,
 	yRatio : 1,
 	offset : 0.025,
-	pleaseWait : true,
+	pleaseWait : false,
 	counterMax : 10,
 	counter: 10,
 	grot :0,
-	steps : [
-		{"name":"grow","max":40,"current":0},
-		{"name":"star","max":120,"current":0},
-		{"name":"antistar","max":120,"current":0},
-		{"name":"circle","max":40,"current":0}
+	minRadius : 100,
+	steps : [ // in seconds
+		{"name":"grow","max":2,"current":0,"step":1},
+		{"name":"star","max":3,"current":0,"step":1},
+		{"name":"antistar","max":3,"current":0,"step":2},
+		{"name":"wait","max":0.1,"current":0,"step":1},
+		{"name":"turn","max":4,"current":0,"step":0.05},
+		{"name":"star","max":3,"current":0,"step":1},
+		{"name":"wait","max":0.1,"current":0,"step":1},
+		{"name":"antistar","max":3,"current":0,"step":2},
+		{"name":"wait","max":0.1,"current":0,"step":1},
+		{"name":"turn","max":4,"current":0,"step":-0.05}
 	],
 	currentStep : 0
 };
@@ -30,6 +37,11 @@ var globals = {
 function setup() {
    var cnv = createCanvas(globals.mainWidth, globals.mainHeight);
     cnv.parent('canvasZone');
+	
+	// Seconds to frames
+	globals.steps.forEach(function(x){
+		x.max *= globals.frameRate;
+	});
 	frameRate(globals.frameRate);
 }
 
@@ -62,7 +74,7 @@ function draw() {
 	if(globals.xRatio < 0){
 		globals.xgrow = true;
 		globals.xRatio = 0;
-		globals.pleaseWait = true;
+		//globals.pleaseWait = true;
 		globals.counter = globals.counterMax;
 		globals.yRatio = 0;
 	}
@@ -96,8 +108,20 @@ function draw() {
 }
 
  function generateCircle(step){
+	 if(step.name == "wait") return;
+	 
+	 if(step.name == "turn"){
+		globals.grot += globals.steps[globals.currentStep].step;
+	 return;
+	 }
 	 globals.circlePoints = [];
 	 globals.rotation = TWO_PI / globals.numberPoints;
+	 
+	 var mult = globals.steps[globals.currentStep].step;
+	 var max = globals.steps[globals.currentStep].max;
+	   if(step.name == "star" || step.name == "antistar"){
+		  var progressStep =  ((globals.radius - globals.minRadius) * mult) / max ;
+	   }
 	 for(var i = 0; i < globals.numberPoints; i++){
 		 var rot = i*globals.rotation - (globals.rotation/2);
 		 if(step.name == "circle" || step.name == "grow"){
@@ -105,16 +129,21 @@ function draw() {
 			var y = -sin(rot)*globals.radius; 
 		 }else if (step.name == "star") {
 			 if(i%2==1){
-				 var x = -cos(rot)*(globals.radius-step.current+1);
-				 var y = -sin(rot)*(globals.radius-step.current+1);
+				 var radius = globals.minRadius+(progressStep*step.current);
+				 if(radius > globals.radius) radius = globals.radius;
+
+				 var x = -cos(rot)*radius;
+				 var y = -sin(rot)*radius;
 			 } else{
 				var x = -cos(rot)*globals.radius;
 				var y = -sin(rot)*globals.radius;  
 				}
 		 }else if (step.name == "antistar") {
 			 if(i%2==1){
-				 var x = -cos(rot)*(globals.radius-step.max+step.current+1);
-				 var y = -sin(rot)*(globals.radius-step.max+step.current+1);
+				 var radius = globals.radius-(progressStep*step.current);
+				 if(radius < globals.minRadius) radius = globals.minRadius;
+				 var x = -cos(rot)*radius;
+				 var y = -sin(rot)*radius;
 			 } else{
 				var x = -cos(rot)*globals.radius;
 				var y = -sin(rot)*globals.radius;  
