@@ -5,14 +5,16 @@ var _TRIANGLE = _PIx2 / 3;
 
 var _timer = 0;
 var _frameCount = 0;
-var _animSteps = 60;
+var _animSteps = 80;
 var _previous = null;
-var _wait = 0;
+var _thickness = 3;
+var _growing = true;
+var _passedFirst = false;
 
 var globals = {
 	mainHeight : 480,
 	mainWidth : 480,
-	radius : 200,
+	radius : 180,
 	numberPoints : 48, // this minus 3 must be divisible by 3 : ex (3 * 11) + 3 = 36
 	circlePoints : [],
 	trianglePoints : [],
@@ -22,7 +24,9 @@ var globals = {
 	rotB : _HALF_PI + _TRIANGLE,
 	rotC : _HALF_PI + 2*_TRIANGLE,
 	fr:25,
-	drawPoints : false
+	drawPoints : false,
+	foregroundColor : 255,
+	backgroundColor : 0
 };
 
 function setup() {
@@ -32,8 +36,41 @@ var cnv = createCanvas(globals.mainWidth,globals.mainHeight,mode);
     cnv.parent('canvasZone');
 	globals.angleOffset = TWO_PI / globals.numberPoints;
 	frameRate(globals.fr);
+	strokeWeight(_thickness);
+	noFill();
+	textSize(16);
 	makeCircle();
 	makeTriangle();
+	_timer = 0;
+	_growing = true;
+}
+
+function draw() {
+	 background(globals.backgroundColor);
+	 if(_growing){
+		 _timer++;
+		 if(_timer == _animSteps -1){
+			 _growing = false;
+		 }
+	 }else{
+		_timer--;
+		 if(_timer == 1){
+			 _growing = true;
+		 }
+	 }
+
+	stroke(globals.foregroundColor);
+	translate(width / 2, height / 2); 
+	drawTriangle();
+  			strokeWeight(1);
+			textSize(28);
+			stroke(245,40,40);
+			fill(245,40,40);
+			text("BREATHE",-64,6);
+			strokeWeight(_thickness);
+			noFill();
+			textSize(16);
+			stroke(globals.foregroundColor);
 }
 
 function makeTriangle(){
@@ -100,19 +137,6 @@ function makeTriangle(){
 	
 }
 
-function draw() {
-	_timer = Math.floor(frameCount / (globals.fr/6)) % _animSteps;
-	background(255);
-	stroke(0);
-	translate(width / 2, height / 2); 
-	if(_wait<=0){
-		drawTriangle();
-	}else{
-		drawCircle();
-		_wait--;
-	}
-}
-
 function makeCircle(){
 	var rot;
 	globals.circlePoints = [];
@@ -125,32 +149,31 @@ function makeCircle(){
 }
 
 function drawTriangle(){
-	stroke(200);
-	var last;
+	stroke(globals.foregroundColor);
+	var last,ratio,x,y,w,h;
 	for(var i = 0; i < globals.trianglePoints.length; i++){
 		var p = globals.trianglePoints[i];
-		
 		var c = globals.circlePoints[i];
 		
-		var ratio = _timer / _animSteps;
-		
-		var x = p.x;
-		var y = p.y;
-		
-		if(ratio > 0){
-			var w = c.x - p.x;
-			var h = c.y - p.y;
-			x += ratio * w;
-			y += ratio * h;
-		}
+		w = c.x - p.x;
+		h = c.y - p.y;
+	
+		ratio = (_timer*_timer) / (_animSteps*_animSteps) ;
+		x = p.x + ratio * w;
+		y = p.y + ratio * h;	
+
 		if(globals.drawPoints){
 			ellipse(x, y, 2, 2);
 		}
 		
 		if(p.name) {
-			stroke(255,0,0);
+			strokeWeight(1);
+			stroke(245,40,40);
+			fill(245,40,40);
 			text(p.name,p.textXY.x, p.textXY.y);
-			stroke(0);
+			strokeWeight(_thickness);
+			noFill();
+			stroke(globals.foregroundColor);
 		}
 		
 		if(i==0){
@@ -164,18 +187,12 @@ function drawTriangle(){
 			}
 		}
 	}	
-	if(	_timer == _animSteps-1){
-		drawCircle();
-		_wait = 60;
-	}
-	
 
 }
 
 function drawCircle(){
-	
-	stroke(0);
-	
+	stroke(globals.foregroundColor);
+
 	for(var i = 0; i < globals.circlePoints.length; i++){
 		var p = globals.circlePoints[i];
 		var q;
@@ -190,15 +207,19 @@ function drawCircle(){
 		arc(0, 0,globals.radius*2,globals.radius*2,p.r,q.r);
 		
 		if(globals.trianglePoints[i].name) {
-			stroke(255,0,0);
+			strokeWeight(1);
+			stroke(245,40,40);
+			fill(245,40,40);
 			text(globals.trianglePoints[i].name,globals.trianglePoints[i].textXY.x, globals.trianglePoints[i].textXY.y);
-			stroke(0);
+			strokeWeight(_thickness);
+			noFill()
+			stroke(globals.foregroundColor);
 		}
 		
 	}
 	
 	if(globals.drawPoints){
-		stroke(0);
+		stroke(globals.foregroundColor);
 		for(var i = 0; i < globals.circlePoints.length; i++){
 			var p = globals.circlePoints[i];
 			ellipse(p.x, p.y, 4, 4);
