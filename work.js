@@ -224,7 +224,7 @@ function gotData(data){
 	entries.sort(function(a,b){
 		var d1 = new Date(a[1].Creation);
 		var d2 = new Date(b[1].Creation);
-		return d1.getTime() <= d2.getTime();
+		return d2.getTime() - d1.getTime();
 	});
 
 	var html="";
@@ -354,6 +354,11 @@ function gotDataPost(data){
 				var data = p[1];
 				var category = data.Category;
 				$("#"+category+"-posts").html("");
+				p.when = new Date(data.Creation).getTime();
+			});
+			
+			entries.sort(function(a,b){
+				return b.when - a.when;
 			});
 			
 			entries.forEach(function(p){
