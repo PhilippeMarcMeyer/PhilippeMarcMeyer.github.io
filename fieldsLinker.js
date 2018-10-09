@@ -1,12 +1,11 @@
 /* 
- Copyright (C) Philippe Meyer 2018
- Distributed under the MIT License
- fieldsLinker v 0.7 : effect on hover link + init destroys automaticaly the previous context 
+   https://github.com/PhilippeMarcMeyer/FieldsLinker v 0.71 
+
 */
 
 (function ($) {
     const errMsg = "fieldsLinker error : "
-    var data, canvasId, canvasCtx, canvasPtr, canvasWidth, canvasHeight, onError, className, byName, linksByOrder, linksByName, List1, List2, Mandatories, ListHeights1, ListHeights2, move, that, lineStyle, handleColor, lineColor, autoDetect, oneToMany, mandatoryErrorMessage, mandatoryTooltips, canvasTopOffset, isDisabled, globalAlpha, effectHover, effectHoverDefaultBorderRight, effectHoverDefaultBorderLeft, effectHoverBorderWidth, effectHoveredLink, topContext;
+    var data, canvasId, canvasCtx, canvasPtr, canvasWidth, canvasHeight, onError, className, byName, linksByOrder, linksByName, List1, List2, Mandatories, ListHeights1, ListHeights2, move, that, lineStyle, handleColor, lineColor, autoDetect, oneToMany, mandatoryErrorMessage, mandatoryTooltips, canvasTopOffset, isDisabled, globalAlpha, effectHover, effectHoverBorderWidth, effectHoveredLink, topContext;
 
     var setDefaults = function () {
 
@@ -39,8 +38,6 @@
         isDisabled = false;
         globalAlpha = 1;
         effectHover = "off";
-        effectHoverDefaultBorderRight = "1px solid black";
-        effectHoverDefaultBorderLeft = "1px solid black";
         effectHoverBorderWidth = 2;
         effectHoveredLink = -1;
         topContext = this;
@@ -100,6 +97,39 @@
         });
     }
 
+    var removerOverEffect = function (offsetA,offsetB) {
+        var listsToClean = [".FL-main .FL-left li", ".FL-main .FL-right li"];
+        if (offsetA == undefined) offsetA = -1;
+        if (offsetB == undefined) offsetB = -1;
+        var offsets = [offsetA, offsetB];
+        listsToClean.forEach(function (listToClean, i) {
+            var offset = offsets[i];
+            var $LIs;
+            if (offset == -1) {
+                $LIs = $(topContext).find(listToClean);
+            } else {
+                $LIs = $(topContext).find(listToClean).eq(offset);
+            }
+            $LIs.each(function () {
+                $(this).removeClass("linkOver");
+                var styleAttribute = $(this).attr("style");
+                if (!styleAttribute) styleAttribute = ""
+                var styles = styleAttribute.split(";");
+                if (styles.length > 0) {
+                    var style = "";
+                    styles.forEach(function (item) {
+                        item = item.replace(/ /g, "");
+                        if (item != "" && item.indexOf("border-color:") == -1) {
+                            style += item + ";"
+                        }
+                    });
+                    $(this).attr("style", style);
+                }
+            });
+
+        });
+    }
+
     var makeLink = function (infos) {
         if (oneToMany == "off") {
             // If the link already exists then we erase it
@@ -135,8 +165,7 @@
             what: "removeLink"
         });
 
-        $(topContext).find(".FL-main .FL-left li").css("border", effectHoverDefaultBorderLeft);
-        $(topContext).find(".FL-main .FL-right li").css("border", effectHoverDefaultBorderRight);
+        removerOverEffect();
     }
 
     var eraseLinkB = function (offset) {
@@ -156,25 +185,23 @@
             type: "fieldLinkerUpdate",
             what: "removeLink"
         });
-        $(topContext).find(".FL-main .FL-left li").css("border", effectHoverDefaultBorderLeft);
-        $(topContext).find(".FL-main .FL-right li").css("border", effectHoverDefaultBorderRight);
+
+        removerOverEffect();
     }
 
-    var hoverEffect = function (onOff,link) { // triggered by the LI elements only, not the canvas
+    var hoverEffect = function (onOff, link) { // triggered by the LI elements only, not the canvas
         that = this;
         if (onOff == "on") {
             var handleCurrentColor = handleColor[link.from % handleColor.length];
-            var borderEffect = effectHoverBorderWidth + "px solid " + handleCurrentColor;
-            $(that).find(".FL-main .FL-left li[data-offset='" + link.from + "']").css("border", borderEffect);
-            $(that).find(".FL-main .FL-right li[data-offset='" + link.to + "']").css("border", borderEffect);
+            $(that).find(".FL-main .FL-left li[data-offset='" + link.from + "']").addClass("linkOver").css("border-color", handleCurrentColor);
+            $(that).find(".FL-main .FL-right li[data-offset='" + link.to + "']").addClass("linkOver").css("border-color", handleCurrentColor);
             effectHoveredLink = link.from;
-    
+
         } else {
             if (effectHoveredLink == link.from) {
                 effectHoveredLink = -1;
             }
-            $(that).find(".FL-main .FL-left li[data-offset='" + link.from + "']").css("border",effectHoverDefaultBorderLeft);
-            $(that).find(".FL-main .FL-right li[data-offset='" + link.to + "']").css("border",effectHoverDefaultBorderRight);
+            removerOverEffect(link.from, link.to);
         }
         draw();
     }
@@ -200,8 +227,7 @@
         return false;
     }
 
-
-    var dist =function(x1, y1, x2, y2) {
+    var dist = function (x1, y1, x2, y2) {
         var diffX = x2 - x1;
         var diffY = y2 - y1;
         return Math.sqrt(diffX * diffX + diffY * diffY);
@@ -257,11 +283,10 @@
                 if (data.options.effectHover) {
                     effectHover = data.options.effectHover;
 
-                    if (data.options.effectHoverBorderWidth != undefined){
+                    if (data.options.effectHoverBorderWidth != undefined) {
                         effectHoverBorderWidth = data.options.effectHoverBorderWidth;
                     }
                 }
-                
 
                 $(this).html("");
 
@@ -388,7 +413,7 @@
                     var hOuter = $(this).outerHeight();
 
                     var delta = (hOuter - hInner) / 2;
-                    var midInner =  hInner / 2;
+                    var midInner = hInner / 2;
                     var midHeight = Math.round(position.top + midInner - delta);
                     ListHeights1.push(midHeight);
                     if (i == 0) {
@@ -404,16 +429,15 @@
                     var position = $(this).position();
                     var hInner = $(this).height();
                     var hOuter = $(this).outerHeight();
-                    var delta =(hOuter - hInner) / 2;
-                    var midInner =  hInner / 2;
+                    var delta = (hOuter - hInner) / 2;
+                    var midInner = hInner / 2;
                     var midHeight = Math.round(position.top + midInner - delta);
                     ListHeights2.push(midHeight);
                 });
 
                 // Listeners :
                 if (effectHover == "on") {
-                    effectHoverDefaultBorderLeft = $(this).find(".FL-main .FL-left li").first().css("border");
-                    effectHoverDefaultBorderRight = $(this).find(".FL-main .FL-right li").first().css("border");
+
 
                     $(this).find(".FL-main .FL-left li").hover(function (e) {
                         if (isDisabled) return;
@@ -663,7 +687,7 @@
                         }
                     });
                 }
-              
+
                 $(window).resize(function () {
                     canvasWidth = $(that).find(".FL-main .FL-mid").width();
                     canvasPtr.width = canvasWidth;
