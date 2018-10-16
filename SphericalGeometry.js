@@ -119,7 +119,7 @@ endBeam = {x:0,y:0,z:0};
  globals.offset=0;
  
 var deltaZ = 0.009;
-var deltaX = 0.1;
+var deltaX = 0.05;
 var deltaY = 0;	
  function draw(){	 
   background(0);
@@ -127,7 +127,6 @@ var deltaY = 0;
   texture(globals.startBg);
   plane(globals.w,globals.h);
 
-line(startBeam.x,startBeam.y,startBeam.z,endBeam.x,endBeam.y,endBeam.z);
 
 	if(abs(globals.lastRotationZ) >= 0.3){
 		deltaZ*=-1;
@@ -202,6 +201,7 @@ line(startBeam.x,startBeam.y,startBeam.z,endBeam.x,endBeam.y,endBeam.z);
 			
 	}
   }
+
 }
 
  function drawBeaconTrail(data){
@@ -228,21 +228,20 @@ line(startBeam.x,startBeam.y,startBeam.z,endBeam.x,endBeam.y,endBeam.z);
 	if(test4Directions== 1){
 		// top
 		nextI = i-1;
-		if (nextI < 0) nextI = globals.definition -1;
+		if (nextI < 1) nextI = 1;
 	}else if(test4Directions== 2){
 		// right
 		var nextJ = j+1;
-		if (nextJ > globals.definition -1) nextJ = 0;
+		if (nextJ > globals.definition -1) nextJ = j;
 	}else if(test4Directions== 3){
 		// bottom
 		nextI = i+1;
-		if (nextI > globals.definition -1) nextI = 0;
+		if (nextI > globals.definition -1) nextI = i;
 	}else if(test4Directions== 4){
 		// left
 		var nextJ = j-1;
-		if (nextJ < 0) nextJ = globals.definition -1;
+		if (nextJ < 1) nextJ = 1;
 	}
- // TODO : check if the branch is already in the data array
  var notFound = true;
  data.forEach(function(d){
 	 if(d.i == nextI && d.j == nextJ){
