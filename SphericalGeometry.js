@@ -22,6 +22,7 @@ var globals = {
 	w : 640,
 	h : 480,
 	sunLight : null,
+	camera : null,
 	colors :[
 		{r:116,g:73,b:73},
 		{r:128,g:64,b:64},
@@ -48,6 +49,7 @@ var startBeam,endBeam;
   });
   
   globals.sunLight = createVector(-HALF_PI,0,HALF_PI);
+  globals.camera = createVector(0,0,1);
   globals.lastRotationX = HALF_PI;
  // frameRate(30);
   globals.startBg = createGraphics(globals.w,globals.h);
@@ -182,17 +184,19 @@ line(startBeam.x,startBeam.y,startBeam.z,endBeam.x,endBeam.y,endBeam.z);
 			for(var j = 0; j < globals.definition; j++){
 				var mainPt = globals.globe[i][j];{
 					if(mainPt.beacon.isBeacon){
-					var data = mainPt.beacon.beaconData;
-					var linesMax = mainPt.beacon.beaconMax;
-					var len = data.length;
-					if(len > linesMax || len == 0){
-						data.length = 0;
-						data.push({"i":i,"j":j});
+					var dot = scalarProduct(mainPt.normale,globals.camera);
+					if(dot > 0){
+						var data = mainPt.beacon.beaconData;
+						var linesMax = mainPt.beacon.beaconMax;
+						var len = data.length;
+						if(len > linesMax || len == 0){
+							data.length = 0;
+							data.push({"i":i,"j":j});
+						}
+						
+						addNextPoint(data);
+						drawBeaconTrail(data);
 					}
-					
-					addNextPoint(data);
-					drawBeaconTrail(data);
-				
 				}
 			}
 			
