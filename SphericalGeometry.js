@@ -10,7 +10,7 @@
 var globals = {
 	r : 160,
 	magStep : 1,
-	maxElevation : 160,
+	maxElevation : 112*112,
 	countElevation : 0,
 	definition : 112,
 	starNr : 75,
@@ -23,7 +23,7 @@ var globals = {
 	lastRotationZ:0,
 	startBg :null,
 	drawTrailDuring : 0,
-	beaconDelay :6,
+	beaconDelay :2,//6
 	w : 640,
 	h : 480,
 	darkness : null,
@@ -239,7 +239,7 @@ function doRotate(vect,pitch, roll, yaw) {
 			y = globals.r * y;
 			z = globals.r * z;
 			var pt = createVector(x,y,z);
-			var isBeacon = (random() <= 0.05);
+			var isBeacon = (random() <= 0.03);
 			globals.globe[i].push({
 			"point":pt,
 			"radius" : globals.r,
@@ -338,7 +338,7 @@ function doRotate(vect,pitch, roll, yaw) {
 												pivotPoint.point.normalize();
 												pivotPoint.radius+=globals.magStep;
 												pivotPoint.point.setMag(pivotPoint.radius);
-												globals.maxElevation++;
+												globals.countElevation++;
 											}
 
 										}
