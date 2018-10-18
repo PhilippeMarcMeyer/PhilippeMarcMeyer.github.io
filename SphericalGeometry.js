@@ -19,8 +19,7 @@ var globals = {
 	lastRotationY:0,
 	lastRotationZ:0,
 	startBg :null,
-	beaconTrailColor : null,
-	beaconTrailColor2 : null,
+	beaconDelay :12,
 	w : 640,
 	h : 480,
 	sunLight : null,
@@ -40,10 +39,9 @@ var globals = {
 		{r:255,g:255,b:255}
 	]
 };
-
 var startBeam,endBeam;
 var deltaZ = 0.001* Math.pow(globals.definition,0.2);
-var deltaX = 0.01*Math.pow(globals.definition,0.2);
+var deltaX = 0.005*Math.pow(globals.definition,0.2);
 var deltaY = 0;	
 
  function setup(){
@@ -52,11 +50,12 @@ var deltaY = 0;
 	cnv.mousePressed(function(){
 		globals.auto = !globals.auto;
 	});
-frameRate(20);
+	frameRate(20);
+	
 	globals.beaconTrailColor = color(255,240,80);
 	globals.beaconTrailColor2 = color(255,255,0,50);
-
-	globals.sunLight = createVector(PI,0,0);
+	globals.beaconTrailColor3 = color(255,255,0,20);
+	globals.sunLight = createVector(PI,-0.8,0);
 	globals.camera = createVector(0,0,1);
 	globals.lastRotationX = HALF_PI;
 	startBeam = {x:globals.sunLight.x,y:globals.sunLight.y,z:globals.sunLight.z};
@@ -65,7 +64,6 @@ frameRate(20);
 	globals.globe = [];
 	//makeCodingTrainGlobe();
 	makeGlobe();
-
 	//addNormalsToCodingTrainGlobe();
  }
  
@@ -180,136 +178,40 @@ function doRotate(vect,pitch, roll, yaw) {
 	var ryOld = random(globals.h); 
 	globals.startBg.stroke(255);
 		
-	 for(var i = 0;i < globals.starNr;i++){
+	for(var i = 0;i < globals.starNr;i++){
 		var rx = random(globals.w); 
 		var ry = random(globals.h); 
 		globals.startBg.line(rxOld,ryOld,rx,ry);
 		rxOld = rx;
 		ryOld = ry;
-	 }
-	 		globals.startBg.filter(ERODE,DILATE); // DILATE ,BLUR ,POSTERIZE,
-
+	}
+	 
+	globals.startBg.filter(ERODE,DILATE); // DILATE ,BLUR ,POSTERIZE,
 	globals.startBg.noStroke();
 	globals.startBg.translate(globals.w/2,globals.h/2);
+	
+	globals.startBg.fill(globals.beaconTrailColor3);
+	var originX = -0.4*globals.w*cos(globals.sunLight.x);
+	var originY =  0.4*globals.h*sin(globals.sunLight.y);
+	var distance = 30;
+	var diameter = 40;
+	var angleUnit = 30;
+	var x,y,angle;
+	var turns = round(360 / angleUnit);
+	for(var i = 0; i < turns;i++){
+		angle = radians(angleUnit*(i+1));
+		x = originX + cos(angle)*distance;
+		y = originY - sin(angle)*distance;
+		globals.startBg.ellipse(x,y,diameter,diameter );
+	}
+
 	globals.startBg.fill(globals.beaconTrailColor2);
-	globals.startBg.ellipse(-1.9*globals.r*cos(globals.sunLight.x),1.5*globals.r*sin(globals.sunLight.y),27,27 );
-		globals.startBg.fill(globals.beaconTrailColor);
-	globals.startBg.ellipse(-1.9*globals.r*cos(globals.sunLight.x),1.5*globals.r*sin(globals.sunLight.y),20,20 );
-		globals.startBg.filter(ERODE,DILATE,BLUR ,POSTERIZE); // DILATE ,BLUR ,POSTERIZE,
-
+	globals.startBg.ellipse(-0.4*globals.w*cos(globals.sunLight.x),0.4*globals.h*sin(globals.sunLight.y),27,27 );
+	globals.startBg.fill(globals.beaconTrailColor);
+	globals.startBg.ellipse(-0.4*globals.w*cos(globals.sunLight.x),0.4*globals.h*sin(globals.sunLight.y),20,20 );
+	globals.startBg.filter(ERODE,DILATE,BLUR ,POSTERIZE); // DILATE ,BLUR ,POSTERIZE,
  }
  
- function addNormalsToCodingTrainGlobe(){
-	for(var i = 1; i < globals.definition+1; i++){
-		for(var j = 0; j < globals.definition+2; j++){
-				globals.globe[i][j].point = doRotate(globals.globe[i][j].point,0,HALF_PI,0);
-				globals.globe[i][j].normale.x = globals.globe[i][j].point.x / globals.r;
-				globals.globe[i][j].normale.y = globals.globe[i][j].point.y / globals.r;
-				globals.globe[i][j].normale.z = globals.globe[i][j].point.z / globals.r;
-		}
-    } 
- }
- 
- function makeCodingTrainGlobe(){
-	 	for(var i = 0; i < globals.definition+2; i++){
-		var lat = map(i,0,globals.definition,0, PI);
-		globals.globe.push([]);
-		for(var j = 0; j < globals.definition+2; j++){
-			var lon = map(j,0,globals.definition+1,0,  TWO_PI);
-			
-			var x = sin(lat) * cos(lon);
-			var y = sin(lat) * sin(lon);
-			var z = cos(lat);
-			var normale = createVector(x,y,z);
-			x = globals.r * x;
-			y = globals.r * y;
-			z = globals.r * z;
-			var pt = createVector(x,y,z);
-			var isBeacon = (random() <= 0.08);
-			globals.globe[i].push({
-			"point":pt,
-			"normale":normale,
-			"beacon":{
-				"isBeacon" : isBeacon,
-				"beaconData":[],
-				"beaconMax": map(random(),0,1,5,9)
-				}
-			});
-		}
-	}
- }
- 
- 
-function drawCodingTrainGlobe(){
-	
-	if(abs(globals.lastRotationZ) >= 0.3){
-		deltaZ*=-1;
-	}
-	globals.lastRotationX+=deltaX;
-	globals.lastRotationZ+=deltaZ;	
-
-	if(deltaX!=0){
-			for(var i = 1; i < globals.definition+1; i++){
-				for(var j = 0; j < globals.definition+2; j++){
-				globals.globe[i][j].point = doRotate(globals.globe[i][j].point,deltaX,deltaY,deltaZ);
-				globals.globe[i][j].normale.x = globals.globe[i][j].point.x / globals.r;
-				globals.globe[i][j].normale.y = globals.globe[i][j].point.y / globals.r;
-				globals.globe[i][j].normale.z = globals.globe[i][j].point.z / globals.r;
-
-			}
-		}
-	}
-	
-	for(var i = 1; i < globals.definition+1; i++){
-		beginShape();
-		for(var j = 0; j < globals.definition+2; j++){
-			var mainPt = globals.globe[i][j];
-			var color = {r:45,g:45,b:55};
-			var dot = scalarProduct(mainPt.normale,globals.sunLight);
-			 if(dot >= 0){
-				 var lightStrength = round(dot*dot*30);
-				color.r += lightStrength;
-				color.g += lightStrength;
-				color.b += lightStrength*0.9;
-			 }
-			if(dot >= 0.6){
-				 var lightStrength = 1;
-				color.r += lightStrength;
-				color.g += lightStrength;
-				color.b += lightStrength;
-			 } 
-			fill(color.r,color.g,color.b);
-			var v1 = mainPt.point;	
-			vertex(v1.x,v1.y,v1.z);
-			var v2 = globals.globe[i-1][j].point;
-			vertex(v2.x,v2.y,v2.z);
-
-		}
-		endShape();
-	}
-	
-	for(var i = 1; i < globals.definition; i++){
-			for(var j = 0; j < globals.definition; j++){
-				var mainPt = globals.globe[i][j];{
-					if(mainPt.beacon.isBeacon){
-					var dot = scalarProduct(mainPt.normale,globals.camera);
-					if(dot > 0){
-						var data = mainPt.beacon.beaconData;
-						var linesMax = mainPt.beacon.beaconMax;
-						var len = data.length;
-						if(len > linesMax || len == 0){
-							data.length = 0;
-							data.push({"i":i,"j":j});
-						}
-						addNextPoint(data);
-						drawBeaconTrail(data);
-					}
-				}
-			}
-	}
-  }
-}
-
  function makeGlobe(){
 	 //	var test = sphere(160);
 	var intermediatePointsNumber = globals.definition - 2;
@@ -339,7 +241,9 @@ function drawCodingTrainGlobe(){
 			"beacon":{
 				"isBeacon" : isBeacon,
 				"beaconData":[],
-				"beaconMax": map(random(),0,1,5,7)
+				"beaconMax": map(random(),0,1,5,7),
+				"beaconCounter": globals.beaconDelay
+
 				}
 			});
 		}
@@ -353,9 +257,7 @@ function drawCodingTrainGlobe(){
 				globals.globe[i][j].normale.z = globals.globe[i][j].point.z / globals.r;
 
 			}
-    } 
-	
-
+    } 	
  }
  
  function drawGlobe(){
@@ -405,7 +307,7 @@ function drawCodingTrainGlobe(){
 		}
 		endShape();
 	}
-
+	
 	for(var i = 1; i < globals.definition; i++){
 		var nrPoints = globals.globe[i].length;
 			for(var j = 0; j < nrPoints; j++){
@@ -414,13 +316,17 @@ function drawCodingTrainGlobe(){
 					var dot = scalarProduct(mainPt.normale,globals.camera);
 					if(dot > 0){
 						var data = mainPt.beacon.beaconData;
-						var linesMax = mainPt.beacon.beaconMax;
-						var len = data.length;
-						if(len > linesMax || len == 0){
-							data.length = 0;
-							data.push({"i":i,"j":j});
+						mainPt.beacon.beaconCounter--;
+						if(mainPt.beacon.beaconCounter <= 0){
+							var linesMax = mainPt.beacon.beaconMax;
+							var len = data.length;
+							if(len > linesMax || len == 0){
+								data.length = 0;
+								data.push({"i":i,"j":j});
+							}
+							addNextPoint(data);
+							mainPt.beacon.beaconCounter = globals.beaconDelay;
 						}
-						addNextPoint(data);
 						drawBeaconTrail(data);
 					}
 				}
