@@ -9,38 +9,44 @@
 var globals = {
 	r : 160,
 	magStep : 1,
-	maxElevation : 0,	countElevation : 0,
-	definition : 112,
+	maxElevation : 0,
+	gridAtStage : 3,
+	countElevation : 0,
+	definition : 144,
 	starNr : 75,
 	globe : [],
 	offset : 0,
-	auto : false,
 	initialRotation : null,
 	lastRotationX:0.5,
 	lastRotationY:0,
 	lastRotationZ:0,
+	autoRotate:true,
 	startBg :null,
+	drawTrailDuring : 160,
+	beaconDelay :0,
 	beaconRatio : 0.022, // increase to spread land into scatrered islands, decrease to regroup land. plays with maxElevation also
 	nrBeacons:0,
-	maxBeacons :0,	drawTrailDuring : 160,
-	beaconDelay :0,	w : 640,
+	maxBeacons :0,
+	w : 640,
 	h : 480,
+	sunPosition  : null,
+	sunSize : 40,
 	sunLight : null,
 	camera : null,
-    colors: null
+    colors : []
 };
+
 var startBeam,endBeam;
 var deltaZ = 0.001* Math.pow(globals.definition,0.2);
 var deltaX = 0.0025 * Math.pow(globals.definition,0.1);
 var deltaY = 0;	
+var cnv;
  function setup(){
-	var cnv = createCanvas(globals.w,globals.h,WEBGL);
+	cnv = createCanvas(globals.w,globals.h,WEBGL);
 	cnv.parent('demoZone');
-	cnv.mousePressed(function(){
-		globals.auto = !globals.auto;
-	});
+	cnv.mouseMoved(changeCursor) ;
 	frameRate(30);
-	globals.colors=[
+	let baseColors=[
 		color(50,50,200),
 		color(70,65,50),
 		color(70,90,50),
@@ -53,6 +59,22 @@ var deltaY = 0;
 		color(150,150,150),
 		color(200,200,200)
 	];
+	
+	baseColors.forEach(function(c){
+			let levels = c.levels;
+			let r = c.levels[0];
+			let g = c.levels[1];
+			let b = c.levels[2];
+			var ratios = [0.8,1.2,1.4,1.6];
+			globals.colors.push({
+				"darker":color(levels[0]*ratios[0],levels[1]*ratios[0],levels[2]*ratios[0]),
+				"base":c,
+				"lighter":color(levels[0]*ratios[1],levels[1]*ratios[1],levels[2]*ratios[1]),
+				"light":color(levels[0]*ratios[2],levels[1]*ratios[2],levels[2]*ratios[2]),
+				"lightest":color(levels[0]*ratios[3],levels[1]*ratios[3],levels[2]*ratios[3])
+				});
+		});		 
+				 
 	globals.maxElevation = globals.definition * globals.definition * 0.5;
 	globals.maxBeacons =  globals.maxElevation*globals.beaconRatio;
 	globals.beaconTrailColor = color(200,200,10);
@@ -177,7 +199,8 @@ function doRotate(vect,pitch, roll, yaw) {
 	
 	var offsetX = -0.4*globals.w*cos(globals.sunLight.x);
 	var offsetY = 0.4*globals.h*sin(globals.sunLight.y);
-	var sunSize = 40;
+	globals.sunPosition = createVector(offsetX,offsetY);
+	var sunSize = globals.sunSize;
 	
 	globals.startBg.fill(sunColor);
 	globals.startBg.ellipse(offsetX,offsetY,5+sunSize*2,5+sunSize*2);
@@ -228,12 +251,14 @@ function doRotate(vect,pitch, roll, yaw) {
 			y = globals.r * y;
 			z = globals.r * z;
 			var pt = createVector(x,y,z);
+			
 			var isBeacon = (random()+noise(noiseScaleX)/20 <= globals.beaconRatio  && globals.nrBeacons <= globals.maxBeacons);
 			globals.nrBeacons += isBeacon;
 			globals.globe[i].push({ 
 			"point":pt,
 			"radius" : globals.r,
 			"stage" : 0, // for color
+			"grid" : null,
 			"normale":normale,
 			"beacon":{
 				"isBeacon" : isBeacon,
@@ -256,26 +281,28 @@ function doRotate(vect,pitch, roll, yaw) {
  }
  
  function drawGlobe(){
-	if(abs(globals.lastRotationZ) >= 0.3){
-		deltaZ*=-1;
-	}
-	globals.lastRotationX+=deltaX;
-	globals.lastRotationZ+=deltaZ;	
-	if(frameCount < globals.drawTrailDuring){
-		globals.lastRotationX+=deltaX*4;
-		globals.lastRotationZ+=deltaZ*4;		
-	}
-	if(deltaX!=0){
-		for(var i = 1; i < globals.definition; i++){
-			var nrPoints = globals.globe[i].length;
-			for(var j = 0; j < nrPoints; j++){
-				globals.globe[i][j].point = doRotate(globals.globe[i][j].point,deltaX,deltaY,deltaZ);
-				globals.globe[i][j].normale.x = globals.globe[i][j].point.x / globals.globe[i][j].radius;
-				globals.globe[i][j].normale.y = globals.globe[i][j].point.y / globals.globe[i][j].radius;
-				globals.globe[i][j].normale.z = globals.globe[i][j].point.z / globals.globe[i][j].radius;
+	 if(globals.autoRotate){
+		if(abs(globals.lastRotationZ) >= 0.3){
+			deltaZ*=-1;
+		}
+		globals.lastRotationX+=deltaX;
+		globals.lastRotationZ+=deltaZ;	
+		if(frameCount < globals.drawTrailDuring){
+			globals.lastRotationX+=deltaX*4;
+			globals.lastRotationZ+=deltaZ*4;		
+		}
+		if(deltaX!=0){
+			for(var i = 1; i < globals.definition; i++){
+				var nrPoints = globals.globe[i].length;
+				for(var j = 0; j < nrPoints; j++){
+					globals.globe[i][j].point = doRotate(globals.globe[i][j].point,deltaX,deltaY,deltaZ);
+					globals.globe[i][j].normale.x = globals.globe[i][j].point.x / globals.globe[i][j].radius;
+					globals.globe[i][j].normale.y = globals.globe[i][j].point.y / globals.globe[i][j].radius;
+					globals.globe[i][j].normale.z = globals.globe[i][j].point.z / globals.globe[i][j].radius;
+				}
 			}
 		}
-	}
+	 }
 	var nbLat = globals.globe.length;
 	for(var i = 1; i < nbLat; i++){
 		beginShape(TRIANGLE_STRIP);
@@ -283,23 +310,46 @@ function doRotate(vect,pitch, roll, yaw) {
 		var nrPoints = globals.globe[i].length;
 		for(var j = 0; j < nrPoints; j++){
 			var mainPt = globals.globe[i][j];
-			var acolor = globals.colors[mainPt.stage];
 			var dot = scalarProduct(mainPt.normale,globals.sunLight);
-			 if(dot >= 0.4 ){
-				 var lightStrength = 1+dot;
-				 levels = acolor.levels;
-				 var newColor = color(levels[0]*lightStrength*1.2,levels[1]*1.2,levels[2]);
-				fill(newColor);
-			 }else if(dot>=0.2){
-				fill(acolor);
-			 }else{
-				fill(acolor);
-			 }			 
+			  var intensity;
+			  if(dot < 0.2){
+				  intensity = "darker";
+			  }else if(dot < 0.4){
+				  intensity = "base";
+			  }else if(dot < 0.6){
+				  intensity = "lighter";
+			  }else if(dot < 0.8){
+				  intensity = "light";
+			  }else{
+				  intensity = "lightest";
+			  }
+
+			  fill(globals.colors[mainPt.stage][intensity]);
+			  
+		    //var stage1 = mainPt.stage;
+			//var stage2 = globals.globe[i-1][j].stage;
+
 			var v1 = mainPt.point;	
-				var v1 = mainPt.point;	
-				vertex(v1.x,v1.y,v1.z);
-				var v2 = globals.globe[i-1][j].point;
+			vertex(v1.x,v1.y,v1.z);
+			var v2 = globals.globe[i-1][j].point;
+			//var stageDifference = abs(stage1- stage2);
+			//if(stageDifference <= 1){
+			//	vertex(v2.x,v2.y,v2.z);	
+			//}else{
+				/*
+				var nrPointsBetween = stageDifference -1;
+				var direction = (stage1> stage2) ? -1 : 1;
+				var diffX = (v2.x - v1.x)/stageDifference;
+				var diffY = (v2.y - v1.y)/stageDifference;
+				var diffZ = (v2.z - v1.z)/stageDifference;
+				for(var k = 1; k <= nrPointsBetween;k++){
+					fill(globals.colors[mainPt.stage+(k*direction)][intensity]);
+					vertex(v1.x+(k*diffX),v1.y+(k*diffY),v1.z+(k*diffZ));	
+
+				}
+				*/
 				vertex(v2.x,v2.y,v2.z);	
+			//}
 		}
 		endShape();
 	}
@@ -325,6 +375,11 @@ function doRotate(vect,pitch, roll, yaw) {
 										if(pivotPoint.stage < globals.colors.length -1){
 											if(globals.countElevation <= globals.maxElevation){
 												pivotPoint.stage++;
+												if(pivotPoint.stage == globals.gridAtStage){
+													var xJ = pivotData.j;
+													var xI = pivotData.i;
+													//globals.globe[i][j]
+												}
 												pivotPoint.point.normalize();
 												pivotPoint.radius+=globals.magStep;
 												pivotPoint.point.setMag(pivotPoint.radius);
@@ -337,7 +392,8 @@ function doRotate(vect,pitch, roll, yaw) {
 														pivotPoint.beacon.beaconCounter =globals.beaconDelay;
 														globals.nrBeacons++;
 													}
-												}											}
+												}
+											}
 										}
 									}
 								}
@@ -424,3 +480,35 @@ function testBeaconTrailForPattern(data){
 		 }
 	}
 }
+
+
+
+function changeCursor(){
+	var mx = mouseX;
+	var my = mouseY;
+  
+	var sunX = globals.sunPosition.x + globals.w/2;
+	var sunY = globals.sunPosition.y + globals.h/2;
+ 
+	var d = dist(mx, my, sunX, sunY);
+	if(d < globals.sunSize){
+	    cursor(HAND);
+	}else{
+		    cursor(ARROW);
+
+	}
+}
+
+function mouseReleased() {
+	var mx = mouseX;
+	var my = mouseY;
+  
+	var sunX = globals.sunPosition.x + globals.w/2;
+	var sunY = globals.sunPosition.y + globals.h/2;
+ 
+	var d = dist(mx, my, sunX, sunY);
+	if(d < globals.sunSize){
+		globals.autoRotate = !globals.autoRotate;
+	}
+}
+
