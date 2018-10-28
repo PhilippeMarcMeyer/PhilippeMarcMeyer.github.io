@@ -4,7 +4,7 @@
 	z = r cos(Lon)
 	
 	translated from https://github.com/CodingTrain/website/blob/master/CodingChallenges/CC_026_SuperShape3D/CC_026_SuperShape3D.pde
-	in p5.js
+	in p5.js xx
 */
 var globals = {
 	r : 160,
