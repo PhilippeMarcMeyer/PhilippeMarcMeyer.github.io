@@ -4,14 +4,16 @@
 	z = r cos(Lon)
 	
 	translated from https://github.com/CodingTrain/website/blob/master/CodingChallenges/CC_026_SuperShape3D/CC_026_SuperShape3D.pde
-	in p5.js xx
+	in p5.js
 */
 var globals = {
 	r : 160,
 	magStep : 1,
-	maxElevation : 0,	
+	maxElevation : 0,
+	gridAtStage : 3,
 	countElevation : 0,
-	definition : 112,	starNr : 75,
+	definition : 144,
+	starNr : 75,
 	globe : [],
 	offset : 0,
 	initialRotation : null,
@@ -24,12 +26,11 @@ var globals = {
 	beaconDelay :0,
 	beaconRatio : 0.022, // increase to spread land into scatrered islands, decrease to regroup land. plays with maxElevation also
 	nrBeacons:0,
-	maxBeacons :0,	
-	drawTrailDuring : 160,
-	beaconDelay :0,	
+	maxBeacons :0,
 	w : 640,
 	h : 480,
 	sunPosition  : null,
+	sunSize : 40,
 	sunLight : null,
 	camera : null,
     colors : []
@@ -198,9 +199,8 @@ function doRotate(vect,pitch, roll, yaw) {
 	
 	var offsetX = -0.4*globals.w*cos(globals.sunLight.x);
 	var offsetY = 0.4*globals.h*sin(globals.sunLight.y);
-	
-	sunPosition = createVector(offsetX,offsetY);
-	var sunSize = 40;
+	globals.sunPosition = createVector(offsetX,offsetY);
+	var sunSize = globals.sunSize;
 	
 	globals.startBg.fill(sunColor);
 	globals.startBg.ellipse(offsetX,offsetY,5+sunSize*2,5+sunSize*2);
@@ -392,8 +392,9 @@ function doRotate(vect,pitch, roll, yaw) {
 														pivotPoint.beacon.beaconCounter =globals.beaconDelay;
 														globals.nrBeacons++;
 													}
-}
-}										}
+												}
+											}
+										}
 									}
 								}
 								data.length = 0;
@@ -480,33 +481,34 @@ function testBeaconTrailForPattern(data){
 	}
 }
 
-function mousePressed() {
-  var mx = mouseX;
-  var my = mouseY;
 
 
+function changeCursor(){
+	var mx = mouseX;
+	var my = mouseY;
+  
+	var sunX = globals.sunPosition.x + globals.w/2;
+	var sunY = globals.sunPosition.y + globals.h/2;
+ 
+	var d = dist(mx, my, sunX, sunY);
+	if(d < globals.sunSize){
+	    cursor(HAND);
+	}else{
+		    cursor(ARROW);
+
+	}
 }
 
 function mouseReleased() {
-
+	var mx = mouseX;
+	var my = mouseY;
+  
+	var sunX = globals.sunPosition.x + globals.w/2;
+	var sunY = globals.sunPosition.y + globals.h/2;
+ 
+	var d = dist(mx, my, sunX, sunY);
+	if(d < globals.sunSize){
+		globals.autoRotate = !globals.autoRotate;
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
