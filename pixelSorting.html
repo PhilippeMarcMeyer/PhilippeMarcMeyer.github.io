@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Pixel sorting</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	 <style>
+   	 body{
+		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	 }
+
+	h5 {
+		color: #2e44b9;
+		font-weight: bold;
+		font-size: 24px;
+		margin-bottom: 10px;
+		margin-top: 0px;
+	}
+	
+	.controls{
+		font-size:14px;
+		margin-top:10px;
+	}
+	
+	.controls label{
+		position:absolute;
+		width:200px;
+		margin-bottom:10px;
+		 user-select: none;
+	}
+	
+	.controls select{
+		margin-left:220px;
+		margin-bottom:10px;
+		width:160px;
+	}
+	
+	 </style>
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/p5.min.js"></script>
+	
+	<script src="pixelSorting.js"></script>
+  </head>
+  <body>
+  <h5>Pixel sorting</h5>
+  <div id="canvasZone"></div>
+  
+  <div class="controls">
+	<label>Image to sort : </label><select id="imgChoice"></select>
+	<br/>
+	<label>Sort pixels by : </label><select id="indexChoice"></select>
+</select>
+<br /><i>Inspired by Daniel Shiffman coding challenge on youTube "Pixel sorting"</i>
+  </body>
+</html>
