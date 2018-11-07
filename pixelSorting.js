@@ -6,12 +6,12 @@ var cnv;
 var w,h;
 var selectedImage;
 var selectedFunction;
-
+var horizontalChoice;
 
 function setup() {
 selectedImage = "tree.png";
 selectedFunction = "lightness";
-
+horizontalChoice = false;
 
 var temp;
 var fullPath = "images/"+ selectedImage;
@@ -61,28 +61,52 @@ function process(){
 
  let colors = [];
  
-for (let i = 0; i < sortedImage.pixels.length-2; i+=3) {
+for (let i = 0; i < sortedImage.pixels.length-3; i+=4) {
   let iColor = new colorTriplet(sortedImage.pixels[i],sortedImage.pixels[i+1],sortedImage.pixels[i+2]);
   iColor.index = fct(color(iColor.r,iColor.g,iColor.b));
   colors.push(iColor);
 }
-   
-  colors.sort(function(a,b){
-	return a.index - b.index;
- });  
-  
+	   
+ if(!horizontalChoice){
+	 colors.sort(function(a,b){
+		return a.index - b.index;
+	 });  
+	  
+	}
+else{
+	var copyColors = [];
+	var nrLines = colors.length / w;
+	var colorLines = [];
+	for(var l = 0; l<nrLines ; l++){
+		var colorsOnLine = colors.slice(l*w,(l+1)*w);
+			  colorsOnLine.sort(function(a,b){
+				return a.index - b.index;
+		});  
+		
+		for(var k = 0; k<colorsOnLine.length ; k++){
+			copyColors.push(colorsOnLine[k]);
+		}
+		colorsOnLine = [];
+	}
+	colors = copyColors.slice(0);
+	copyColors = [];
+}
 
-colors.forEach(function(c,i){
-	sortedImage.pixels[i*3] = c.r;
-	sortedImage.pixels[1+(i*3)] = c.g;
-	sortedImage.pixels[2+(i*3)] = c.b;
-});
+	colors.forEach(function(c,i){
+		if(c==undefined){
+			debugger
+			c=color(0);
+		}
+		sortedImage.pixels[i*4] = c.r;
+		sortedImage.pixels[1+(i*4)] = c.g;
+		sortedImage.pixels[2+(i*4)] = c.b;
+	});
 
-  sortedImage.updatePixels();
-  background(0);
-  image(originalImage, 0, 0);
-  image(sortedImage, w, 0);
-  pop();
+	  sortedImage.updatePixels();
+	  background(0);
+	  image(originalImage, 0, 0);
+	  image(sortedImage, w, 0);
+	  pop();
 }
 
 function setUI(){
@@ -133,13 +157,15 @@ function reload(){
 	});
 }
 
-
+function checkHorizontal(){
+	horizontalChoice = document.getElementById("horizontalChoice").checked;
+	reload();
+}
 
 function makeSelect(id,dictionary,selectedKey,onSelect){
 	var ptr = document.getElementById(id);
 	if(ptr){
 		for (var key in dictionary) {
-			console.log(key, dictionary[key]);
 			var anOption = document.createElement("option");
 			anOption.value = key;
 			anOption.text = dictionary[key];
