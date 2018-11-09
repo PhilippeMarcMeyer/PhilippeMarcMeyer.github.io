@@ -6,7 +6,7 @@ var renderer;
 var font;
 var fontSize = 14;
 var geometry;
-var definition = 36;
+var definition = 26;
 var radiusX = 200;
 var radiusY = 200;
 var radiusZ = 200;
@@ -16,6 +16,10 @@ var earth;
 var once = false;
 var usePrimitive = false;
 var earthLoaded = false;
+var orbiter = null;
+var autoRotate = true;
+var lastOrbitCtrlRotations;
+var fr = 8;
 var places = [
 	{"name":"Paris","lat":48.856614,"lon": 2.3522219}
 ]
@@ -23,6 +27,28 @@ var places = [
 function setup() {
   font = loadFont("fonts/Roboto-Regular.otf");
   renderer = createCanvas(windowWidth, windowHeight-120, WEBGL);
+  lastOrbitCtrlRotations = createVector(0, 0, 0);
+  
+   renderer.mouseOver(function(){
+	   cursor(HAND);
+   });
+  renderer.mousePressed(function(){
+	  	// reproduce orbitControl rotations (trying!)
+	lastOrbitCtrlRotations.x = (mouseX - width / 2) / (width / 2);
+	lastOrbitCtrlRotations.y = (mouseY - height / 2) / (height / 2);
+  });
+  
+    renderer.mouseReleased(function(){
+	cursor(ARROW);
+	lastOrbitCtrlRotations.x = (mouseX - width / 2) / (width / 2);
+	lastOrbitCtrlRotations.y = (mouseY - height / 2) / (height / 2);
+  });
+  
+  renderer.doubleClicked(function() {
+	autoRotate = !autoRotate;
+});
+  
+  frameRate(fr);
   sunLightPos = createVector(600, 0, -600);
   noStroke();
   	camY = -600;
@@ -73,26 +99,27 @@ var ellipsoid = function() {
 	});
 	
 
-
 }
 
 function draw() {
-	orbitControl();
+	orbiter = orbitControl();
 	background(0);
 	if(earthLoaded){
-		var currentRotY = frameCount * 0.003;
+		var currentRotY = (autoRotate) ? frameCount * 0.003 : 0;
 		background(0);
 		push();
 		fill(62,89,250);
 		if(!once){
-		   rotateX(radians(90)); 
+		  lastOrbitCtrlRotations.y = radians(180);
+		  lastOrbitCtrlRotations.x = radians(60);
 		}
 		texture(earth);
-		ambientLight(90);
+		ambientLight(210);
 		directionalLight(255, 250, 136, sunLightPos.x,sunLightPos.y,sunLightPos.z);
+		
+		rotateX(lastOrbitCtrlRotations.x); 
+		rotateY(lastOrbitCtrlRotations.y+currentRotY); 
 
-		rotateX(radians(330)); 
-		rotateY(radians(180)+currentRotY);
 		//rotateZ(radians(10)); // real inclination is around 22°
 
 		if(!usePrimitive)  {
@@ -102,7 +129,6 @@ function draw() {
 		}else{
 			sphere(radiusX,24,24);
 		}
-//rotateY(radians(180)); 
 		places.forEach(function(place){
 			// fix: in OpenGL, y & z axes are flipped from math notation of spherical coordinates
 
@@ -122,7 +148,7 @@ function draw() {
 
 			stroke("red")
 			strokeWeight(6);
-			point(x,y,z);
+			line(x,y,z,x,y,z);
 			if(font && false){
 			strokeWeight(1);
 			 points = font.textToPoints(place.name, 0, 0, fontSize, {
@@ -131,7 +157,7 @@ function draw() {
 			});
 			
 			points.forEach(function(pti,i){
-				point(x + pti.x, y + pti.y,z);
+				line(x + pti.x, y + pti.y,z,x + pti.x, y + pti.y,z);
 			});
 			}
 			//translate(x,y,z);
@@ -143,3 +169,6 @@ function draw() {
 		
 	}
 }
+
+
+
