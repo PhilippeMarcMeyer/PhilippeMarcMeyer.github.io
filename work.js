@@ -321,13 +321,16 @@ function init(menuItem) {
 			if (menu.id == menuItem) {
 				$("#" + menu.id + "Zone").show();
 				$("#" + menu.id).addClass("active");
+				if(menuItem = "rlanguage"){
+				}
 			} else {
 				$("#" + menu.id + "Zone").hide();
 				$("#" + menu.id).removeClass("active");
 			}
 		}
     });
-	$("#Learning-R").prop("height",(window.innerHeight -200)+"px");	
+					$("#Learning-R").prop("height",(window.innerHeight -240)+"px");	
+	
 }
 
  var refPosts = database.ref("Posts");
