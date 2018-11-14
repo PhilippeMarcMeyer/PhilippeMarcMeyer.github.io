@@ -1,5 +1,5 @@
 /*
-Philippe MEYER 
+Philippe MEYER pmg.meyer@gmail.com
 DATE : 2018-09-28
 v 1.0 2018-11-12 : no more animation
 */

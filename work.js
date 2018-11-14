@@ -327,6 +327,7 @@ function init(menuItem) {
 			}
 		}
     });
+	$("#Learning-R").prop("height",(window.innerHeight -200)+"px");	
 }
 
  var refPosts = database.ref("Posts");

@@ -39,7 +39,7 @@
 				<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Other interests <span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li id="machinelearning"><a href="#machinelearning">Machine Learning</a></li>
+						<li id="rlanguage"><a href="#rlanguage">R Language</a></li>
 						<li id="canvas"><a href="#canvas">Graphics</a></li>
 						<li role="separator" class="divider"></li>
 						<li id="about"><a href="#about">About me</a></li>
@@ -229,16 +229,15 @@
 
 		</div>
 	</div>
-	
-	<div id="machinelearningZone" style="display: none;">
-		<h5>Machine Learning</h5>
-		<p>Learning how to teach a machine with p5.js and ml5.js</p>
-		<input type="text" data-category="machinelearning" class="searchField "/>
-		<button type='button'  class='search btn btn-sm btn-default '>Search</button>
-		<span class="whenOn myEyesOnly ">&nbsp;</span>
-		<button type='button' data-target="#post-machinelearning" class='whenOn myEyesOnly post-new btn btn-sm btn-default'>New Post</button>
+
+	<div id="rlanguageZone" style="display: none;">
+
+		<iframe id="Learning-R" style="border:none;" width="100%" height="800px" src="https://philippemarcmeyer.github.io/Learning-R/"></iframe>
+		<hr>
+		<h5>R Language</h5>
+		<button type='button' data-target="#post-rlanguage" class='whenOn myEyesOnly post-new btn btn-sm btn-default'>New Post</button>
 		<hr />
-		<div id="post-machinelearning" data-category="machinelearning" data-comment="false" style="display: none;">
+		<div id="post-rlanguage" data-category="rlanguage" data-comment="false" style="display: none;">
 			<b class="keyzone">Key</b>
 			<input class="keyzone post-key" type = "text" readonly="readonly" value=""><br class="keyzone" />
 			<b class="titlezone">Title</b><br/>
@@ -250,10 +249,11 @@
 			<span class="post-error"></span>
 			<hr />
 		</div>
-		<div id="machinelearning-posts">
+		<div id="rlanguage-posts">
 
 		</div>
 	</div>
+
 	
 	<div id="aboutZone" style="display: none;">
 		<h5>Philippe Meyer, web developper, Paris France </h5>
