@@ -117,7 +117,8 @@ function setUI(){
 		"sparrow.jpg":"sparrow",
 		"sunflower.jpg":"sunflower",
 		"tree.png":"tree",
-		"wildCat.jpg":"wildCat"
+		"wildCat.jpg":"wildCat",
+		"mars-curiosity.jpg":"curiosity"
 	};
 	makeSelect("imgChoice",dictImg,selectedImage,function(){
 		selectedImage = this.value;
