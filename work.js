@@ -375,8 +375,11 @@ function gotDataPost(data){
 				if(data.Modification != "no"){
 					when += " + modified : " + new Date(data.Modification).toLocaleString();
 				}
-				
-				var search = $("#"+category+"Zone .searchField").val().toLowerCase().trim().split(" ");
+				var $searchField = $("#"+category+"Zone .searchField");
+				var search = "";
+				if(searchField.length > 0){
+					search = $searchField.val().toLowerCase().trim().split(" ");
+				}
 				var gotIt = true;
 				if(search.length !=0 && search[0]!=""){
 					gotIt = false;
