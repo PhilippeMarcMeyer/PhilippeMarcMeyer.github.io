@@ -329,8 +329,11 @@ function init(menuItem) {
 			}
 		}
     });
-					$("#Learning-R").prop("height",(window.innerHeight -240)+"px");	
 	
+	var h = window.innerHeight-450;
+	if(h >200){
+		$("#Learning-R").prop("height",h+"px");	
+	}
 }
 
  var refPosts = database.ref("Posts");
