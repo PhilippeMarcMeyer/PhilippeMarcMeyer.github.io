@@ -377,7 +377,7 @@ function gotDataPost(data){
 				}
 				var $searchField = $("#"+category+"Zone .searchField");
 				var search = "";
-				if(searchField.length > 0){
+				if($searchField.length > 0){
 					search = $searchField.val().toLowerCase().trim().split(" ");
 				}
 				var gotIt = true;
