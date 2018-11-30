@@ -321,8 +321,7 @@ function init(menuItem) {
 			if (menu.id == menuItem) {
 				$("#" + menu.id + "Zone").show();
 				$("#" + menu.id).addClass("active");
-				if(menuItem = "rlanguage"){
-				}
+
 			} else {
 				$("#" + menu.id + "Zone").hide();
 				$("#" + menu.id).removeClass("active");
@@ -330,9 +329,16 @@ function init(menuItem) {
 		}
     });
 	
-	var h = window.innerHeight-450;
-	if(h >200){
-		$("#Learning-R").prop("height",h+"px");	
+
+	
+	if(menuItem = "rlanguage"){
+		var h = window.innerHeight-450;
+		if(h >200){
+			$("#Learning-R").prop("height",h+"px");	
+		}
+		$("#Learning-R").show();
+	}else{
+		$("#Learning-R").hide();
 	}
 }
 
