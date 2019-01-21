@@ -52,6 +52,8 @@ function setup() {
 }
 
 function draw() {
+	let mx = mouseX;
+	let my = mouseY;
     background(163, 214, 231);
 	drawWeed1();
 	drawWeed2();
@@ -101,7 +103,7 @@ function draw() {
                 }
             }
         }
-        globals.movers[i].display();
+        globals.movers[i].display(mx,my);
 
         globals.movers[i].checkEdges();
     }
@@ -163,11 +165,26 @@ let Mover = function (i) {
 
     }
 
-    this.display = function () {
+    this.display = function (mx,my) {
+		push();
         stroke(0);
 		//noStroke();
         fill(this.color);
         ellipse(this.position.x, this.position.y, this.size, this.size);
+		let angle = atan2(my - this.position.y, mx - this.position.x);
+		let cos2Pointer = cos(angle);
+		let sin2pointer = sin(angle);
+		let irisSize =  this.size / 3;
+		let irisX = this.position.x + (cos2Pointer * irisSize);
+		let irisY = this.position.y + (sin2pointer * irisSize);
+		let pupilSize =  irisSize / 3;
+		let pupilX = irisX + (cos2Pointer * pupilSize);
+		let pupilY = irisY + (sin2pointer * pupilSize);
+		fill(255);
+		ellipse(irisX, irisY, irisSize, irisSize);
+		fill(0);
+		ellipse(pupilX, pupilY, pupilSize, pupilSize);
+		pop();
     }
 }
 
