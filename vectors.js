@@ -47,6 +47,7 @@ function setup() {
             globals.moverNr = globals.lastIndex + 1;
         }
     }
+	globals.moverNr = globals.movers.length;
     globals.wind = createVector(random(-1, 1) / 4, random(-1, 1) / 25);
     globals.gravity = createVector(0, 0.3);
 }
