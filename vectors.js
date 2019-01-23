@@ -33,8 +33,8 @@ var globals = {
 
 function setup() {
     frameRate(30);
-    globals.mainHeight = windowHeight - 20;
-    globals.mainWidth = windowWidth - 20;
+    globals.mainHeight = windowHeight - 120;
+    globals.mainWidth = windowWidth - 40
     globals.lastWidth = globals.mainWidth;
     globals.ballResizer = floor(globals.mainWidth / 64);
     var mode = (globals.mode == "WEBGL") ? WEBGL : P2D;
