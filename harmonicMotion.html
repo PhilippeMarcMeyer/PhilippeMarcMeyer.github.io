@@ -1,30 +1,66 @@
+<!DOCTYPE html>
 <html>
- <head>
+  <head>
+      <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>P5js</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+    <!-- external css -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,500">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+	
  	 
    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.7/p5.min.js"></script>
    
-   <script type="text/javascript" src="harmonicMotion.js"></script>
+
    <style>
    	 body{
-		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; 
+		font-family: "Roboto,Helvetica Neue",Helvetica,Arial,sans-serif; 
+		background-color:white;
 	 }
-	 #container{
-		 padding-top: 10px;
-		 padding-left:10px;
-		 width:90%;
+	 #canvasZone{
+		 padding-top: 0px;
+		 padding-left:20px;
 	 }
 	 
 	h5 {
 		color: #2e44b9;
 		font-weight: bold;
-		font-size: 24px;;
+		font-size: 24px;
+		padding-left:20px;
 	}
 	  </style>
  </head>
  <body>
+      <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <div class="btn-group" style="margin-top: 8px;margin-right:10px;">
+                </div>
+                <a class="navbar-brand" href="#">
+					Experiments with p5.js
+                </a>
+            </div>
+            <ul class="nav navbar-nav">
+				<li id="Harmonic-motion" class="active"><a href="#Harmonic-motion">vectors</a></li>
+                <li id="blog"><a href="https://philippemarcmeyer.github.io#canvas">Github Blog</a></li>
+                <li id="repos"><a href="https://github.com/PhilippeMarcMeyer/Harmonic-motion">Github repos</a></li>
+            </ul>
+        </div>
+    </nav>
 	<div id="container">
+	  <h5>Harmonic motion</h5>
+	  <p>
 		<div id="canvasZone" >
 		</div>
 	</div>
+	   <script type="text/javascript" src="harmonicMotion.js"></script>
  </body>
 </html>
