@@ -8,13 +8,21 @@ $(document).ready(function () {
 	
 	var url = location.href;
 	var arr = url.split("#");
+	var page = "";
+	
 	if(arr.length == 2){
-		var page = arr[1];
-		if(page !=""){
-			init(page.toLowerCase());
+		page = arr[1];
+		if(page ==""){
+			page = "vanillajs";
 		}
+
+	}else{
+		page = "vanillajs"
 	}
 	
+	if(page !=""){
+		init(page.toLowerCase());
+	}
 
 	
   var config = {
@@ -100,15 +108,11 @@ $(document).ready(function () {
 
   database = firebase.database();
   // when I wanna submit something :
+  /*
  var ref = database.ref("Knowledge");
  var now = new Date().toISOString();
   var data = {
-		/*
-	  Subject:"Experimenting firebase",
-	  Creation: "2018-08-16T11:01:01.091Z",
-	  Body:	"I recommend Daniel Shiffman tutorial on firebase\r\n<a href='https://www.youtube.com/watch?v=NcewaPfFR6Y'>Firebase Tutorial</a>\r\nMy first try is to input data to the server. I create a js object corresponding to a firebase record and push it to the server !",
-	  Modification:"no"
-  */
+
 	  Subject:"Satisfaction",
 	  Creation: now,
 	  Body:"What I like very much is that each time an input is sent to the server, then the page receives an event with new data refreshed !",
@@ -159,12 +163,7 @@ $(document).ready(function () {
 						 $("#firebaseEdit #key").val("");
 						 $("#firebaseEdit #title").val("");
 						 $("#firebaseEdit #text").val("");
-						 /*
-						ref.child(key).child("Keywords").remove();
-					  keywords.forEach(function(k){
-						 ref.child(key).child("Keywords").push(k); 
-					  });
-					   */
+
 					  }
 				  });
 
@@ -187,11 +186,7 @@ $(document).ready(function () {
 					 $("#firebaseEdit #key").val("");
 					 $("#firebaseEdit #title").val("");
 					 $("#firebaseEdit #text").val("");
-					 /*
-					  keywords.forEach(function(k){
-							  ref.child(key).child("Keywords").push(k); 
-					  });
-					*/
+
 				  }
 					
 				}); 
@@ -210,10 +205,10 @@ $(document).ready(function () {
 	function showStatus(s){
 		//console.log(s);
 	}
- //ref.push(data); 
 ref.on('value',gotData,errData);
-
+*/
 // Pull from firebase for "firebase" page
+/*
 function gotData(data){
 	
 	var obj = data.val();
@@ -299,7 +294,7 @@ function gotData(data){
 		ref.child(key).remove();
 	});
 }
-
+*/
 function errData(err){
 	console.log("error !");
 	console.log(err);
