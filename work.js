@@ -650,3 +650,18 @@ function index (text,minLength){
 	
 	return output;
 }
+
+function setBestFontSize(maxWidth, inlineDivPtr,fontsizeToTest) {
+	var divWidth = inlineDivPtr.width();
+	if (divWidth > maxWidth) {
+		fontsize = fontsizeToTest || parseInt(inlineDivPtr.css("font-size").replace("px", ""));
+		if (!isNaN(fontsize)) {
+			var ratio = maxWidth / divWidth;
+			fontsize = Math.floor(ratio * fontsize);
+			inlineDivPtr.css("font-size", fontsize + "px");
+			if (fontsize > 1) {
+				setBestFontSize(maxWidth, inlineDivPtr, fontsize-1);
+			}
+		}
+	}
+}
