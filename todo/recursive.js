@@ -1,5 +1,6 @@
 
 var hasStorage = (function() {
+	/*
 	try {
 		localStorage.setItem("testsdhjhsdf", "xxxxx");
 		localStorage.removeItem("testsdhjhsdf");
@@ -7,6 +8,8 @@ var hasStorage = (function() {
 	} catch (exception) {
 		return false;
 	}
+	*/
+	return true;
 }());
 
 if(!hasStorage){
