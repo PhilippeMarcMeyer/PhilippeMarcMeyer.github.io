@@ -1,4 +1,4 @@
-# Learning-Vuejs
+# Vuejs todo list
 Recursive ToDolist with local storage
 
 - Recursive toDoList with any number of sub branches.
@@ -26,3 +26,7 @@ Recursive ToDolist with local storage
 - Retrieve you data from the cloud by clicking on 'Let it rain"
 
 03/27/2019 : Added sorting by drag and drop on the same branch
+
+03/27/2019 : Added a due date (optional) with colors (orange if soon < 1 day, red if late, green otherwise)
+
+![screen shot](https://raw.githubusercontent.com/PhilippeMarcMeyer/Learning-Vuejs/master/screen.png)
