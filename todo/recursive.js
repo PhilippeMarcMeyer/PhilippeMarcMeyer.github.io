@@ -1,8 +1,8 @@
 
 var hasStorage = (function() {
 	try {
-		localStorage.setItem(mod, mod);
-		localStorage.removeItem(mod);
+		localStorage.setItem("testsdhjhsdf", "xxxxx");
+		localStorage.removeItem("testsdhjhsdf");
 		return true;
 	} catch (exception) {
 		return false;
