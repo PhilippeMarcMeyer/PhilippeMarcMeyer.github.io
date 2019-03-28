@@ -18,7 +18,7 @@ window.onload = function() {
 	message("");
 	document.getElementById("titleZone").style.display="block";
 	document.getElementById("showTasks").style.display="block";
-	document.querySelectorAll(".buttons").forEach(function(x){x.style.display="inline-block"});
+	document.querySelectorAll(".buttons").forEach(function(x){x.style.display="block"});
 	
 	let list = toStorage.getList();
 	checkData(list);
