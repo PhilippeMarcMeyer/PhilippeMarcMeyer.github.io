@@ -7,7 +7,6 @@ let carousel;
 let imagesLoaded = false;
 
 function setup() {
-	cam = new navCamera();
 	cam2 = new cameraFPS();
 	carousel = new Carousel();
 	
@@ -48,7 +47,7 @@ function setup() {
 function draw() {
 	if(imagesLoaded){
 	background(200);
-		//cam.update();
+		
 	  cam2.draw();
 	  carousel.update();
 	}
@@ -77,12 +76,4 @@ function Carousel() {
       pop();
     }
   }
-}
-
-function mouseReleased() {
-  cam.onMouseRelease();
-}
-
-function mousePressed() {
-  cam.onMousePress();
 }
