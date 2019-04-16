@@ -609,6 +609,10 @@ function gotDataPost(data){
 			$(formId + " .post-error").text("Please type something...");
 		}		
 	});
+	
+	  document.querySelectorAll('pre code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
 }
 
 $(".search").on("click",function(){
