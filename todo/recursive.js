@@ -10,7 +10,7 @@ function resursiveInit() {
   toStorage = initLocalStorage();
  
  if(toStorage != null){
-	message("Welcome back !");
+	message("Getting things ready...");
 	document.getElementById("titleZone").style.display="block";
 	document.getElementById("showTasks").style.display="block";
 	document.querySelectorAll(".buttons").forEach(function(x){x.style.display="block"});
@@ -274,6 +274,7 @@ function initApp(treeData){
 		},
 		mounted : function(){
 			hideLoader();  
+			message("Welcome back !");
 		},
 	});
 }
