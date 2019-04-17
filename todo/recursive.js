@@ -186,6 +186,7 @@ function loadVueComponent(){
 			save();
 		},
 		editTitle:function(item){
+			if(item.id == -99) return;
 			message("");
 			item.editModeTitle=true;
 		},
@@ -197,6 +198,7 @@ function loadVueComponent(){
 			}
 		},
 		editSummary:function(item){
+			if(item.id == -99) return;
 			message("");
 			item.editModeSummary=true;
 		},
