@@ -35,12 +35,12 @@ function resursiveInit() {
 		hideKeyInput();
 	}
  }
- if(detectmobile()){
-	 document.documentElement.requestFullscreen();
-	 document.querySelector("#fullScreenToggler")
-		.style.display = "inline-block"
-		.innerHTML = "show bar"
-	 
+ if(window.innerWidth <= 640){
+	 let ptr = document.querySelector("#fullScreenToggler");
+	 if(ptr){
+		ptr.style.display = "inline-block";
+		ptr.innerHTML = "hide bar";
+	 }
  }
 }
 // init functions :
@@ -552,24 +552,18 @@ function hideLoader() {
        loaderElt.style.display="none";
     }
 }
-
-function detectmobile() { 
- if( navigator.userAgent.match(/Android/i)
- || navigator.userAgent.match(/webOS/i)
- || navigator.userAgent.match(/iPhone/i)
- || navigator.userAgent.match(/iPad/i)
- || navigator.userAgent.match(/iPod/i)
- || navigator.userAgent.match(/BlackBerry/i)
- || navigator.userAgent.match(/Windows Phone/i)
- ){
-   if(window.innerWidth <= 800 && window.innerHeight <= 600) {
-     return true;
-   } else {
-     return false;
-   }
-  }
- else {
-    return false;
-  }
-}
-
+window.onresize = function(){
+	let ptr = document.querySelector("#fullScreenToggler");
+	if(ptr != null){
+		if(window.innerWidth <= 640){
+			ptr.style.display = "inline-block";
+		}else{
+			ptr.style.display = "none";
+		} 
+		if (document.fullscreenElement) { 
+			ptr.innerHTML = "show bar"
+		} else { 
+			ptr.innerHTML = "hide bar"
+		} 
+	}
+};
