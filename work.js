@@ -302,6 +302,38 @@ function errData(err){
 	console.log(err);
 }
 
+$("#googleAuth").on("click", function () {
+	var provider = new firebase.auth.GoogleAuthProvider();
+	provider.addScope('profile');
+	provider.addScope('email');
+	firebase.auth().signInWithPopup(provider).then(function(result) {
+	 // This gives you a Google Access Token.
+	 var token = result.credential.accessToken;
+	 // The signed-in user info.
+	 var user = result.user;
+	 	if(user){
+		fireUser = user;
+		$(".whenOn").removeClass("hide");
+		$(".whenOff").addClass("hide");
+
+		if(user.displayName){
+			$("#userMessage").html("You are logged as "+user.displayName+"&nbsp;&nbsp;&nbsp;");
+		}else{
+			$("#userMessage").html("You are logged as "+user.email+"&nbsp;&nbsp;&nbsp;");
+			itsMe = (user.email == "pmg.meyer@gmail.com");
+		}
+		}else{
+			fireUser = null;
+			$(".whenOff").removeClass("hide");
+			$(".whenOn").addClass("hide");
+			$("#userMessage").text("");
+		}
+		if(!itsMe){
+			$(".myEyesOnly").addClass("hide");
+		}
+	});
+});
+
 $("#githubAuth").on("click", function () {
 	var provider = new firebase.auth.GithubAuthProvider();
 	firebase.auth().signInWithPopup(provider).then(function(result) {

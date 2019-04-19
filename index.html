@@ -52,9 +52,12 @@
             </ul>
 			<div class="auth">
 				<span style="float:left;color:white;font-size: 2em;margin:1px 8px 0 8px;cursor:pointer;" data-toggle="tooltip" data-placement="bottom" title="Authenticate as Github user">
-					<i class="fab fa-github whenOff" id="githubAuth" ></i>
+					<i class="fab fa-github whenOff" id="githubAuth" aria-hidden="true"></i>
 				</span>
-				<input class="whenOff" type = "email" id="txtEmail" placeholder="Email" required>
+				<span style="float:left;color:white;font-size: 2em;margin:1px 8px 0 8px;cursor:pointer;" data-toggle="tooltip" data-placement="bottom" title="Authenticate as Google user">
+					<i class="fab fa-google whenOff" id="googleAuth" aria-hidden="true"></i>
+				</span>
+				<input class="whenOff" type = "email" id="txtEmail" placeholder="Email" style="margin-left:12px;" required>
 				<input class="whenOff" type = "password" id="txtPassword" placeholder="Password">
 				<button class="btn btn-primary whenOff" id="btnLogin">Log in</button>
 				<button class="btn btn-success whenOff" id="btnSignUp">Sign up</button>
