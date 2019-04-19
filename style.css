@@ -141,13 +141,11 @@
 }
 
 a.btn-demo{
-	padding:2px 4px 2px 4px;
-	border: 1px solid grey;
-	background-color:lightyellow;
-	text-decoration: #333;
-	color:black;
+	border-radius:4px;
+	padding: 4px 8px 4px 8px;   
+	background-image: linear-gradient(to bottom,#fee 0,#e0e0f0 100%);
 }
 
 a.btn-demo:hover{
-	background-color:#FFDEAD;
+	background-image: linear-gradient(to bottom,#c0c0d0 0,#dcc 100%);
 }
