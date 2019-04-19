@@ -142,6 +142,8 @@
 
 a.btn-demo{
 	border-radius:4px;
+	text-decoration:none;
+	border:1px solid #d4d4d4;
 	padding: 4px 8px 4px 8px;   
 	background-image: linear-gradient(to bottom,#fee 0,#e0e0f0 100%);
 }
