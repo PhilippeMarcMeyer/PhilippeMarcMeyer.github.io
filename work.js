@@ -5,7 +5,9 @@ var indexMinimalLength = 4;
 var itsMe = false;
 
 $(document).ready(function () {
-	
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip()
+	})
 	var url = location.href;
 	var arr = url.split("#");
 	var page = "";
@@ -299,6 +301,55 @@ function errData(err){
 	console.log("error !");
 	console.log(err);
 }
+
+$("#githubAuth").on("click", function () {
+	var provider = new firebase.auth.GithubAuthProvider();
+	firebase.auth().signInWithPopup(provider).then(function(result) {
+	// This gives you a GitHub Access Token. You can use it to access the GitHub API.
+	var token = result.credential.accessToken;
+	// The signed-in user info.
+	$("#errorMessage").html("");
+
+	var user = result.user;
+	if(user){
+		fireUser = user;
+		$(".whenOn").removeClass("hide");
+		$(".whenOff").addClass("hide");
+
+		if(user.displayName){
+			$("#userMessage").html("You are logged as "+user.displayName+"&nbsp;&nbsp;&nbsp;");
+		}else{
+			$("#userMessage").html("You are logged as "+user.email+"&nbsp;&nbsp;&nbsp;");
+			itsMe = (user.email == "pmg.meyer@gmail.com");
+		}
+
+	}else{
+		fireUser = null;
+		$(".whenOff").removeClass("hide");
+		$(".whenOn").addClass("hide");
+		$("#userMessage").text("");
+	}
+	if(!itsMe){
+		$(".myEyesOnly").addClass("hide");
+	}
+	// ...
+	}).catch(function(error) {
+	  // Handle Errors here.
+	  var errorCode = error.code;
+	  var errorMessage = error.message;
+	  // The email of the user's account used.
+	  var email = error.email;
+	  // The firebase.auth.AuthCredential type that was used.
+	  var credential = error.credential;
+	  // ...
+	  	fireUser = null;
+		$(".whenOff").removeClass("hide");
+		$(".whenOn").addClass("hide");
+		$("#userMessage").text("");
+	    $("#errorMessage").html("<i class='fas fa-exclamation-circle'></i> " + errorMessage);
+	});
+});
+
   
  $(".navbar-nav li").on("click", function () {
 	 	var attr = $(this).attr('id');

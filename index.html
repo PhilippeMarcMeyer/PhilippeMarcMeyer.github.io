@@ -13,6 +13,8 @@
 
     <!-- external css -->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,500">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
@@ -49,18 +51,23 @@
 				</li>				
             </ul>
 			<div class="auth">
+				<span style="float:left;color:white;font-size: 2em;margin:1px 8px 0 8px;cursor:pointer;" data-toggle="tooltip" data-placement="bottom" title="Authenticate as Github user">
+					<i class="fab fa-github whenOff" id="githubAuth" ></i>
+				</span>
 				<input class="whenOff" type = "email" id="txtEmail" placeholder="Email" required>
 				<input class="whenOff" type = "password" id="txtPassword" placeholder="Password">
 				<button class="btn btn-primary whenOff" id="btnLogin">Log in</button>
 				<button class="btn btn-success whenOff" id="btnSignUp">Sign up</button>
 				<span class="whenOn" id="userMessage"></span>
 				<button class="btn btn-primary hide whenOn" id="btnLogout">Log out</button>
+			
 			</div>
         </div>
     </nav>
 	
     <div id="container"> <!-- container for all pages-->
 	  <!-- Modal for deleting firebase zone posts-->
+	  <div class="whenOff" id="errorMessage" style="position:absolute;margin-top:-40px;line-height:16px;color:grey;"></div>
 	  <div class="modal" id="myModal" tabindex="-1" role="dialog">
 	   <div class="modal-dialog" role="document">
 		  <div class="modal-content">
