@@ -32,11 +32,9 @@
  .auth{
 	margin-top:6px;
 	float:right;
+	width:100%;
  }
- 
-  .auth *{
-	inline-block
- }
+
  
  h5 {
     color: #2e44b9;
@@ -183,6 +181,10 @@ a.btn-demo:hover{
 
 @media screen and (min-width: 300px) and (max-width: 640px) {
 	
+.container-fluid{
+	    padding-left: 0;
+
+}
  h5 {
     color: #2e44b9;
     font-weight: bold;
@@ -250,6 +252,9 @@ pre code{
 canvas{
 	margin-left:0;
 }
+ input.whenOff{
+	 width:27%;
+ }
 }
 
 
