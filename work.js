@@ -264,56 +264,91 @@ function gotDataPost(data){
 			entries.sort(function(a,b){
 				return b.when - a.when;
 			});
-			
+			let entriesPerCategory = {};
 			entries.forEach(function(p){
 				var key = p[0];
 				var data = p[1];
 				var category = data.Category;
 				if(category){
-				var author = data.Author || "anonymous";
-				var when = new Date(data.Creation).toLocaleString();
-				if(data.Modification != "no"){
-					when += " + modified : " + new Date(data.Modification).toLocaleString();
-				}
-				var $searchField = $("#"+category+"Zone .searchField");
-				var search = "";
-				if($searchField.length > 0){
-					search = $searchField.val().toLowerCase().trim().split(" ");
-				}
-				var gotIt = true;
-				if(search.length !=0 && search[0]!=""){
-					gotIt = false;
-					search.forEach(function(k){
-						if(k.length >=indexMinimalLength){
-							if(data.Keywords.indexOf(k)!=-1){
-								gotIt = true;	
-							}
-						}
-					});
-				}
-				if(gotIt){
-					var $ptr = $("#"+category+"-posts");
-					if($ptr.length==1){
-						$ptr.append("<b class='subject'>"+data.Subject+"</b>&nbsp;by&nbsp;"+author+"&nbsp;on&nbsp;"+when+"<br />");
-						$ptr.append(data.Body.replace(/[\n\r]/g, '<br />')+'<br />');
-						$ptr.append("<button type='button' data-target='#post-"+category+"' data-id='"+key+"' class='whenOn newComment btn btn-sm btn-default'>New Comment</button><br />");
-						$ptr.append("<div class='whenOff hide inviteToLogAndComment'>Please log to leave comments</div>");
-
-						if(data.Comments){
-							var keys = Object.keys(data.Comments)
-							$ptr.append("<br /><b class='comment-title'>Comments : </b><br />");
-							keys.forEach(function(k){
-								var comment = data.Comments[k];
-								var when = new Date(comment.Creation).toLocaleString();
-								var commentHtml = "<div class='comment-post'><b>"+comment.Author+"</b>&nbsp;on&nbsp;"+when+"<br />" + comment.Body.replace(/[\n\r]/g, '<br />')+"</div><br />";
-								$ptr.append(commentHtml);
-							});
-						}
-						$ptr.append("<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-edit btn btn-sm btn-default'>Edit</button>&nbsp;");
-						$ptr.append("<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-delete btn btn-sm btn-default'>Delete</button>");
-						$ptr.append("<hr />");
+					var author = data.Author || "anonymous";
+					var when = new Date(data.Creation).toLocaleString();
+					if(data.Modification != "no"){
+						when += " + modified : " + new Date(data.Modification).toLocaleString();
 					}
-				}
+					var $searchField = $("#"+category+"Zone .searchField");
+					var search = "";
+					if($searchField.length > 0){
+						search = $searchField.val().toLowerCase().trim().split(" ");
+					}
+					var gotIt = true;
+					if(search.length !=0 && search[0]!=""){
+						gotIt = false;
+						search.forEach(function(k){
+							if(k.length >=indexMinimalLength){
+								if(data.Keywords.indexOf(k)!=-1){
+									gotIt = true;	
+								}
+							}
+						});
+					}
+					if(gotIt){
+						var $ptr = $("#"+category+"-posts");
+						if($ptr.length==1){
+							
+							if(entriesPerCategory[category] == undefined) {
+								entriesPerCategory[category] = 0;
+							}
+							entriesPerCategory[category] ++;
+							let $maindiv;
+							if(entriesPerCategory[category] % 2 == 1){
+								$maindiv = $("<div></div>");
+								$maindiv
+									.addClass('row no-gutters');
+									
+								let $div1 = $("<div></div>");
+								$div1
+									.addClass('col-lg-6 col-md-12 col-sm-12')
+									.attr('id',category+"_"+entriesPerCategory[category]);
+								
+								$div1.appendTo($maindiv);	
+								
+								let $div2 = $("<div></div>");
+								$div2
+									.addClass('col-lg-6 col-md-12 col-sm-12')
+									.attr('id', category +"_" + (parseInt(entriesPerCategory[category])+1));
+								
+								$div2.appendTo($maindiv);
+								
+								$maindiv.appendTo($ptr);	
+								
+							}
+							    let html = "";
+								html += "<b class='subject'>"+data.Subject+"</b>&nbsp;by&nbsp;"+author+"&nbsp;on&nbsp;"+when+"<br />";
+								html += data.Body.replace(/[\n\r]/g, '<br />')+'<br />';
+								html += "<button type='button' data-target='#post-"+category+"' data-id='"+key+"' class='whenOn newComment btn btn-sm btn-default'>New Comment</button><br />";
+								html += "<div class='whenOff hide inviteToLogAndComment'>Please log to leave comments</div>";
+
+								if(data.Comments){
+									var keys = Object.keys(data.Comments)
+									html += "<br /><b class='comment-title'>Comments : </b><br />";
+									keys.forEach(function(k){
+										var comment = data.Comments[k];
+										var when = new Date(comment.Creation).toLocaleString();
+										var commentHtml = "<div class='comment-post'><b>"+comment.Author+"</b>&nbsp;on&nbsp;"+when+"<br />" + comment.Body.replace(/[\n\r]/g, '<br />')+"</div><br />";
+										html += commentHtml;
+									});
+								}
+								html += "<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-edit btn btn-sm btn-default'>Edit</button>&nbsp;";
+								html += "<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-delete btn btn-sm btn-default'>Delete</button><hr />";
+								$("#"+category+"_"+entriesPerCategory[category]).html(html);
+								/*
+								$ptr.append("</div>")
+							if(entriesPerCategory[category] % 3 == 0){
+								$ptr.append("</div>");
+							}
+							*/
+						}
+					}
 				}
 			});
 	}
