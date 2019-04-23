@@ -181,7 +181,7 @@ a.btn-demo:hover{
 	
 .container-fluid{
 	    padding-left: 0;
-
+min-height : 80px;
 }
  h5 {
     color: #2e44b9;
@@ -209,7 +209,8 @@ a.btn-demo:hover{
  }
  
   .auth{
-	position:relative;
+	position:absolute;
+	top:40px;
 	margin:6px 0 0 0;
 	padding-right:25px;
 	text-align:right;
@@ -217,7 +218,7 @@ a.btn-demo:hover{
 	font-size:12px;
  }
  .iconAuth{
-	position:absolute;color:white;font-size: 2em;margin:1px 12px 0 12px;top:-47px;cursor:pointer;right:0px;;
+	position:absolute;color:white;font-size: 2em;margin:1px 12px 0 12px;top:-40px;cursor:pointer;right:0px;;
 }
 
  .iconAuth:first-of-type {
