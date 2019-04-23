@@ -297,31 +297,27 @@ function gotDataPost(data){
 							
 							if(entriesPerCategory[category] == undefined) {
 								entriesPerCategory[category] = 0;
-							}
-							entriesPerCategory[category] ++;
-							let $maindiv;
-							if(entriesPerCategory[category] % 2 == 1){
-								$maindiv = $("<div></div>");
+								let $maindiv = $("<div></div>");
 								$maindiv
 									.addClass('row no-gutters');
 									
-								let $div1 = $("<div></div>");
-								$div1
+								let $divLeft = $("<div></div>");
+								$divLeft
 									.addClass('col-lg-6 col-md-12 col-sm-12')
-									.attr('id',category+"_"+entriesPerCategory[category]);
+									.attr('id',category+"-left");
 								
-								$div1.appendTo($maindiv);	
+								$divLeft.appendTo($maindiv);	
 								
-								let $div2 = $("<div></div>");
-								$div2
+								let $divRight = $("<div></div>");
+								$divRight
 									.addClass('col-lg-6 col-md-12 col-sm-12')
-									.attr('id', category +"_" + (parseInt(entriesPerCategory[category])+1));
+									.attr('id',category+"-right");
 								
-								$div2.appendTo($maindiv);
-								
-								$maindiv.appendTo($ptr);	
-								
+								$divRight.appendTo($maindiv);
+								$maindiv.appendTo($ptr);
 							}
+							entriesPerCategory[category] ++;
+
 							    let html = "";
 								html += "<b class='subject'>"+data.Subject+"</b>&nbsp;by&nbsp;"+author+"&nbsp;on&nbsp;"+when+"<br />";
 								html += data.Body.replace(/[\n\r]/g, '<br />')+'<br />';
@@ -340,7 +336,11 @@ function gotDataPost(data){
 								}
 								html += "<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-edit btn btn-sm btn-default'>Edit</button>&nbsp;";
 								html += "<button type='button'  data-id='"+key+"' data-category='"+category+"' class='whenOn post-delete btn btn-sm btn-default'>Delete</button><hr />";
-								$("#"+category+"_"+entriesPerCategory[category]).html(html);
+								if(entriesPerCategory[category] % 2 == 1){
+									$("#"+category+"-left").append(html);
+								}else{
+									$("#"+category+"-right").append(html);
+								}
 								/*
 								$ptr.append("</div>")
 							if(entriesPerCategory[category] % 3 == 0){
