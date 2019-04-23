@@ -15,11 +15,11 @@ $(document).ready(function () {
 	if(arr.length == 2){
 		page = arr[1];
 		if(page ==""){
-			page = "home";
+			page = "about";
 		}
 
 	}else{
-		page = "home"
+		page = "about"
 	}
 	
 	if(page !=""){
