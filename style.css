@@ -30,12 +30,16 @@
  }
  
  .auth{
-	margin-top:6px;
-	float:right;
+	position:absolute;
+	margin:6px 0 0 0;
+	padding-right:25px;
+	text-align:right;
 	width:100%;
+	font-size:12px;
  }
-
- 
+ .iconAuth{
+	float:right;color:white;font-size: 2em;margin:1px 12px 0 12px;cursor:pointer;
+}
  h5 {
     color: #2e44b9;
     font-weight: bold;
@@ -138,10 +142,6 @@
 	margin-bottom:12px;
 }
 
-.auth{
-	font-size:12px;
-}
-
 .modal-backdrop{
 	z-index:0 !important;
 }
@@ -169,9 +169,7 @@ a.btn-demo:hover{
 	background-image: linear-gradient(to bottom,#c0c0d0 0,#dcc 100%);
 }
 
-.iconAuth{
-	float:left;color:white;font-size: 2em;margin:1px 8px 0 8px;cursor:pointer;
-}
+
 
 @media screen and (max-width:299px){
 	body{
@@ -209,8 +207,21 @@ a.btn-demo:hover{
  .title{
 	 margin-left:30px;
  }
+ 
+  .auth{
+	position:relative;
+	margin:6px 0 0 0;
+	padding-right:25px;
+	text-align:right;
+	width:100%;
+	font-size:12px;
+ }
  .iconAuth{
-	position:absolute;top:12px;color:white;font-size: 2em;margin:1px 8px 0 8px;cursor:pointer;
+	position:absolute;color:white;font-size: 2em;margin:1px 12px 0 12px;top:-47px;cursor:pointer;right:0px;;
+}
+
+ .iconAuth:first-of-type {
+	right:32px;
 }
 
 .navbarwithpadding {
