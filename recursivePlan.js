@@ -5,10 +5,10 @@ v 1.0 2018-11-12 : no more animation
 */
 
 var globals = {
-	mainHeight : 480,//480
-	mainWidth : 480,
-	radius : 200,
-	baseY : 120, // half radius
+	mainHeight : 384,//480
+	mainWidth : 384,
+	radius : 160,
+	baseY : 96, // half radius
 	mode : "100",
 	angleOffset : 0.2,
 	soilAngle : Math.PI/4,

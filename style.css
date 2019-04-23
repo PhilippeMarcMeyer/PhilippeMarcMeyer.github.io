@@ -1,22 +1,41 @@
  body{
 	font-family: "Roboto,Helvetica Neue",Helvetica,Arial,sans-serif; 
+	width:100%;
  }
+ 
  #container{
 	 padding-top: 30px;
 	 padding-left:50px;
 	 width:90%;
  }
  
+ .on-mobile{
+	 display:none important!;
+ }
+ 
+ .on-desktop{
+	 display:inline-block;
+ }
+ 
  input.error{
 	color:red; 
+ }
+ 
+ input.whenOff{
+	 width:120px;
  }
  
  #userMessage{
 	 color:white;
  }
+ 
  .auth{
-	 margin-top:6px;
+	margin-top:6px;
 	float:right;
+ }
+ 
+  .auth *{
+	inline-block
  }
  
  h5 {
@@ -151,3 +170,86 @@ a.btn-demo{
 a.btn-demo:hover{
 	background-image: linear-gradient(to bottom,#c0c0d0 0,#dcc 100%);
 }
+
+.iconAuth{
+	float:left;color:white;font-size: 2em;margin:1px 8px 0 8px;cursor:pointer;
+}
+
+@media screen and (max-width:299px){
+	body{
+		display:none;
+	}
+}
+
+@media screen and (min-width: 300px) and (max-width: 640px) {
+	
+ h5 {
+    color: #2e44b9;
+    font-weight: bold;
+    font-size: 18px;;
+}
+ .line1{
+	width:40px;
+ }
+ .menu{
+	margin-top:-44px; 
+	padding-bottom:4px;
+ }
+ 
+ .menu ul{
+	 margin-left:24px;
+ } 
+ 
+ .menu li{
+	 	 line-height:16px;
+
+ }
+ .title{
+	 margin-left:30px;
+ }
+ .iconAuth{
+	position:absolute;top:12px;color:white;font-size: 2em;margin:1px 8px 0 8px;cursor:pointer;
+}
+
+.navbarwithpadding {
+	padding-bottom:6px;
+}
+button.whenOff{
+	padding:3px 6px 3px 6px;
+	font-size:12px;
+}
+button.whenOn{
+	padding:3px 6px 3px 6px;
+	font-size:12px;
+}
+.searchField{
+	height:24px;
+	width:190px;
+}
+.subject{
+	display:block;
+}
+
+ div[id*='-posts']{
+    font-size:12px;
+}
+
+img{
+	max-width:100%;
+}
+#container{
+	font-size:12px;
+	 padding-top: 00px;
+	 padding-left:10px;
+	 width:95%;
+	 overflow-x:hidden;
+ }
+pre code{
+	font-size:9px;
+}
+canvas{
+	margin-left:0;
+}
+}
+
+

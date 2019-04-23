@@ -23,38 +23,34 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav class="navbar navbar-inverse">
+    <nav class="navbar navbar-inverse navbarwithpadding">
         <div class="container-fluid">
 
             <div class="navbar-header">
-                <div class="btn-group" style="margin-top: 8px;margin-right:10px;">
-                </div>
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand title" >
                     Pmg's experiments
                 </a>
             </div>
-            <ul class="nav navbar-nav">
-                <!--li id="firebaselearning" class="active"><a href="#firebaselearning">Firebase</a></li-->
-                <li id="vanillajs"><a href="#vanillajs">Vanilla js</a></li>
-                <li id="jquery"><a href="#jquery">jquery</a></li>
-				<li id="csharp"><a href="#csharp">C#</a></li>
-				<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Other interests <span class="caret"></span></a>
+            <ul class="nav navbar-nav menu" style="float:left;">
+                <li class="dropdown">
+				<a href="#" class="dropdown-toggle line1" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-lg fa-bars"></i></span></a>
 					<ul class="dropdown-menu">
-						<li id="rlanguage"><a href="#rlanguage">R Language</a></li>
+						<li id="vanillajs"><a href="#vanillajs">javascript</a></li>
+						<li id="jquery"><a href="#jquery">jquery</a></li>
+						<li id="csharp"><a href="#csharp">C#</a></li>					
+						<!--li id="rlanguage"><a href="#rlanguage">R Language</a></li-->
+						<li id="vuejs"><a href="#vuejs">vuejs</a></li>	
 						<li id="canvas"><a href="#canvas">Graphics</a></li>
-						<li role="separator" class="divider"></li>
-						<li id="about"><a href="#about">About me</a></li>
-						<li role="separator" class="divider"></li>
 						<li><a href="https://github.com/PhilippeMarcMeyer">my Github</a></li>
+						<li id="about"><a href="#about">About</a></li>
 					</ul>
 				</li>				
             </ul>
 			<div class="auth">
-				<span style="float:left;color:white;font-size: 2em;margin:1px 8px 0 8px;cursor:pointer;" data-toggle="tooltip" data-placement="bottom" title="Authenticate as Github user">
-					<i class="fab fa-github whenOff" id="githubAuth" aria-hidden="true"></i>
+				<span class="iconAuth" style="right:10px;" data-toggle="tooltip" data-placement="bottom" title="Authenticate as Github user">
+				<i class="fab fa-github whenOff" id="githubAuth" aria-hidden="true"></i>
 				</span>
-				<span style="float:left;color:white;font-size: 2em;margin:1px 8px 0 8px;cursor:pointer;" data-toggle="tooltip" data-placement="bottom" title="Authenticate as Google user">
+				<span class="iconAuth" style="right:50px;" data-toggle="tooltip" data-placement="bottom" title="Authenticate as Google user">
 					<i class="fab fa-google whenOff" id="googleAuth" aria-hidden="true"></i>
 				</span>
 				<input class="whenOff" type = "email" id="txtEmail" placeholder="Email" style="margin-left:12px;" required>
@@ -111,34 +107,10 @@
 
 	  
 	<!-- Beginning of pages-->
-<!--
-	<div id="firebaselearningZone" style="display: block;">
-		<h5>Firebase </h5>
-		<b>Firebase is a Database as service : it means I can store data in the cloud and retrieve it in that page</b><br />
-		<p>The following posts are stored in firebase :</p>
-		<input type="text" data-category="firebase" class="searchField "/>
-		<button type='button'  class='search btn btn-sm btn-default '>Search</button>
-		<span class="whenOn myEyesOnly ">&nbsp;</span>
-		<button type='button'  class='whenOn myEyesOnly new btn btn-sm btn-default'>New Post</button>
-		<hr />
-		<div id="firebaseEdit" style="display: none;">
-		<b class="keyzone">Key</b>
-		<input class="keyzone" type = "text" id="key" readonly="readonly" value=""><br class="keyzone" />
-		<b>Title</b>
-		<input type = "text" id="title" value=""><br />
-		<b>Text</b>
-		<textarea id="text"></textarea><br />
-		<button type='button'  class='cancel btn btn-sm btn-default'>Cancel</button>
-		<button type='button'  class='save btn btn-sm btn-primary'>Save</button>
-		<span id="error"></span>
-		<hr />
-		</div>
-		<div id="firebaseZone">
 
-		</div>
-	</div>
 
--->
+
+
 	<div id="vanillajsZone" style="display: none;">
 		<h5>Javascript </h5>
 		<p>Some personnal tips to come in javascript</p>
@@ -238,6 +210,33 @@
 		<div id="canvas-posts">
 
 		</div>
+		
+	</div>
+	
+	<div id="vuejsZone" style="display: none;">
+		<h5>vueJs</h5>
+		<p> Learning vuejs</p>
+		<input type="text" data-category="vuejs" class="searchField "/>
+		<button type='button'  class='search btn btn-sm btn-default '>Search</button>
+		<span class="whenOn myEyesOnly ">&nbsp;</span>
+		<button type='button' data-target="#post-vuejs" class='whenOn myEyesOnly post-new btn btn-sm btn-default'>New Post</button>
+		<hr />
+		<div id="post-vuejs" data-category="vuejs" data-comment="false" style="display: none;">
+			<b class="keyzone">Key</b>
+			<input class="keyzone post-key" type = "text" readonly="readonly" value=""><br class="keyzone" />
+			<b class="titlezone">Title</b><br/>
+			<input type="text" class="post-title titlezone" value=""><br />
+			<b>Text</b><br/>
+			<textarea class="post-text"></textarea><br />
+			<button type='button'  class='post-cancel btn btn-sm btn-default'>Cancel</button>
+			<button type='button'  class='post-save btn btn-sm btn-primary'>Save</button>
+			<span class="post-error"></span>
+			<hr />
+		</div>
+		<div id="vuejs-posts">
+
+		</div>
+		
 	</div>
 
 	<div id="rlanguageZone" style="display: none;">
@@ -272,7 +271,31 @@
 		<p>Junior Back-End developper with .Net C#</p>
 		<p>Client-server database developper 01/96 to 06/17 with 4D </p>
 		<p><a href="mailto:pmg.meyer@gmail.com">pmg.meyer@gmail.com</a></p>
+		<p></p>
+		<input type="text" data-category="home" class="searchField "/>
+		<button type='button'  class='search btn btn-sm btn-default '>Search</button>
+		<span class="whenOn myEyesOnly ">&nbsp;</span>
+		<button type='button' data-target="#post-home" class='whenOn myEyesOnly post-new btn btn-sm btn-default'>New Post</button>
+		<hr />
+		<div id="post-about" data-category="about" data-comment="false" style="display: none;">
+			<b class="keyzone">Key</b>
+			<input class="keyzone post-key" type = "text" readonly="readonly" value=""><br class="keyzone" />
+			<b class="titlezone">Title</b><br/>
+			<input type="text" class="post-title titlezone" value=""><br />
+			<b>Text</b><br/>
+			<textarea class="post-text"></textarea><br />
+			<button type='button'  class='post-cancel btn btn-sm btn-default'>Cancel</button>
+			<button type='button'  class='post-save btn btn-sm btn-primary'>Save</button>
+			<span class="post-error"></span>
+			<hr />
+		</div>
+		<div id="about-posts">
+
+		</div>
 	</div>
+	
+
+
 	
 	<div id="htmlRemover" class="hide"></div>
 </div>

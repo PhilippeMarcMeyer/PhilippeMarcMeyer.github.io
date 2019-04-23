@@ -15,11 +15,11 @@ $(document).ready(function () {
 	if(arr.length == 2){
 		page = arr[1];
 		if(page ==""){
-			page = "vanillajs";
+			page = "home";
 		}
 
 	}else{
-		page = "vanillajs"
+		page = "home"
 	}
 	
 	if(page !=""){
@@ -93,8 +93,8 @@ $(document).ready(function () {
 				$("#userMessage").html("You are logged as "+user.displayName+"&nbsp;&nbsp;&nbsp;");
 			}else{
 				$("#userMessage").html("You are logged as "+user.email+"&nbsp;&nbsp;&nbsp;");
-				itsMe = (user.email == "pmg.meyer@gmail.com");
 			}
+			itsMe = (user.email == "pmg.meyer@gmail.com");
 			
 		}else{
 			fireUser = null;
@@ -109,194 +109,7 @@ $(document).ready(function () {
 	});
 
   database = firebase.database();
-  // when I wanna submit something :
-  /*
- var ref = database.ref("Knowledge");
- var now = new Date().toISOString();
-  var data = {
 
-	  Subject:"Satisfaction",
-	  Creation: now,
-	  Body:"What I like very much is that each time an input is sent to the server, then the page receives an event with new data refreshed !",
-	  Modification:"no"
-	
-	}
-
-	$(".cancel").off("click").on("click",function(){
-		$("#firebaseEdit").hide();
-		$("#firebaseEdit #key").val("");
-		$("#firebaseEdit #title").val("");
-		$("#firebaseEdit #text").val("");
-	});
-	
-	
-	$(".new").off("click").on("click",function(){
-		$("#firebaseEdit").show();
-		$("#firebaseEdit #key").val("");
-		$("#firebaseEdit .keyzone").hide();
-		$("#firebaseEdit #title").val("");
-		$("#firebaseEdit #text").val("");
-		$("#firebaseEdit #error").text("");
-
-	});
-
-
-	$(".save").off("click").on("click",function(){
-		var key = $("#firebaseEdit #key").val();
-		var title = $("#firebaseEdit #title").val();
-		var text = $("#firebaseEdit #text").val();
-		var keywords = index(title+" "+text,indexMinimalLength);
-		if(title !="" && text != ""){
-			if(key!=""){
-				now = new Date().toISOString();
-				ref.child(key)
-					.update({ 
-						Subject: title, 
-						Body: text,
-						Keywords : keywords,
-						//Creation:"2018-08-16T10:02:10.384Z",
-						Modification:now 
-					},function(error){
-						 if (error){
-							$("#firebaseEdit #error").text(error.message);
-						 }
-					  else{
-						 $("#firebaseEdit").hide();
-						 $("#firebaseEdit #key").val("");
-						 $("#firebaseEdit #title").val("");
-						 $("#firebaseEdit #text").val("");
-
-					  }
-				  });
-
-			
-	
-			}else{
-				now = new Date().toISOString();
-				ref.push({
-				  Subject:title,
-				  Creation: now,
-				  Body:	text,
-				  Modification:"no",
-				  Keywords:keywords
-				},function(error){
-					 if (error){
-					$("#firebaseEdit #error").text(error.message);
-					 }
-				  else{
-					 $("#firebaseEdit").hide();
-					 $("#firebaseEdit #key").val("");
-					 $("#firebaseEdit #title").val("");
-					 $("#firebaseEdit #text").val("");
-
-				  }
-					
-				}); 
-				
-			}
-			
-			
-		}else{
-			$("#firebaseEdit #error").text("Please type something...");
-
-		}
-
-		
-	});
-	
-	function showStatus(s){
-		//console.log(s);
-	}
-ref.on('value',gotData,errData);
-*/
-// Pull from firebase for "firebase" page
-/*
-function gotData(data){
-	
-	var obj = data.val();
-	if(obj==null) return;
-	var search = $("#firebaselearningZone .searchField").val().toLowerCase().trim().split(" ");
-	
-	var entries = Object.entries(obj);	
-	entries.sort(function(a,b){
-		var d1 = new Date(a[1].Creation);
-		var d2 = new Date(b[1].Creation);
-		return d2.getTime() - d1.getTime();
-	});
-
-	var html="";
-	entries.forEach(function(p){
-		var gotIt = true;
-		var key = p[0];
-		var data = p[1];
-		var when = new Date(data.Creation).toLocaleString();
-		
-		if(data.Modification != "no"){
-			when += " + modified : " + new Date(data.Modification).toLocaleString();
-		}
-		
-		if(search.length !=0 && search[0]!=""){
-			gotIt = false;
-			search.forEach(function(k){
-				if(k.length >=5){
-					if(data.Keywords.indexOf(k)!=-1){
-						gotIt = true;	
-					}
-				}
-			});
-		}
-
-		if(gotIt){
-			html+="<b class='subject'>"+data.Subject+"</b>&nbsp;"+when+"<br />";
-			html+= data.Body.replace(/[\n\r]/g, '<br />')+'<br />';+'<br />';
-			html+= "<button type='button'  data-id='"+key+"' class='whenOn edit btn btn-sm btn-default'>Edit</button>";
-			html+= "<button type='button'  data-id='"+key+"' class='whenOn delete btn btn-sm btn-default'>Delete</button>";
-
-			html+= "<hr />";	
-		}
-	});
-	html = html.replace(/<br \/><br \/>/g, '<br \/>')+"<br />";
-	
-	$("#firebaseZone").html(html);
-	if(!fireUser){
-		$(".whenOff").removeClass("hide");
-		$(".whenOn").addClass("hide");
-	}
-
-	
-	$(".edit").off("click").on("click",function(){
-		var key = $(this).data("id");
-		ref.child(key).on("value",function(x){
-			
-			window.scroll({
-			 top: 0, 
-			 left: 0, 
-			 behavior: 'smooth' 
-			});
-		
-			var data = x.val();
-			$("#firebaseEdit #key").val(key);
-			$("#firebaseEdit #title").val(data.Subject);
-			$("#firebaseEdit #text").val(data.Body);
-			$("#firebaseEdit").show();
-			$("#firebaseEdit .keyzone").show();
-			$("#firebaseEdit #error").text("");
-		});
-		
-	});
-	
-	$(".delete").off("click").on("click",function(){
-		var key = $(this).data("id");
-		$("#modal-ok").data("id",key);
-		$('#myModal').modal();
-	});
-	
-	$("#modal-ok").off("click").on("click",function(){
-		var key = $(this).data("id");
-		ref.child(key).remove();
-	});
-}
-*/
 function errData(err){
 	console.log("error !");
 	console.log(err);

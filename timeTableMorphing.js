@@ -12,9 +12,9 @@ var _growing = true;
 var _passedFirst = false;
 
 var globals = {
-	mainHeight : 520,
-	mainWidth : 480,
-	radius : 210,
+	mainHeight : 416,
+	mainWidth : 384,
+	radius : 168,
 	numberPoints : 123, // this minus 3 must be divisible by 3 : ex (3 * 11) + 3 = 36
 	circlePoints : [],
 	trianglePoints : [],
