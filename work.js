@@ -3,6 +3,8 @@ var database;
 var fireUser = null;
 var indexMinimalLength = 4;
 var itsMe = false;
+var lastComment= null;
+
 
 $(document).ready(function () {
 	$(function () {
@@ -416,7 +418,6 @@ function gotDataPost(data){
 	
 	//commentModal
 	
-	
 	$(".post-new").off("click").on("click",function(){
 		var formId = $(this).data("target");
 		var $form = $(formId);
@@ -433,25 +434,79 @@ function gotDataPost(data){
 		$form.show();
 	});
 	
-	$(".newComment").off("click").on("click",function(){
+	$(".newComment").on("click",function(){
 		
 		var key = $(this).data("id");
 		var formId = $(this).data("target");
 		var $form = $(formId);
 		var category = $form.data("category");
-		
-		$form.data("comment","true");
-		
-		$(formId+ " .post-key").val(key);
 
-		$(formId + " .post-title").val("none");
-		$(formId + " .titlezone").hide();
-		$(formId + " .post-text").val("");
-		$(formId + " .post-error").text("");
+		$("#commentModal")
+			.data("category",category)
+			.data("key",key);
+			
+		$("#modal-error").text("");
+		$("#modal-comment-text").val("");
 		
-		$form.show();
+		$("#modal-comment").show();
 	});
 	
+	$(".modal-cancel").on("click",function(){
+		$("#modal-comment").hide();
+		lastComment = null;
+	});
+	
+	$(".modal-save").on("click",function(){
+		var author;
+		var error = "";
+		var $commentModal = $("#commentModal");
+		var category = $commentModal.data("category");
+		var key = $commentModal.data("key");
+		var comment = $("#modal-comment-text").val().trim();
+      	if(fireUser){
+			if(fireUser.displayName){
+				author = fireUser.displayName;
+			}else{
+				author = fireUser.email;
+			}
+			if(comment.length <5){
+				error = "Please type something";
+			}
+		}else{
+			error = "You are not identified";
+		}
+		if(error == ""){
+			let dontShout = false;
+			let thisComment = {key:key,text:comment};
+			if(lastComment != null){
+				if(lastComment.key == thisComment.key && lastComment.text == thisComment.text){
+					$("#modal-comment").hide();
+					return;
+				}
+			}
+			lastComment = {key:key,text:comment};
+			var now = new Date().toISOString();
+			var keywords = index(comment,indexMinimalLength);
+			$("#htmlRemover").html(comment);
+			comment = $("#htmlRemover").html();
+			var refComments = database.ref("Posts/"+key+"/Comments");
+			  refComments.push({
+				  Creation: now,
+				  Author:author,
+				  Body:	comment
+				},function(error){
+				  if (error){
+					error = error.message;
+				  }
+			}); 
+		}
+		if(error == ""){
+			$("#modal-comment").hide();
+		}else{
+			$("#modal-error").text(error);
+		}
+	});
+		
 	
 
 	$(".post-save").off("click").on("click",function(){
@@ -582,7 +637,19 @@ function index (text,minLength){
 			}
 		}
 	});
-	
+	for(let i = output.length -1 ; i >=0;i--){
+		let doDelete = false;
+		if(output[i].indexOf("_") > -1){
+			doDelete = true;
+		}
+		let test = parseInt(output[i]);
+		if(!isNaN(test)){
+			doDelete = true;
+		}
+		if(doDelete){
+			output.splice(i,1);
+		}
+	}
 	return output;
 }
 
