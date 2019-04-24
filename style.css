@@ -1,3 +1,12 @@
+ @font-face {font-family: "Neutra Text";
+    src: url("//db.onlinewebfonts.com/t/11d6740b4b9fa37c5cb1c5dbae8b716c.eot");
+    src: url("//db.onlinewebfonts.com/t/11d6740b4b9fa37c5cb1c5dbae8b716c.eot?#iefix") format("embedded-opentype"),
+    url("//db.onlinewebfonts.com/t/11d6740b4b9fa37c5cb1c5dbae8b716c.woff2") format("woff2"),
+    url("//db.onlinewebfonts.com/t/11d6740b4b9fa37c5cb1c5dbae8b716c.woff") format("woff"),
+    url("//db.onlinewebfonts.com/t/11d6740b4b9fa37c5cb1c5dbae8b716c.ttf") format("truetype"),
+    url("//db.onlinewebfonts.com/t/11d6740b4b9fa37c5cb1c5dbae8b716c.svg#Neutra Text") format("svg");
+}
+ 
  body{
 	font-family: "Roboto,Helvetica Neue",Helvetica,Arial,sans-serif; 
 	width:100%;
@@ -5,7 +14,6 @@
  
  pre code{
 	font-size:12px;
-	min-height: 400px;
 	max-height: 600px;
 	overflow-y:auto;
 	overflow-wrap: break-word;
@@ -24,6 +32,11 @@
  .on-desktop{
 	 display:inline-block;
  }
+ 
+ .only-desktop{
+	 display:inline-block;
+ }
+ 
  
  input.error{
 	color:red; 
@@ -45,8 +58,46 @@
 	width:100%;
 	font-size:12px;
  }
- .iconAuth{
+.iconAuth{
 	float:right;color:white;font-size: 2em;margin:1px 12px 0 12px;cursor:pointer;
+}
+
+.iconThema{
+	float:left;color: #9d9d9d;font-size: 2em;margin:5px 9px 0 6px;cursor:pointer;opacity:0.5;
+}
+
+.iconThema span.fas,.iconThema span.far,.iconThema span.fab{
+	display:inline-block;
+	font-weight:bold;
+	background-color: #9d9d9d;
+	color:#222;
+	font-size:16px;
+	width:25px;
+	height:25px;
+	border-radius : 4px;
+    margin-bottom:-2px;
+}
+
+
+.iconThema span.codingLanguage{
+	position:absolute;
+	font-family: 'Neutra Text';
+	font-weight:bold;
+	color:#222;
+	font-size:15px;
+	left:5px;
+	top:13px;
+}
+.iconThema:hover{
+	opacity:1;
+}
+
+.iconThema span.fas:hover,.iconThema span.far:hover,.iconThema span.fab:hover{
+	background-color: #fff;
+}
+
+.iconThema:hover{
+	color: #fff;
 }
  h5 {
     color: #2e44b9;
@@ -185,12 +236,22 @@ a.btn-demo:hover{
 	}
 }
 
-@media screen and (min-width: 300px) and (max-width: 640px) {
+@media screen and (min-width: 300px) and (max-width: 899px) {
+ .only-desktop{
+	 display:none;
+ }
+}
+
+@media screen and (min-width: 300px) and (max-width: 780px) {
 	
 .container-fluid{
 	    padding-left: 0;
 min-height : 80px;
 }
+
+  .only-desktop{
+	 display:none;
+ }
  h5 {
     color: #2e44b9;
     font-weight: bold;

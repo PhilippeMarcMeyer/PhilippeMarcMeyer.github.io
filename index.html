@@ -41,25 +41,34 @@
 			</div>
             <div class="navbar-header">
                 <a class="navbar-brand title" >
-                    Pmg's experiments
+                   &lt;Phm's experiments/&gt;
                 </a>
             </div>
             <ul class="nav navbar-nav menu" style="float:left;">
                 <li class="dropdown">
 				<a href="#" class="dropdown-toggle line1" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-lg fa-bars"></i></span></a>
-					<ul class="dropdown-menu">
+					<ul class="dropdown-menu" id="thema-menu">
 						<li id="vanillajs"><a href="#vanillajs">javascript</a></li>
 						<li id="jquery"><a href="#jquery">jquery</a></li>
 						<li id="csharp"><a href="#csharp">C#</a></li>					
 						<!--li id="rlanguage"><a href="#rlanguage">R Language</a></li-->
 						<li id="vuejs"><a href="#vuejs">vuejs</a></li>	
 						<li id="canvas"><a href="#canvas">Graphics</a></li>
-						<li><a href="https://github.com/PhilippeMarcMeyer">my Github</a></li>
+						<li id="github"><a href="https://github.com/PhilippeMarcMeyer">my Github</a></li>
 						<li id="about"><a href="#about">About</a></li>
 					</ul>
-				</li>				
-            </ul>
+				</li>
 
+            </ul>
+			      <ul id="thema-bar" class="nav navbar-nav menu only-desktop " style="float:left;margin-left:20px;">
+					<li class="iconThema" data-language="vanillajs" data-toggle="none" data-placement="bottom" title="JavaScript posts"><i class="fab fa-js-square"></i></li>
+					<li class="iconThema fake" data-language="jquery" data-toggle="none" data-placement="bottom" title="jQuery posts"><span class="fas fa-rectangle-portrait"></span><span class="codingLanguage">JQ</span></li>
+					<li class="iconThema fake" data-language="csharp" data-toggle="none" data-placement="bottom" title="C# posts"><span class="fas fa-rectangle-portrait"></span><span class="codingLanguage">C#</span></li>
+					<li class="iconThema" data-language="vuejs" data-toggle="none" data-placement="bottom" title="Vuejs posts"><i class="fab fa-vuejs"></i></li>
+					<li class="iconThema" data-language="canvas" data-toggle="none" data-placement="bottom" title="Graphics"><i class="far fa-file-image"></i></li>
+					<li class="iconThema" data-language="github" data-toggle="tooltip" data-placement="bottom" title="Go to github"><i class="fab fa-github-square"></i></li>
+					<li class="iconThema" data-language="about" data-toggle="none" data-placement="bottom" title="Home"><i class="fas fa-address-card"></i></li>
+				</ul>
         </div>
     </nav>
 	
@@ -296,6 +305,14 @@
 		<p>Client-server database developper 01/96 to 06/17 with 4D </p>
 		<p><a href="mailto:pmg.meyer@gmail.com">pmg.meyer@gmail.com</a></p>
 		<p></p>
+	</div>
+	
+	<div id="cyberLostZone" style="display: none;">
+		<i class="fas fa-robot fa-6x"></i>
+		<br /><br />
+		<h5> 404 ! You are lost in cyberspace !</h5>
+		<p>Don't panic and pick a theme from the menu :-)</p>
+		
 	</div>
 	<div id="htmlRemover" class="hide"></div>
 </div>

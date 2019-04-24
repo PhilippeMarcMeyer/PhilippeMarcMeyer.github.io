@@ -5,30 +5,34 @@ var indexMinimalLength = 4;
 var itsMe = false;
 var lastComment= null;
 
+let themas = [
+	"vanillajs",
+	"jquery",
+	"csharp",
+	"vuejs",
+	"canvas",
+	"github",
+	"about"
+
+]
+
 
 $(document).ready(function () {
 	$(function () {
 		$('[data-toggle="tooltip"]').tooltip()
 	})
-	var url = location.href;
-	var arr = url.split("#");
-	var page = "";
-	
-	if(arr.length == 2){
-		page = arr[1];
-		if(page ==""){
-			page = "about";
-		}
+	var page = window.location.hash.replace("#","").toLowerCase();
 
-	}else{
+	if(page==""){
 		page = "about"
 	}
 	
-	if(page !=""){
-		init(page.toLowerCase());
+	if(themas.indexOf(page) == -1){
+		page = "cyberLost"
 	}
-
 	
+	init(page);
+
   var config = {
     apiKey: "AIzaSyCdE3mJVWexNDOh83rNA5S29N2KK5gcy-c",
     authDomain: "first-firebase-project-5ada0.firebaseapp.com",
@@ -206,33 +210,42 @@ $("#githubAuth").on("click", function () {
 	 }
 });
 
-function init(menuItem) {
-    var menus = $(".navbar-nav li");
-    $.each(menus, function (index, menu) {
-		var attr = $(this).attr('id');
-		if(attr){
-			if (menu.id == menuItem) {
-				$("#" + menu.id + "Zone").show();
-				$("#" + menu.id).addClass("active");
-
-			} else {
-				$("#" + menu.id + "Zone").hide();
-				$("#" + menu.id).removeClass("active");
-			}
+ $("#thema-bar li").on("click", function () {
+	 	var menuItem  = $(this).data('language');
+		if(menuItem == "github"){
+			document.location.href="https://github.com/PhilippeMarcMeyer";
+		}else{
+		  init(menuItem);
 		}
-    });
-	
+});
 
+
+function init(page) {
+	if(page ==	"cyberLost"){
+		window.location.hash = "";
+		$("#cyberLostZone").show();
+	}else{
+		window.location.hash = page;
+		themas.forEach(function(x){
+			if(x == page){
+				$("#" + x + "Zone").show();
+				$("#" + x).addClass("active");	
+			}else{
+				$("#" + x + "Zone").hide();
+				$("#" + x).removeClass("active");				
+			}
+		});
+	}
 	
-	if(menuItem = "rlanguage"){
+	if(page = "rlanguage"){
 		var h = window.innerHeight-450;
 		if(h >200){
 			$("#Learning-R").prop("height",h+"px");	
 		}
 		$("#Learning-R").show();
-	}else{
-		$("#Learning-R").hide();
-	}
+		}else{
+			$("#Learning-R").hide();
+		}
 }
 
  var refPosts = database.ref("Posts");
