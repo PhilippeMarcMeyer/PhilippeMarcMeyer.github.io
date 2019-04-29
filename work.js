@@ -609,8 +609,8 @@ function gotDataPost(data){
 		}		
 	});
 	
-	  document.querySelectorAll('pre code').forEach((block) => {
-    hljs.highlightBlock(block);
+	  document.querySelectorAll('pre code').forEach(function(block){
+		hljs.highlightBlock(block);
   });
 }
 
