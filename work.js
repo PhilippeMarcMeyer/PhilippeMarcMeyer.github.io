@@ -11,6 +11,7 @@ let themas = [
 	"csharp",
 	"vuejs",
 	"canvas",
+	"anything",
 	"github",
 	"about"
 
