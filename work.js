@@ -367,6 +367,7 @@ function gotDataPost(data){
 					}
 				}
 			});
+			$(".static-post").removeClass("hide");
 	}
 
 	if(!fireUser){
