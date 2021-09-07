@@ -1,20 +1,21 @@
 {
   "files": {
-    "main.css": "/chessStudies/static/css/main.e65a1555.chunk.css",
-    "main.js": "/chessStudies/static/js/main.cb162322.chunk.js",
-    "main.js.map": "/chessStudies/static/js/main.cb162322.chunk.js.map",
+    "main.css": "/chessStudies/static/css/main.8b980ab8.chunk.css",
+    "main.js": "/chessStudies/static/js/main.3e59552a.chunk.js",
+    "main.js.map": "/chessStudies/static/js/main.3e59552a.chunk.js.map",
     "runtime-main.js": "/chessStudies/static/js/runtime-main.1c31fbf9.js",
     "runtime-main.js.map": "/chessStudies/static/js/runtime-main.1c31fbf9.js.map",
     "static/js/2.dbe239f4.chunk.js": "/chessStudies/static/js/2.dbe239f4.chunk.js",
     "static/js/2.dbe239f4.chunk.js.map": "/chessStudies/static/js/2.dbe239f4.chunk.js.map",
     "index.html": "/chessStudies/index.html",
-    "static/css/main.e65a1555.chunk.css.map": "/chessStudies/static/css/main.e65a1555.chunk.css.map",
-    "static/js/2.dbe239f4.chunk.js.LICENSE.txt": "/chessStudies/static/js/2.dbe239f4.chunk.js.LICENSE.txt"
+    "static/css/main.8b980ab8.chunk.css.map": "/chessStudies/static/css/main.8b980ab8.chunk.css.map",
+    "static/js/2.dbe239f4.chunk.js.LICENSE.txt": "/chessStudies/static/js/2.dbe239f4.chunk.js.LICENSE.txt",
+    "static/media/logopmg.082d71ad.png": "/chessStudies/static/media/logopmg.082d71ad.png"
   },
   "entrypoints": [
     "static/js/runtime-main.1c31fbf9.js",
     "static/js/2.dbe239f4.chunk.js",
-    "static/css/main.e65a1555.chunk.css",
-    "static/js/main.cb162322.chunk.js"
+    "static/css/main.8b980ab8.chunk.css",
+    "static/js/main.3e59552a.chunk.js"
   ]
 }
