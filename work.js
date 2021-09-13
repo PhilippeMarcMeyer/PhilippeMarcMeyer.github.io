@@ -36,6 +36,7 @@ $(document).ready(function () {
 	
 	var chessFrameHeight = $(document).height()-$(".navbarwithpadding").height();
 	$("#chessFrame").attr("height",chessFrameHeight+"px");
+
 	init(page);
 
   var config = {
