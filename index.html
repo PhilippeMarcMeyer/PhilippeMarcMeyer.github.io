@@ -51,7 +51,7 @@
 						<li id="vanillajs"><a href="#vanillajs">javascript</a></li>
 						<li id="jquery"><a href="#jquery">jquery</a></li>
 						<li id="csharp"><a href="#csharp">C#</a></li>					
-						<li id="rlanguage"><a href="#reactjs">Reactjs</a></li>
+						<li id="reactjs"><a href="#reactjs">Reactjs</a></li>
 						<li id="vuejs"><a href="#vuejs">Vuejs</a></li>	
 						<li id="canvas"><a href="#canvas">Graphics</a></li>
 						<li id="anything"><a href="#anything">Anything slse</a></li>
@@ -65,7 +65,7 @@
 					<li class="iconThema" data-language="vanillajs" data-toggle="tooltip" data-placement="bottom" title="JavaScript posts"><i class="fab fa-js-square"></i></li>
 					<li class="iconThema fake" data-language="jquery" data-toggle="tooltip" data-placement="bottom" title="jQuery posts"><span class="fas fa-rectangle-portrait"></span><span class="codingLanguage">JQ</span></li>
 					<li class="iconThema fake" data-language="csharp" data-toggle="tooltip" data-placement="bottom" title="C# posts"><span class="fas fa-rectangle-portrait"></span><span class="codingLanguage">C#</span></li>
-					<li class="iconThema" data-language="reactjs" data-toggle="tooltip" data-placement="bottom" title="Reactjs posts"><i class="fab fa-reactjs"></i></li>
+					<li class="iconThema" data-language="reactjs" data-toggle="tooltip" data-placement="bottom" title="Reactjs posts"><i class="fab fa-react"></i></li>
 					<li class="iconThema" data-language="vuejs" data-toggle="tooltip" data-placement="bottom" title="Vuejs posts"><i class="fab fa-vuejs"></i></li>
 					<li class="iconThema" data-language="canvas" data-toggle="tooltip" data-placement="bottom" title="Graphics"><i class="far fa-file-image"></i></li>
 					<li class="iconThema" data-language="anything" data-toggle="tooltip" data-placement="bottom" title="Anything else"><i class="fas fa-question"></i></li>
@@ -224,9 +224,35 @@
 		</div>
 		
 	</div>
+
+	<div id="reactjsZone" style="display: none;">
+		<h5>reactjs</h5>
+		<p> Learning reactjs</p>
+		<input type="text" data-category="reactjs" class="searchField "/>
+		<button type='button'  class='search btn btn-sm btn-default '>Search</button>
+		<span class="whenOn myEyesOnly ">&nbsp;</span>
+		<button type='button' data-target="#post-reactjs" class='whenOn myEyesOnly post-new btn btn-sm btn-default'>New Post</button>
+		<hr />
+		<div id="post-reactjs" data-category="reactjs" data-comment="false" style="display: none;">
+			<b class="keyzone">Key</b>
+			<input class="keyzone post-key" type = "text" readonly="readonly" value=""><br class="keyzone" />
+			<b class="titlezone">Title</b><br/>
+			<input type="text" class="post-title titlezone" value=""><br />
+			<b>Text</b><br/>
+			<textarea class="post-text"></textarea><br />
+			<button type='button'  class='post-cancel btn btn-sm btn-default'>Cancel</button>
+			<button type='button'  class='post-save btn btn-sm btn-primary'>Save</button>
+			<span class="post-error"></span>
+			<hr />
+		</div>
+		<div id="reactjs-posts">
+
+		</div>
+		
+	</div>
 	
 	<div id="vuejsZone" style="display: none;">
-		<h5>vueJs</h5>
+		<h5>vuejs</h5>
 		<p> Learning vuejs</p>
 		<input type="text" data-category="vuejs" class="searchField "/>
 		<button type='button'  class='search btn btn-sm btn-default '>Search</button>
