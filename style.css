@@ -293,10 +293,6 @@ font-size:12px;
 	right:32px;
 }
 
-.navbar{
-	margin-bottom:0;
-}
-
 .navbarwithpadding {
 	padding-bottom:6px;
 }
@@ -339,6 +335,9 @@ canvas{
  input.whenOff{
 	 width:27%;
  }
+}
+.navbar{
+	margin-bottom:0 !important;
 }
 
 
