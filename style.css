@@ -293,6 +293,10 @@ font-size:12px;
 	right:32px;
 }
 
+.navbar{
+	margin-bottom:0;
+}
+
 .navbarwithpadding {
 	padding-bottom:6px;
 }

@@ -34,6 +34,8 @@ $(document).ready(function () {
 		page = "cyberLost"
 	}
 	
+	var chessFrameHeight = $(document).height()-$(".navbarwithpadding").height();
+	var $("#chessFrame").attr("height",chessFrameHeight+"px");
 	init(page);
 
   var config = {
