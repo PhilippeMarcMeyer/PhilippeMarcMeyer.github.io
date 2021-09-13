@@ -9,6 +9,7 @@ let themas = [
 	"vanillajs",
 	"jquery",
 	"csharp",
+	"reactjs",
 	"vuejs",
 	"canvas",
 	"anything",
@@ -540,7 +541,7 @@ function gotDataPost(data){
 		var key = $(formId + " .post-key").val();
 		var title = $(formId + " .post-title").val();
 		var text = $(formId + " .post-text").val();
-		var keywords = index(title+" "+text,indexMinimalLength);
+		var keywords = [];//index(title+" "+text,indexMinimalLength);
 		if(title !="" && text != ""){
 			if(key!=""){
 				now = new Date().toISOString();
