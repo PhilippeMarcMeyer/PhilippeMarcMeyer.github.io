@@ -14,7 +14,8 @@ let themas = [
 	"canvas",
 	"anything",
 	"github",
-	"about"
+	"about",
+	"chess"
 
 ]
 
