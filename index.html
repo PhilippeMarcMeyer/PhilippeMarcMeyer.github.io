@@ -9,16 +9,12 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" href="pi.ico" />
-	
 
     <!-- external css -->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,500">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
     <!-- internal css -->
     <link rel="stylesheet" href="style.css">
 </head>
@@ -48,7 +44,7 @@
                 <li class="dropdown">
 				<a href="#" class="dropdown-toggle line1" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-lg fa-bars"></i></span></a>
 					<ul class="dropdown-menu" id="thema-menu">
-						<li id="vanillajs"><a href="#vanillajs">javascript</a></li>
+						<li id="vanillajs"><a href="#vanillajs">javascript & css</a></li>
 						<li id="jquery"><a href="#jquery">jquery</a></li>
 						<li id="csharp"><a href="#csharp">C#</a></li>					
 						<li id="reactjs"><a href="#reactjs">Reactjs</a></li>
@@ -57,10 +53,8 @@
 						<li id="anything"><a href="#anything">Anything slse</a></li>
 						<li id="github"><a href="https://github.com/PhilippeMarcMeyer">my Github</a></li>
 						<li id="about"><a href="#about">About</a></li>
-						<li id="chess"><a href="#chess">Chess</a></li>
 					</ul>
 				</li>
-
             </ul>
 			      <ul id="thema-bar" class="nav navbar-nav menu only-desktop " style="float:left;margin-left:20px;">
 					<li class="iconThema" data-language="vanillajs" data-toggle="tooltip" data-placement="bottom" title="JavaScript posts"><i class="fab fa-js-square"></i></li>
@@ -72,16 +66,10 @@
 					<li class="iconThema" data-language="anything" data-toggle="tooltip" data-placement="bottom" title="Anything else"><i class="fas fa-question"></i></li>
 					<li class="iconThema" data-language="about" data-toggle="tooltip" data-placement="bottom" title="Home"><i class="fas fa-address-card"></i></li>
 					<li class="iconThema" data-language="github" data-toggle="tooltip" data-placement="bottom" title="Go to github"><i class="fab fa-github-square"></i></li>
-					<li class="iconThema" data-language="chess" data-toggle="tooltip" data-placement="bottom" title="Go to chess studies"><i class="fa fa-chess-king"></i></li>
 				</ul>
         </div>
     </nav>
-	
-		
-	<div id="chessZone" style="display: none;">
-	<iframe id="chessFrame" style="border:none;" width="100%" height="500px" src="./chessStudies/index.html"></iframe>
-	</div>
-	
+
     <div id="container"> <!-- container for all pages-->
 	<!-- Modal for deleting other posts-->
 	  <div class="modal" id="post-del-modal" tabindex="-1" role="dialog">
@@ -127,7 +115,6 @@
 	  </div>
   	  <!-- End Modal for deleting other posts-->  
 
-	  
 	<!-- Beginning of pages-->
 
 	<div id="vanillajsZone" style="display: none;">
@@ -281,31 +268,6 @@
 		<div id="vuejs-posts">
 
 		</div>
-		
-	</div>
-
-	<div id="rlanguageZone" style="display: none;">
-
-		<iframe id="Learning-R" style="border:none;" width="100%" height="500px" src="https://philippemarcmeyer.github.io/Learning-R/"></iframe>
-		<hr>
-		<b>Other posts</b>
-		<button type='button' data-target="#post-rlanguage" class='whenOn myEyesOnly post-new btn btn-sm btn-default pull-right'>New Post</button>
-		<hr />
-		<div id="post-rlanguage" data-category="rlanguage" data-comment="false" style="display: none;">
-			<b class="keyzone">Key</b>
-			<input class="keyzone post-key" type = "text" readonly="readonly" value=""><br class="keyzone" />
-			<b class="titlezone">Title</b><br/>
-			<input type="text" class="post-title titlezone" value=""><br />
-			<b>Text</b><br/>
-			<textarea class="post-text"></textarea><br />
-			<button type='button'  class='post-cancel btn btn-sm btn-default'>Cancel</button>
-			<button type='button'  class='post-save btn btn-sm btn-primary'>Save</button>
-			<span class="post-error"></span>
-			<hr />
-		</div>
-		<div id="rlanguage-posts">
-
-		</div>
 	</div>
 	
 	<div id="anythingZone" style="display: none;">
@@ -331,11 +293,9 @@
 		<div id="anything-posts">
 
 		</div>
-		
 	</div>
 	
 	<div id="aboutZone" style="display: none;">
-	
 		<h5>Welcome</h5>
 		<p>This blog is my notebook build on firebase : you are free to comment</p>
 		<input type="text" data-category="about" class="searchField "/>
